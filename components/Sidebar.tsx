@@ -53,6 +53,7 @@ export default function Sidebar({
 }: Props) {
   const [active, setActive] = useState('hero');
   const visitorCount = useVisitorCount();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     let raf = 0;

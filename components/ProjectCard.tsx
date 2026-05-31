@@ -77,9 +77,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               </span>
             ))}
           </div>
-          <h3 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-[#e6edf3]">{project.title}</h3>
-          <p className="mt-4 text-slate-700 dark:text-[#8b949e]">{project.description}</p>
-          <p className="mt-5 font-semibold text-slate-900 dark:text-[#e6edf3]">{project.metric}</p>
+          <h3 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-[#e6edf3] break-words">{project.title}</h3>
+          <p className="mt-4 text-slate-700 dark:text-[#8b949e] break-words">{project.description}</p>
+          <p className="mt-5 font-semibold text-slate-900 dark:text-[#e6edf3] break-words">{project.metric}</p>
           <p className="mt-4 md:hidden text-xs font-medium text-[#8B2635]/60 dark:text-[#8B2635]/80">Tap to see details →</p>
         </div>
 

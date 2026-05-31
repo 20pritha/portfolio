@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import confetti from 'canvas-confetti';
 import emailjs from 'emailjs-com';
+import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
 import GlitchHeading from '@/components/GlitchHeading';
 import SectionReveal from '@/components/SectionReveal';
@@ -94,6 +95,7 @@ export default function Contact() {
 
       setSuccess(true);
       setStatus('> message sent successfully ✦');
+      track('contact_form_submitted', { designation: form.designation });
       setForm(initialForm);
       setAvatarMood('celebrating');
       setBounceAvatar(true);

@@ -20,6 +20,22 @@ const sections = [
 
 const allSectionIds = ['hero', ...sections.map((s) => s.id)];
 
+function useVisitorCount() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const stored = parseInt(localStorage.getItem('visitor_count') ?? '0', 10);
+    if (!sessionStorage.getItem('visitor_counted')) {
+      const next = stored + 1;
+      localStorage.setItem('visitor_count', String(next));
+      sessionStorage.setItem('visitor_counted', '1');
+      setCount(next);
+    } else {
+      setCount(stored);
+    }
+  }, []);
+  return count;
+}
+
 interface Props {
   expanded: boolean;
   onToggle: () => void;
@@ -36,7 +52,7 @@ export default function Sidebar({
   onMobileClose,
 }: Props) {
   const [active, setActive] = useState('hero');
-  const { theme, toggleTheme } = useTheme();
+  const visitorCount = useVisitorCount();
 
   useEffect(() => {
     let raf = 0;
@@ -165,8 +181,8 @@ export default function Sidebar({
           expanded ? 'block' : 'hidden'
         }`}
       >
-        <p className="text-[10px] text-slate-400 dark:text-[#8b949e]">
-          <span className="text-maroon">👁</span> Visited by 1,247 builders
+        <p className="font-mono text-[10px] text-maroon/50">
+          👁 {visitorCount.toLocaleString()} visitors
         </p>
       </div>
 

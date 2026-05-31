@@ -52,7 +52,8 @@ export default function HeroDotGrid() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.08)';
+      const isDark = document.documentElement.classList.contains('dark');
+      ctx.fillStyle = isDark ? 'rgba(230, 237, 243, 0.12)' : 'rgba(15, 23, 42, 0.08)';
       dots.forEach((dot) => {
         dot.vx += (Math.random() - 0.5) * 0.03;
         dot.vy += (Math.random() - 0.5) * 0.03;

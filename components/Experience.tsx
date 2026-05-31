@@ -29,8 +29,8 @@ export default function Experience() {
           transition={{ duration: 0.7 }}
         >
           <div className="mb-10 flex flex-col gap-3">
-            <p className="text-sm uppercase tracking-[0.35em] text-slate-500">Experience</p>
-            <GlitchHeading className="text-3xl font-semibold text-slate-950">
+            <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Experience</p>
+            <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
               Professional roles with production-grade AI delivery.
             </GlitchHeading>
           </div>
@@ -40,7 +40,7 @@ export default function Experience() {
               const avatar = experienceAvatars[item.company];
 
               return (
-                <div key={item.company} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-soft transition hover:-translate-y-1">
+                <div key={item.company} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-soft transition hover:-translate-y-1 dark:border-[#30363d] dark:bg-[#161b22]">
                   <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
                     {avatar ? (
                       <div className="flex-shrink-0">
@@ -56,12 +56,12 @@ export default function Experience() {
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                          <p className="text-xl font-semibold text-slate-950">{item.company}</p>
-                          <p className="mt-1 text-sm text-slate-500">{item.role}</p>
+                          <p className="text-xl font-semibold text-slate-950 dark:text-[#e6edf3]">{item.company}</p>
+                          <p className="mt-1 text-sm text-slate-500 dark:text-[#8b949e]">{item.role}</p>
                         </div>
-                        <span className="rounded-full bg-maroon/10 px-3 py-1 text-sm font-semibold text-maroon">{item.timeframe}</span>
+                        <span className="rounded-full bg-maroon/10 px-3 py-1 text-sm font-semibold text-maroon dark:bg-[#8B2635]/20 dark:text-[#e6edf3]">{item.timeframe}</span>
                       </div>
-                      <ul className="mt-6 space-y-4 text-slate-700">
+                      <ul className="mt-6 space-y-4 text-slate-700 dark:text-[#8b949e]">
                         {item.highlights.map((highlight) => (
                           <li key={highlight} className="leading-7">• {highlight}</li>
                         ))}

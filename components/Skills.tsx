@@ -45,8 +45,8 @@ export default function Skills() {
               />
             </div>
             <div className="min-w-[220px]">
-              <p className="text-sm uppercase tracking-[0.35em] text-slate-500">Skills</p>
-              <GlitchHeading className="text-3xl font-semibold text-slate-950">
+              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Skills</p>
+              <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
                 A focused toolkit for AI engineering delivery.
               </GlitchHeading>
             </div>
@@ -54,21 +54,21 @@ export default function Skills() {
 
           <div className="mb-6">
             <div className="relative inline-flex w-full max-w-sm">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#8b949e]">🔍</span>
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Filter skills..."
-                className="w-full rounded-full border border-slate-200 bg-cream px-4 py-2 pl-9 font-mono text-sm text-slate-800 outline-none transition focus:border-maroon focus:ring-0"
+                className="w-full rounded-full border border-slate-200 bg-cream px-4 py-2 pl-9 font-mono text-sm text-slate-800 outline-none transition focus:border-maroon focus:ring-0 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:placeholder-[#8b949e] dark:focus:border-[#8B2635]"
               />
             </div>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {skills.map((group) => (
-              <div key={group.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft">
-                <h3 className="text-lg font-semibold text-slate-950">{group.title}</h3>
+              <div key={group.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+                <h3 className="text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">{group.title}</h3>
                 <motion.div
                   className="mt-4 flex flex-wrap gap-3"
                   variants={containerVariants}
@@ -80,7 +80,7 @@ export default function Skills() {
                     <motion.span
                       key={item}
                       variants={pillVariants}
-                      className={`rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 transition hover:border-maroon hover:text-maroon ${
+                      className={`rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 transition hover:border-maroon hover:text-maroon dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635] dark:hover:shadow-[0_0_8px_rgba(139,38,53,0.4)] ${
                         q && !item.toLowerCase().includes(q) ? 'opacity-20' : 'opacity-100'
                       }`}
                     >

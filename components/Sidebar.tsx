@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import SidebarToggle from '@/components/SidebarToggle';
 import site from '@/data/site';
+import { useTheme } from '@/hooks/useTheme';
 
 const sections = [
   { id: 'hero',         label: 'Home',           icon: '✦' },
@@ -35,6 +36,7 @@ export default function Sidebar({
   onMobileClose,
 }: Props) {
   const [active, setActive] = useState('hero');
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     let raf = 0;
@@ -91,8 +93,8 @@ export default function Sidebar({
             expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 hidden'
           }`}
         >
-          <p className="truncate text-sm font-semibold text-slate-900">Pritha Mishra</p>
-          <p className="truncate text-xs text-slate-500">AI Engineer</p>
+          <p className="truncate text-sm font-semibold text-slate-900 dark:text-[#e6edf3]">Pritha Mishra</p>
+          <p className="truncate text-xs text-slate-500 dark:text-[#8b949e]">AI Engineer</p>
         </div>
       </div>
 
@@ -102,7 +104,7 @@ export default function Sidebar({
           expanded ? 'max-h-10 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-xs text-slate-600">
+        <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-xs text-slate-600 dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#8b949e]">
           <span className="inline-flex h-2 w-2 shrink-0 animate-pulse rounded-full bg-emerald-500" />
           <span>building in Bengaluru 🇮🇳</span>
         </div>
@@ -119,8 +121,8 @@ export default function Sidebar({
               onClick={onMobileClose}
               className={`group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-150 ${
                 isActive
-                  ? 'bg-maroon/10 font-semibold text-maroon'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-maroon/10 font-semibold text-maroon dark:bg-[#8B2635]/20 dark:text-[#e6edf3] dark:shadow-[inset_3px_0_0_#8B2635]'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-[#8b949e] dark:hover:bg-white/5 dark:hover:text-[#e6edf3]'
               }`}
             >
               {isActive && (
@@ -135,7 +137,7 @@ export default function Sidebar({
                 {label}
               </span>
               {!expanded && (
-                <span className="pointer-events-none absolute left-full ml-2 whitespace-nowrap rounded-full bg-cream px-3 py-1 text-xs font-medium text-maroon shadow-soft opacity-0 transition-opacity duration-150 group-hover:opacity-100 z-50">
+                <span className="pointer-events-none absolute left-full ml-2 whitespace-nowrap rounded-full bg-cream px-3 py-1 text-xs font-medium text-maroon shadow-soft opacity-0 transition-opacity duration-150 group-hover:opacity-100 z-50 dark:bg-[#161b22] dark:text-[#e6edf3]">
                   {label}
                 </span>
               )}
@@ -144,20 +146,33 @@ export default function Sidebar({
         })}
       </nav>
 
+      {/* Theme toggle */}
+      <div className="px-2 pb-2">
+        <button
+          onClick={toggleTheme}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[#8B2635] hover:bg-[#8B2635]/10 w-full dark:text-[#e6edf3] dark:hover:bg-white/5"
+        >
+          <span className="shrink-0">{theme === 'dark' ? '☀️' : '🌙'}</span>
+          <span className={`truncate transition-all duration-300 ${expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'}`}>
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          </span>
+        </button>
+      </div>
+
       {/* Visitor counter */}
       <div
         className={`px-4 pb-2 transition-all duration-300 ${
           expanded ? 'block' : 'hidden'
         }`}
       >
-        <p className="text-[10px] text-slate-400">
+        <p className="text-[10px] text-slate-400 dark:text-[#8b949e]">
           <span className="text-maroon">👁</span> Visited by 1,247 builders
         </p>
       </div>
 
       {/* Bottom social links */}
       <div
-        className={`flex items-center border-t border-slate-200/60 px-4 py-4 transition-all duration-300 ${
+        className={`flex items-center border-t border-slate-200/60 px-4 py-4 transition-all duration-300 dark:border-[#30363d] ${
           expanded ? 'gap-3' : 'flex-col gap-2 justify-center'
         }`}
       >
@@ -166,19 +181,19 @@ export default function Sidebar({
           target="_blank"
           rel="noopener noreferrer"
           title="LinkedIn"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#8b949e] dark:hover:border-[#8B2635] dark:hover:text-[#e6edf3]"
         >
           <LinkedInIcon />
         </a>
         <a
           href={`mailto:${site.contact.email}`}
           title="Email"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#8b949e] dark:hover:border-[#8B2635] dark:hover:text-[#e6edf3]"
         >
           <EmailIcon />
         </a>
         <span
-          className={`truncate text-xs text-slate-400 transition-all duration-300 ${
+          className={`truncate text-xs text-slate-400 dark:text-[#8b949e] transition-all duration-300 ${
             expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'
           }`}
         >
@@ -192,7 +207,7 @@ export default function Sidebar({
     <>
       {/* Desktop sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-40 hidden h-screen flex-col border-r border-maroon/10 bg-cream transition-[width] duration-300 ease-in-out md:flex ${
+        className={`fixed left-0 top-0 z-40 hidden h-screen flex-col border-r border-maroon/10 bg-cream transition-[width] duration-300 ease-in-out md:flex dark:bg-[#0d1117] dark:border-[#30363d] ${
           expanded ? 'w-60' : 'w-16'
         }`}
       >
@@ -201,7 +216,7 @@ export default function Sidebar({
           type="button"
           onClick={onToggle}
           aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
-          className="absolute -right-3 top-6 flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-xs text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon"
+          className="absolute -right-3 top-6 flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-xs text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#8b949e] dark:hover:border-[#8B2635] dark:hover:text-[#e6edf3]"
         >
           {expanded ? '‹' : '›'}
         </button>
@@ -212,7 +227,7 @@ export default function Sidebar({
         type="button"
         onClick={onMobileOpen}
         aria-label="Open navigation"
-        className="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-lg text-slate-700 shadow-md transition hover:border-maroon hover:text-maroon md:hidden"
+        className="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-lg text-slate-700 shadow-md transition hover:border-maroon hover:text-maroon md:hidden dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#e6edf3]"
       >
         ☰
       </button>
@@ -227,7 +242,7 @@ export default function Sidebar({
 
       {/* Mobile sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-60 flex-col border-r border-maroon/10 bg-cream transition-transform duration-[250ms] ease-in-out md:hidden ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-60 flex-col border-r border-maroon/10 bg-cream transition-transform duration-[250ms] ease-in-out md:hidden dark:bg-[#0d1117] dark:border-[#30363d] ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -236,7 +251,7 @@ export default function Sidebar({
           type="button"
           onClick={onMobileClose}
           aria-label="Close navigation"
-          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-sm text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon"
+          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-sm text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#8b949e] dark:hover:border-[#8B2635] dark:hover:text-[#e6edf3]"
         >
           ✕
         </button>

@@ -18,8 +18,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans bg-cream text-slate-900`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(){var s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.classList.add('dark');}else if(!s){if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.classList.add('dark');}}})();`
+        }} />
+      </head>
+      <body className={`${inter.variable} font-sans bg-cream dark:bg-[#0d1117] text-slate-900 dark:text-[#e6edf3]`}>
         <ClientShell>{children}</ClientShell>
         <Analytics />
       </body>

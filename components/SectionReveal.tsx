@@ -37,7 +37,7 @@ export default function SectionReveal({ label, children }: SectionRevealProps) {
 
   return (
     <div ref={containerRef}>
-      <div className={`mb-2 min-h-[1.4rem] text-sm font-mono text-maroon transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`mb-2 min-h-[1.4rem] text-sm font-mono text-maroon dark:text-[#58a6ff] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
         {`> loading ${label}...`}
       </div>
       {children}

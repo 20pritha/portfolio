@@ -1,6 +1,6 @@
 # Pritha Mishra Portfolio
 
-Clean, minimal Next.js 14 App Router portfolio for AI Engineer Pritha Mishra.
+Clean, minimal Next.js 14 App Router portfolio.
 
 ## Setup
 

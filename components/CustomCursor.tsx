@@ -67,7 +67,7 @@ export default function CustomCursor() {
       <svg className="pointer-events-none fixed inset-0 w-full h-full" style={{ zIndex: 0 }}>
         {trail.map((point, index) => {
           const t = index / Math.max(1, trail.length - 1);
-          const size = Math.max(10, 24 - t * 14);
+          const size = Math.max(13, 31 - t * 18);
           const opacity = Math.max(0.08, 0.85 - t * 0.75);
           const blur = Math.min(3, 1 + t * 2);
           return (
@@ -92,9 +92,9 @@ export default function CustomCursor() {
       <span
         className="pointer-events-none absolute text-maroon leading-none"
         style={{
-          left: position.x - 16,
-          top: position.y - 16,
-          fontSize: '32px',
+          left: position.x - 21,
+          top: position.y - 21,
+          fontSize: '42px',
           zIndex: 1,
         }}
       >

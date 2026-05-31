@@ -10,10 +10,17 @@ interface ProjectCardProps {
 export default function ProjectCard({ project }: ProjectCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0 });
-  // Delay (ms) before the project card flips on hover. Increase to slow
-  // down the flip reaction when users hover over project tiles.
+  const [isMobile, setIsMobile] = useState(false);
   const HOVER_DELAY = 500;
   const flipTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 767px)');
+    const check = () => setIsMobile(mql.matches);
+    check();
+    mql.addEventListener('change', check);
+    return () => mql.removeEventListener('change', check);
+  }, []);
 
   const cardStyle = useMemo(
     () => ({
@@ -44,20 +51,22 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   }, []);
 
   return (
-    <div className="project-card-outer"
-      onMouseEnter={() => {
+    <div
+      className="project-card-outer"
+      onClick={isMobile ? () => setIsFlipped((f) => !f) : undefined}
+      onMouseEnter={!isMobile ? () => {
         if (flipTimerRef.current) window.clearTimeout(flipTimerRef.current);
         flipTimerRef.current = window.setTimeout(() => setIsFlipped(true), HOVER_DELAY);
-      }}
-      onMouseLeave={() => {
+      } : undefined}
+      onMouseLeave={!isMobile ? () => {
         if (flipTimerRef.current) {
           window.clearTimeout(flipTimerRef.current);
           flipTimerRef.current = null;
         }
         setIsFlipped(false);
         resetTransform();
-      }}
-      onMouseMove={handleMove}
+      } : undefined}
+      onMouseMove={!isMobile ? handleMove : undefined}
     >
       <div className="project-card-inner" style={cardStyle}>
         <div className="project-card-face project-card-front">
@@ -71,6 +80,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <h3 className="mt-6 text-2xl font-semibold text-slate-950">{project.title}</h3>
           <p className="mt-4 text-slate-700">{project.description}</p>
           <p className="mt-5 font-semibold text-slate-900">{project.metric}</p>
+          <p className="mt-4 md:hidden text-xs font-medium text-[#8B2635]/60">Tap to see details →</p>
         </div>
 
         <div className="project-card-face project-card-back">

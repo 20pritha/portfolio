@@ -122,9 +122,14 @@ export default function Journey() {
                     className="relative"
                   >
                     <div className="grid gap-6 lg:grid-cols-[1fr_80px_1fr] lg:items-start">
-                      <div className={alignLeft ? 'lg:col-start-1 lg:col-end-2 lg:text-right' : 'lg:col-start-1 lg:col-end-2'}>
+                      <div className={alignLeft ? 'lg:col-start-1 lg:col-end-2 lg:text-right' : 'hidden lg:block lg:col-start-1 lg:col-end-2'}>
                         {alignLeft && (
                           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 group-hover:border-maroon group-hover:shadow-[0_0_0_16px_rgba(139,38,53,0.08)]">
+                            {avatar && (
+                              <div className="mb-4 items-center gap-3 hidden md:flex lg:hidden">
+                                <Image src={avatar.src} alt={avatar.alt} width={44} height={44} className="object-contain" />
+                              </div>
+                            )}
                             <div className="text-sm text-slate-500">
                               <span className="font-semibold text-slate-900">{item.year}</span>
                               <span className="ml-3 rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600">
@@ -153,9 +158,14 @@ export default function Journey() {
                         </div>
                       </div>
 
-                      <div className={alignLeft ? 'lg:col-start-3 lg:col-end-4' : 'lg:col-start-3 lg:col-end-4 lg:text-left'}>
+                      <div className={!alignLeft ? 'lg:col-start-3 lg:col-end-4 lg:text-left' : 'hidden lg:block lg:col-start-3 lg:col-end-4'}>
                         {!alignLeft && (
                           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 group-hover:border-maroon group-hover:shadow-[0_0_0_16px_rgba(139,38,53,0.08)]">
+                            {avatar && (
+                              <div className="mb-4 items-center gap-3 hidden md:flex lg:hidden">
+                                <Image src={avatar.src} alt={avatar.alt} width={44} height={44} className="object-contain" />
+                              </div>
+                            )}
                             <div className="text-sm text-slate-500">
                               <span className="font-semibold text-slate-900">{item.year}</span>
                               <span className="ml-3 rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600">

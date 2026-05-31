@@ -121,13 +121,6 @@ body.page-loaded section:nth-of-type(9) { animation-delay: 1200ms; }
   20%, 40%, 60%, 80% { transform: translateX(6px); }
 }
 
-@media (max-width: 768px) {
-  section {
-    padding-top: 4rem;
-    padding-bottom: 3rem;
-  }
-}
-
 ::selection {
   background-color: #8B2635;
   color: #fff;
@@ -136,6 +129,14 @@ body.page-loaded section:nth-of-type(9) { animation-delay: 1200ms; }
 section {
   padding-top: 5.5rem;
   padding-bottom: 4.5rem;
+}
+
+#about {
+  padding-bottom: 1.5rem;
+}
+
+#journey {
+  padding-top: 0;
 }
 
 .section-heading {
@@ -182,6 +183,13 @@ section {
 
 .project-card-outer {
   perspective: 1000px;
+  min-height: 22rem;
+  position: relative;
+  z-index: 0;
+}
+
+.project-card-outer:hover {
+  z-index: 10;
 }
 
 .project-card-inner {
@@ -209,13 +217,6 @@ section {
   transform: rotateX(180deg);
 }
 
-@media (max-width: 768px) {
-  section {
-    padding-top: 4rem;
-    padding-bottom: 3rem;
-  }
-}
-
 .hero-avatar {
   @apply relative overflow-hidden rounded-[2.5rem] border border-slate-200 bg-transparent shadow-soft transition duration-300;
 }
@@ -228,5 +229,9 @@ section {
   section {
     padding-top: 4rem;
     padding-bottom: 3rem;
+  }
+
+  #experience {
+    padding-bottom: 2rem;
   }
 }

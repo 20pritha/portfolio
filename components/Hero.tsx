@@ -8,6 +8,13 @@ import HeroName from '@/components/HeroName';
 import useKonami from '@/hooks/useKonami';
 import site from '@/data/site';
 
+const typewriterPhrases = [
+  'Agentic Pipeline Builder',
+  'LLM Orchestration Engineer',
+  'RAG Systems Developer',
+  'Full-Stack AI Engineer',
+];
+
 const moods = ['face', 'celebrating', 'thinking2'] as const;
 
 type Mood = (typeof moods)[number];
@@ -25,6 +32,9 @@ export default function Hero() {
   const [isHovering, setIsHovering] = useState(false);
   const [isKonamiActive, setIsKonamiActive] = useState(false);
   const [showStayPopup, setShowStayPopup] = useState(false);
+  const [typewriterText, setTypewriterText] = useState('');
+  const [typewriterPhaseIndex, setTypewriterPhaseIndex] = useState(0);
+  const [typewriterIsDeleting, setTypewriterIsDeleting] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const avatarRef = useRef<HTMLDivElement | null>(null);
 
@@ -61,6 +71,25 @@ export default function Hero() {
       if (hideTimer) window.clearTimeout(hideTimer);
     };
   }, []);
+
+  useEffect(() => {
+    const phrase = typewriterPhrases[typewriterPhaseIndex];
+    let timeout: number;
+
+    if (!typewriterIsDeleting && typewriterText === phrase) {
+      timeout = window.setTimeout(() => setTypewriterIsDeleting(true), 2000);
+    } else if (typewriterIsDeleting && typewriterText === '') {
+      setTypewriterIsDeleting(false);
+      setTypewriterPhaseIndex((i) => (i + 1) % typewriterPhrases.length);
+    } else {
+      const speed = typewriterIsDeleting ? 40 : 65;
+      timeout = window.setTimeout(() => {
+        setTypewriterText(typewriterIsDeleting ? phrase.slice(0, typewriterText.length - 1) : phrase.slice(0, typewriterText.length + 1));
+      }, speed);
+    }
+
+    return () => window.clearTimeout(timeout);
+  }, [typewriterText, typewriterIsDeleting, typewriterPhaseIndex]);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -110,8 +139,17 @@ export default function Hero() {
           ref={panelRef}
           className="hero-panel max-w-3xl"
         >
+          <div className="mb-6 flex justify-center md:hidden">
+            <div className="relative h-[120px] w-[120px] overflow-hidden rounded-full ring-2 ring-[#8B2635]">
+              <Image src="/avatars/avatar-face.png" alt="Pritha Mishra" fill className="object-contain" />
+            </div>
+          </div>
           <HeroName />
-          <p className="mb-5 text-sm uppercase tracking-[0.35em] text-slate-500">{site.hero.subtitle}</p>
+          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500">{site.hero.subtitle}</p>
+          <p className="mb-5 h-6 font-mono text-sm text-slate-700">
+            {typewriterText}
+            <span className="animate-pulse text-maroon">|</span>
+          </p>
           <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
             {site.hero.title}
           </h1>
@@ -134,7 +172,7 @@ export default function Hero() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
           ref={avatarRef}
-          className="relative flex justify-center"
+          className="relative hidden md:flex justify-center"
         >
           <motion.button
             key={activeAvatar}
@@ -142,7 +180,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] border border-slate-200 bg-transparent p-4 shadow-soft transition-transform duration-300 focus:outline-none hover:scale-105 sm:h-[336px] sm:w-[336px]"
+            className="relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] bg-transparent p-4 drop-shadow-lg transition-transform duration-300 focus:outline-none hover:scale-105 sm:h-[336px] sm:w-[336px]"
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}

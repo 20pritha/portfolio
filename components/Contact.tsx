@@ -162,10 +162,6 @@ export default function Contact() {
             <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
               <p className="text-lg font-semibold text-slate-950">Email</p>
               <p className="mt-4 break-words whitespace-normal text-slate-700">{site.contact.email}</p>
-              <p className="mt-8 text-lg font-semibold text-slate-950">Phone</p>
-              <a href={`tel:${site.contact.phone}`} className="mt-4 inline-block text-slate-700">
-                {site.contact.phone}
-              </a>
               <p className="mt-8 text-lg font-semibold text-slate-950">LinkedIn</p>
               <a
                 href={site.contact.linkedin}
@@ -174,6 +170,15 @@ export default function Contact() {
                 className="mt-4 inline-block break-words whitespace-normal text-maroon underline"
               >
                 {site.contact.linkedInLabel}
+              </a>
+              <p className="mt-8 text-lg font-semibold text-slate-950">GitHub</p>
+              <a
+                href={site.contact.github}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-4 inline-block break-words whitespace-normal text-maroon underline"
+              >
+                {site.contact.githubLabel}
               </a>
             </div>
 
@@ -237,7 +242,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={!isValid}
-                className="mt-8 inline-flex items-center justify-center rounded-full bg-maroon px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#732037] disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-8 inline-flex items-center justify-center rounded-full bg-[#8B2635] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#6B1D2A] hover:scale-[1.02] active:bg-[#6B1D2A] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Send Message
               </button>

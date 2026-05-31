@@ -14,9 +14,10 @@ const site = {
   },
   contact: {
     email: 'pritha.mishra2003@gmail.com',
-    phone: '+91 9663234497',
     linkedin: 'https://www.linkedin.com/in/prixie',
     linkedInLabel: 'linkedin.com/in/prixie',
+    github: 'https://github.com/20pritha',
+    githubLabel: 'github.com/20pritha',
     heading: "Let's connect on AI systems, research, or product design.",
   },
 };

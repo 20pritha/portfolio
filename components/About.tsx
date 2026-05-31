@@ -25,6 +25,17 @@ export default function About() {
                 {paragraph}
               </p>
             ))}
+            <div className="mt-6 flex flex-wrap gap-3">
+              {[
+                '⚡ 2 production systems shipped',
+                '🤖 3,000+ prospects screened',
+                '📊 18% precision improvement',
+              ].map((stat) => (
+                <span key={stat} className="rounded-full border border-maroon/30 px-4 py-1.5 text-sm font-medium text-maroon">
+                  {stat}
+                </span>
+              ))}
+            </div>
           </div>
         </motion.div>
       </SectionReveal>

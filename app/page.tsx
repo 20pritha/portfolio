@@ -45,6 +45,9 @@ export default function HomePage() {
           <Publications />
           <Contact />
         </div>
+        <footer className="py-6 text-center text-xs text-slate-400">
+          <span className="text-maroon">✦</span> Pritha Mishra · 2026 · Built with Next.js &amp; Tailwind
+        </footer>
         <BackToTop />
       </main>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import SectionReveal from '@/components/SectionReveal';
 import GlitchHeading from '@/components/GlitchHeading';
@@ -21,6 +22,9 @@ const pillVariants = {
 };
 
 export default function Skills() {
+  const [query, setQuery] = useState('');
+  const q = query.toLowerCase().trim();
+
   return (
     <section id="skills">
       <SectionReveal label="skills">
@@ -48,6 +52,19 @@ export default function Skills() {
             </div>
           </div>
 
+          <div className="mb-6">
+            <div className="relative inline-flex w-full max-w-sm">
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Filter skills..."
+                className="w-full rounded-full border border-slate-200 bg-cream px-4 py-2 pl-9 font-mono text-sm text-slate-800 outline-none transition focus:border-maroon focus:ring-0"
+              />
+            </div>
+          </div>
+
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {skills.map((group) => (
               <div key={group.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft">
@@ -63,7 +80,9 @@ export default function Skills() {
                     <motion.span
                       key={item}
                       variants={pillVariants}
-                      className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 transition hover:border-maroon hover:text-maroon"
+                      className={`rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 transition hover:border-maroon hover:text-maroon ${
+                        q && !item.toLowerCase().includes(q) ? 'opacity-20' : 'opacity-100'
+                      }`}
                     >
                       {item}
                     </motion.span>

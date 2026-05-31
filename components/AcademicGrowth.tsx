@@ -55,13 +55,13 @@ export default function AcademicGrowth() {
           </div>
 
           <div className="grid gap-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-soft lg:grid-cols-[1.3fr_0.7fr]">
-            <div className="relative h-[420px]">
+            <div className="relative h-[250px] md:h-[420px]">
               {showAvatar && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="absolute right-4 top-4 z-[1] h-[120px] w-[120px] pointer-events-none"
+                  className="absolute right-4 top-4 z-[1] h-[120px] w-[120px] pointer-events-none hidden md:block"
                 >
                   <Image
                     src="/avatars/avatar-celebrating.png"

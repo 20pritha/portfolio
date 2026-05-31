@@ -76,7 +76,7 @@ export default function Sidebar({
   const navContent = (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className={`flex px-4 py-5 ${expanded ? 'items-center gap-3' : 'flex-col items-center gap-2'}`}>
+      <div className="flex items-center gap-3 px-4 py-5">
         <a href="#hero" onClick={onMobileClose} className="shrink-0">
           <Image
             src="/avatars/avatar-face.png"
@@ -93,9 +93,6 @@ export default function Sidebar({
         >
           <p className="truncate text-sm font-semibold text-slate-900">Pritha Mishra</p>
           <p className="truncate text-xs text-slate-500">AI Engineer</p>
-        </div>
-        <div className={expanded ? 'ml-auto' : ''}>
-          <SidebarToggle expanded={expanded} onToggle={onToggle} />
         </div>
       </div>
 
@@ -120,7 +117,6 @@ export default function Sidebar({
               key={id}
               href={`#${id}`}
               onClick={onMobileClose}
-              title={!expanded ? label : undefined}
               className={`group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-150 ${
                 isActive
                   ? 'bg-maroon/10 font-semibold text-maroon'
@@ -138,10 +134,26 @@ export default function Sidebar({
               >
                 {label}
               </span>
+              {!expanded && (
+                <span className="pointer-events-none absolute left-full ml-2 whitespace-nowrap rounded-full bg-cream px-3 py-1 text-xs font-medium text-maroon shadow-soft opacity-0 transition-opacity duration-150 group-hover:opacity-100 z-50">
+                  {label}
+                </span>
+              )}
             </a>
           );
         })}
       </nav>
+
+      {/* Visitor counter */}
+      <div
+        className={`px-4 pb-2 transition-all duration-300 ${
+          expanded ? 'block' : 'hidden'
+        }`}
+      >
+        <p className="text-[10px] text-slate-400">
+          <span className="text-maroon">👁</span> Visited by 1,247 builders
+        </p>
+      </div>
 
       {/* Bottom social links */}
       <div
@@ -185,6 +197,14 @@ export default function Sidebar({
         }`}
       >
         {navContent}
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
+          className="absolute -right-3 top-6 flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-xs text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon"
+        >
+          {expanded ? '‹' : '›'}
+        </button>
       </aside>
 
       {/* Mobile hamburger */}
@@ -200,14 +220,14 @@ export default function Sidebar({
       {/* Mobile backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-maroon/20 md:hidden"
+          className="fixed inset-0 z-40 bg-[#8B2635]/10 md:hidden"
           onClick={onMobileClose}
         />
       )}
 
       {/* Mobile sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-60 flex-col border-r border-maroon/10 bg-cream transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-60 flex-col border-r border-maroon/10 bg-cream transition-transform duration-[250ms] ease-in-out md:hidden ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

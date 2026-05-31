@@ -16,7 +16,7 @@ const experience = [
     highlights: [
       'Led a team on AI-based insider threat detection with enterprise-scale log analysis.',
       'Used ensemble anomaly detection to improve precision by 18% over baselines.',
-      'Built reliable data pipelines and evaluation metrics for continuous research iterations.',
+      'Designed evaluation metrics and data pipelines to benchmark detection performance across multiple log types.',
     ],
   },
 ];

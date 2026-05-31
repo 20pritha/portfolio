@@ -1,6 +1,6 @@
 const site = {
   hero: {
-    title: 'I build production-ready GenAI systems, agentic pipelines, and confidence-first AI tools.',
+    title: 'I build production-ready GenAI systems, agentic pipelines, and full-stack AI tools that teams actually ship.',
     subtitle: 'AI Engineer',
     description: 'Practical AI work with metrics, clear architecture, and polished delivery — from research to deployed systems that teams actually use.',
     cta: 'See My Work',
@@ -18,7 +18,7 @@ const site = {
     linkedInLabel: 'linkedin.com/in/prixie',
     github: 'https://github.com/20pritha',
     githubLabel: 'github.com/20pritha',
-    heading: "Let's connect on AI systems, research, or product design.",
+    heading: "Let's connect on AI systems, research, or full-stack engineering.",
   },
 };
 

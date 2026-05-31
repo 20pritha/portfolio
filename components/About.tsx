@@ -27,7 +27,7 @@ export default function About() {
             ))}
             <div className="mt-6 flex flex-wrap gap-3">
               {[
-                '⚡ 2 production systems shipped',
+                '⚡ 2 live production systems',
                 '🤖 3,000+ prospects screened',
                 '📊 18% precision improvement',
               ].map((stat) => (

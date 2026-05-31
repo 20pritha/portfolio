@@ -144,15 +144,17 @@ export default function Sidebar({
         })}
       </nav>
 
-      {/* Visitor counter */}
-      <div
-        className={`px-4 pb-2 transition-all duration-300 ${
-          expanded ? 'block' : 'hidden'
-        }`}
-      >
-        <p className="text-[10px] text-slate-400">
-          <span className="text-maroon">👁</span> Visited by 1,247 builders
-        </p>
+      {/* Theme toggle */}
+      <div className="px-2 pb-2">
+        <button
+          onClick={toggleTheme}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[#8B2635] hover:bg-[#8B2635]/10 w-full dark:text-[#e6edf3] dark:hover:bg-white/5"
+        >
+          <span className="shrink-0">{theme === 'dark' ? '☀️' : '🌙'}</span>
+          <span className={`truncate transition-all duration-300 ${expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'}`}>
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          </span>
+        </button>
       </div>
 
       {/* Bottom social links */}

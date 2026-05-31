@@ -42,7 +42,7 @@ const projects: Project[] = [
     title: 'Insider Threat Detection',
     stack: ['Python', 'Scikit-learn', 'Pandas', 'CERT Dataset'],
     description: 'Behavioral anomaly detection system across 5 CERT dataset log types — email, HTTP, logon, file, and device — using custom rules to flag deviations from baseline user patterns.',
-    metric: 'Multi-vector detection across 6 behavioral dimensions: temporal, file, web, device, role, and session anomalies.',
+    metric: '18% precision improvement over ensemble detection baselines across 5 CERT log types.',
     detailsUrl: 'https://github.com/20pritha/InsiderSecurityThreatDetection',
     githubUrl: 'https://github.com/20pritha/InsiderSecurityThreatDetection',
   },

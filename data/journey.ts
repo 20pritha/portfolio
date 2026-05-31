@@ -45,7 +45,7 @@ const journey = [
     year: '2026',
     event: 'AI Engineer Intern, QUANTUM CAPITAL GROUP — Production GenAI Systems',
     location: 'USA',
-    description: 'Built end-to-end influencer evaluation and prospecting pipelines for private equity and energy clients.',
+    description: 'Built end-to-end investor/LP evaluation and prospecting pipelines for private equity and energy clients.',
     type: 'internship',
   },
 ];

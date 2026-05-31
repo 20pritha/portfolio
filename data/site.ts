@@ -14,8 +14,9 @@ const site = {
   },
   contact: {
     email: 'pritha.mishra2003@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/pritha-mishra',
-    linkedInLabel: 'linkedin.com/in/pritha-mishra',
+    phone: '+91 9663234497',
+    linkedin: 'https://www.linkedin.com/in/prixie',
+    linkedInLabel: 'linkedin.com/in/prixie',
     heading: "Let's connect on AI systems, research, or product design.",
   },
 };

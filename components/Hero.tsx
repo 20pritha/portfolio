@@ -98,7 +98,7 @@ export default function Hero() {
     : 'Thinking';
 
   return (
-    <section id="hero" className="pt-10 relative overflow-hidden">
+    <section id="hero" className="pt-20 relative overflow-hidden">
       <HeroDotGrid />
       <div className="hero-shape pointer-events-none" />
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">

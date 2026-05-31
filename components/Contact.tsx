@@ -9,10 +9,11 @@ import GlitchHeading from '@/components/GlitchHeading';
 import SectionReveal from '@/components/SectionReveal';
 import site from '@/data/site';
 
-const initialForm = { name: '', email: '', message: '' };
+const initialForm = { name: '', designation: '', email: '', message: '' };
 const placeholderText = {
-  name: 'e.g. Hiring Manager',
-  email: 'e.g. hello@company.com',
+  name: 'e.g. Elon Musk',
+  designation: 'e.g. Engineering Manager, Google',
+  email: 'e.g. samaltman@openai.com',
   message: "e.g. Let's connect...",
 };
 
@@ -20,7 +21,7 @@ export default function Contact() {
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [placeholders, setPlaceholders] = useState({ name: '', email: '', message: '' });
+  const [placeholders, setPlaceholders] = useState({ name: '', designation: '', email: '', message: '' });
   const [avatarMood, setAvatarMood] = useState<'waving' | 'celebrating'>('waving');
   const [bounceAvatar, setBounceAvatar] = useState(false);
   const celebrateTimer = useRef<number | null>(null);
@@ -35,8 +36,9 @@ export default function Contact() {
     const timers: number[] = [];
     const sequence = [
       { key: 'name', text: placeholderText.name, delay: 0 },
-      { key: 'email', text: placeholderText.email, delay: 900 },
-      { key: 'message', text: placeholderText.message, delay: 1800 },
+      { key: 'designation', text: placeholderText.designation, delay: 900 },
+      { key: 'email', text: placeholderText.email, delay: 2000 },
+      { key: 'message', text: placeholderText.message, delay: 3200 },
     ] as const;
 
     sequence.forEach(({ key, text, delay }) => {
@@ -61,7 +63,12 @@ export default function Contact() {
   }, []);
 
   const isValid = useMemo(() => {
-    return form.name.trim().length > 1 && form.email.includes('@') && form.message.trim().length > 10;
+    return (
+      form.name.trim().length > 1 &&
+      form.designation.trim().length > 1 &&
+      form.email.includes('@') &&
+      form.message.trim().length > 10
+    );
   }, [form]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -78,6 +85,7 @@ export default function Contact() {
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? '',
         {
           from_name: form.name,
+          from_designation: form.designation,
           from_email: form.email,
           message: form.message,
         },
@@ -154,6 +162,10 @@ export default function Contact() {
             <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
               <p className="text-lg font-semibold text-slate-950">Email</p>
               <p className="mt-4 break-words whitespace-normal text-slate-700">{site.contact.email}</p>
+              <p className="mt-8 text-lg font-semibold text-slate-950">Phone</p>
+              <a href={`tel:${site.contact.phone}`} className="mt-4 inline-block text-slate-700">
+                {site.contact.phone}
+              </a>
               <p className="mt-8 text-lg font-semibold text-slate-950">LinkedIn</p>
               <a
                 href={site.contact.linkedin}
@@ -174,6 +186,19 @@ export default function Contact() {
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder={placeholders.name}
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0"
+                    />
+                    <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 rounded-full bg-maroon transition-transform duration-300 group-focus-within:scale-x-100" />
+                  </div>
+                </label>
+
+                <label className="group block text-sm font-medium text-slate-800">
+                  Designation
+                  <div className="mt-2 relative">
+                    <input
+                      value={form.designation}
+                      onChange={(e) => setForm({ ...form, designation: e.target.value })}
+                      placeholder={placeholders.designation}
                       className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0"
                     />
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 rounded-full bg-maroon transition-transform duration-300 group-focus-within:scale-x-100" />

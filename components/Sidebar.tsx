@@ -76,7 +76,7 @@ export default function Sidebar({
   const navContent = (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="relative flex items-center gap-3 px-4 py-5">
+      <div className={`flex px-4 py-5 ${expanded ? 'items-center gap-3' : 'flex-col items-center gap-2'}`}>
         <a href="#hero" onClick={onMobileClose} className="shrink-0">
           <Image
             src="/avatars/avatar-face.png"
@@ -87,14 +87,14 @@ export default function Sidebar({
           />
         </a>
         <div
-          className={`min-w-0 overflow-hidden transition-all duration-300 ${
-            expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0'
+          className={`min-w-0 flex-1 overflow-hidden transition-all duration-300 ${
+            expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 hidden'
           }`}
         >
           <p className="truncate text-sm font-semibold text-slate-900">Pritha Mishra</p>
           <p className="truncate text-xs text-slate-500">AI Engineer</p>
         </div>
-        <div className="absolute right-2 top-1/2 -translate-y-1/2">
+        <div className={expanded ? 'ml-auto' : ''}>
           <SidebarToggle expanded={expanded} onToggle={onToggle} />
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function Sidebar({
       >
         <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-xs text-slate-600">
           <span className="inline-flex h-2 w-2 shrink-0 animate-pulse rounded-full bg-emerald-500" />
-          <span className="truncate">currently building in Bengaluru 🇮🇳</span>
+          <span>building in Bengaluru 🇮🇳</span>
         </div>
       </div>
 

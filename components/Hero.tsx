@@ -145,20 +145,20 @@ export default function Hero() {
             </div>
           </div>
           <HeroName />
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500">{site.hero.subtitle}</p>
-          <p className="mb-5 h-6 font-mono text-sm text-slate-700">
+          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">{site.hero.subtitle}</p>
+          <p className="mb-5 h-6 font-mono text-sm text-slate-700 dark:text-[#58a6ff]">
             {typewriterText}
-            <span className="animate-pulse text-maroon">|</span>
+            <span className="animate-pulse text-maroon dark:text-[#58a6ff]">|</span>
           </p>
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
+          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 dark:text-[#e6edf3] sm:text-5xl">
             {site.hero.title}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700">{site.hero.description}</p>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700 dark:text-[#8b949e]">{site.hero.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             {['GenAI', 'RAG', 'Evaluation', 'Azure'].map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600"
+                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#e6edf3]"
               >
                 {tag}
               </span>
@@ -180,7 +180,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] bg-transparent p-4 drop-shadow-lg transition-transform duration-300 focus:outline-none hover:scale-105 sm:h-[336px] sm:w-[336px]"
+            className="relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] bg-transparent p-4 drop-shadow-lg transition-transform duration-300 focus:outline-none hover:scale-105 sm:h-[336px] sm:w-[336px] dark:drop-shadow-[0_0_20px_rgba(139,38,53,0.3)]"
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}
@@ -214,12 +214,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-6 right-6 z-50 flex max-w-xs items-center gap-3 rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-soft"
+          className="fixed bottom-6 right-6 z-50 flex max-w-xs items-center gap-3 rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]"
         >
-          <div className="relative h-12 w-12 overflow-hidden rounded-full border border-slate-200 bg-transparent">
+          <div className="relative h-12 w-12 overflow-hidden rounded-full border border-slate-200 bg-transparent dark:border-[#30363d]">
             <Image src="/avatars/avatar-waving.png" alt="Avatar waving" fill className="object-contain" />
           </div>
-          <p className="text-sm font-medium text-slate-900">Still here? I see you 👀</p>
+          <p className="text-sm font-medium text-slate-900 dark:text-[#e6edf3]">Still here? I see you 👀</p>
         </motion.div>
       )}
     </section>

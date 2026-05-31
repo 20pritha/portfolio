@@ -80,7 +80,7 @@ export default function AcademicGrowth() {
                     tickLine={false}
                     axisLine={false}
                     interval={0}
-                    tick={{ fill: '#475569', fontSize: 12, textAnchor: 'middle' }}
+                    tick={{ fill: '#475569', fontSize: 10, textAnchor: 'middle' }}
                     angle={0}
                     dy={10}
                   />

@@ -34,7 +34,7 @@ export default function HomePage() {
       >
         <ProgressBar />
         <CustomCursor />
-        <div className="mx-auto max-w-[1440px] px-6 pb-24">
+        <div className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6 sm:pb-24">
           <Hero />
           <About />
           <Journey />

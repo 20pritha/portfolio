@@ -139,7 +139,7 @@ export default function Journey() {
                         )}
                       </div>
 
-                      <div className="relative flex justify-center">
+                      <div className="relative hidden lg:flex justify-center">
                         <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full border border-slate-200 bg-transparent shadow-sm">
                           {avatar && (
                             <Image

@@ -142,7 +142,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="relative grid h-[336px] w-[336px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] border border-slate-200 bg-transparent p-4 shadow-soft transition-transform duration-300 focus:outline-none hover:scale-105"
+            className="relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] border border-slate-200 bg-transparent p-4 shadow-soft transition-transform duration-300 focus:outline-none hover:scale-105 sm:h-[336px] sm:w-[336px]"
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}

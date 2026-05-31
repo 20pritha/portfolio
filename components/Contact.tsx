@@ -141,7 +141,7 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="h-[224px] w-[224px]"
+              className="h-[160px] w-[160px] sm:h-[224px] sm:w-[224px]"
             >
               <motion.div
                 animate={bounceAvatar ? { scale: [1, 1.08, 1] } : {}}

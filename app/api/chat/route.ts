@@ -66,7 +66,12 @@ export async function POST(req: NextRequest) {
         'X-Title': 'Pritha Portfolio',
       },
       body: JSON.stringify({
-        model: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
+        models: [
+          'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
+          'nvidia/nemotron-nano-9b-v2:free',
+          'liquid/lfm-2.5-1.2b-instruct:free',
+        ],
+        route: 'fallback',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages.map((m: { role: string; content: string }) => ({

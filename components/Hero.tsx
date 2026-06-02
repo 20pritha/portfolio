@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import HeroDotGrid from '@/components/HeroDotGrid';
 import HeroName from '@/components/HeroName';
 import useKonami from '@/hooks/useKonami';
@@ -36,8 +36,6 @@ export default function Hero() {
   const [typewriterText, setTypewriterText] = useState('');
   const [typewriterPhaseIndex, setTypewriterPhaseIndex] = useState(0);
   const [typewriterIsDeleting, setTypewriterIsDeleting] = useState(false);
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const avatarRef = useRef<HTMLDivElement | null>(null);
 
   const mood = moods[moodIndex];
 
@@ -48,25 +46,16 @@ export default function Hero() {
 
   useEffect(() => {
     if (!isKonamiActive) return;
-
-    const timer = window.setTimeout(() => {
-      setIsKonamiActive(false);
-    }, 1400);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
+    const timer = window.setTimeout(() => setIsKonamiActive(false), 1400);
+    return () => window.clearTimeout(timer);
   }, [isKonamiActive]);
 
   useEffect(() => {
     let hideTimer: number | undefined;
     const popupTimer = window.setTimeout(() => {
       setShowStayPopup(true);
-      hideTimer = window.setTimeout(() => {
-        setShowStayPopup(false);
-      }, 4000);
+      hideTimer = window.setTimeout(() => setShowStayPopup(false), 4000);
     }, 300000);
-
     return () => {
       window.clearTimeout(popupTimer);
       if (hideTimer) window.clearTimeout(hideTimer);
@@ -85,31 +74,16 @@ export default function Hero() {
     } else {
       const speed = typewriterIsDeleting ? 40 : 65;
       timeout = window.setTimeout(() => {
-        setTypewriterText(typewriterIsDeleting ? phrase.slice(0, typewriterText.length - 1) : phrase.slice(0, typewriterText.length + 1));
+        setTypewriterText(
+          typewriterIsDeleting
+            ? phrase.slice(0, typewriterText.length - 1)
+            : phrase.slice(0, typewriterText.length + 1),
+        );
       }, speed);
     }
 
     return () => window.clearTimeout(timeout);
   }, [typewriterText, typewriterIsDeleting, typewriterPhaseIndex]);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const coarse = window.matchMedia('(pointer: coarse)').matches;
-    if (prefersReducedMotion || coarse) return;
-
-    const updateParallax = () => {
-      const scrollY = window.scrollY;
-      if (panelRef.current) panelRef.current.style.transform = `translateY(${scrollY * -0.4}px)`;
-      if (avatarRef.current) avatarRef.current.style.transform = `translateY(${scrollY * -0.6}px)`;
-    };
-
-    window.addEventListener('scroll', updateParallax, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', updateParallax);
-      if (panelRef.current) panelRef.current.style.transform = '';
-      if (avatarRef.current) avatarRef.current.style.transform = '';
-    };
-  }, []);
 
   const handleAvatarClick = () => {
     if (isKonamiActive) return;
@@ -122,67 +96,19 @@ export default function Hero() {
   };
 
   const activeAvatar = isKonamiActive ? 'dancing' : isHovering ? 'waving' : mood;
-  const caption = isKonamiActive
-    ? 'Konami mode active'
-    : isHovering
-    ? 'Waving hello'
-    : mood === 'face'
-    ? 'Face close-up'
-    : mood === 'celebrating'
-    ? 'Celebrating'
-    : 'Thinking';
 
   return (
-    <section id="hero" className="pt-20 relative overflow-hidden">
+    <section id="hero" className="relative overflow-hidden pb-8 pt-10">
       <HeroDotGrid />
       <div className="hero-shape pointer-events-none" />
-      <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div ref={panelRef}>
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="hero-panel max-w-3xl"
-        >
-          <div className="mb-6 flex flex-col items-center md:hidden">
-            <div className="relative h-[120px] w-[120px] overflow-hidden rounded-full ring-2 ring-[#8B2635]">
-              <Image src="/avatars/avatar-face.png" alt="Pritha Mishra" fill className="object-contain" />
-            </div>
-            <ChatBot />
-          </div>
-          <HeroName />
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">{site.hero.subtitle}</p>
-          <p className="mb-5 h-6 font-mono text-sm text-slate-700 dark:text-[#58a6ff]">
-            {typewriterText}
-            <span className="animate-pulse text-maroon dark:text-[#58a6ff]">|</span>
-          </p>
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 dark:text-[#e6edf3] sm:text-5xl">
-            {site.hero.title}
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700 dark:text-[#8b949e]">{site.hero.description}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            {['GenAI', 'RAG', 'Evaluation', 'Azure'].map((tag) => (
-              <motion.span
-                key={tag}
-                whileHover={{ scale: 1.07 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 cursor-default select-none transition-colors duration-200 hover:bg-[#8B2635] hover:border-[#8B2635] hover:text-white dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white"
-              >
-                {tag}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
-        </div>
 
-        <div ref={avatarRef}>
+      <div className="flex flex-col items-center text-center">
+
+        {/* Avatar */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="relative hidden md:flex flex-col items-center justify-start gap-4 pt-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
         >
           <motion.button
             key={activeAvatar}
@@ -190,14 +116,12 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className={`relative grid h-[180px] w-[180px] max-w-full place-items-center overflow-hidden rounded-[2rem] bg-transparent p-3 drop-shadow-lg focus:outline-none sm:h-[200px] sm:w-[200px] dark:drop-shadow-[0_0_20px_rgba(139,38,53,0.3)] ${isHovering ? 'avatar-float' : ''}`}
+            className={`relative grid h-[110px] w-[110px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-2 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.3)] ${isHovering ? 'avatar-float' : ''}`}
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}
             onAnimationComplete={() => {
-              if (isKonamiActive) {
-                setIsKonamiActive(false);
-              }
+              if (isKonamiActive) setIsKonamiActive(false);
             }}
           >
             <div className="relative h-full w-full">
@@ -208,7 +132,7 @@ export default function Hero() {
                     src={meta.src}
                     alt={meta.alt}
                     fill
-                    sizes="200px"
+                    sizes="110px"
                     className="object-contain transition-opacity duration-300 ease-in-out"
                     style={{ opacity: key === activeAvatar ? 1 : 0 }}
                   />
@@ -216,9 +140,35 @@ export default function Hero() {
               )}
             </div>
           </motion.button>
-          <ChatBot defaultOpen hideToggle onMoodHint={handleMoodHint} />
         </motion.div>
-        </div>
+
+        {/* Name + subtitle + typewriter */}
+        <motion.div
+          className="mt-5"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 }}
+        >
+          <HeroName />
+          <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">
+            {site.hero.subtitle}
+          </p>
+          <p className="mt-3 h-6 font-mono text-sm text-slate-700 dark:text-[#58a6ff]">
+            {typewriterText}
+            <span className="animate-pulse text-maroon dark:text-[#58a6ff]">|</span>
+          </p>
+        </motion.div>
+
+        {/* Chat card */}
+        <motion.div
+          className="mt-8 w-full max-w-3xl"
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.35 }}
+        >
+          <ChatBot defaultOpen hideToggle heroLayout onMoodHint={handleMoodHint} />
+        </motion.div>
+
       </div>
 
       {showStayPopup && (

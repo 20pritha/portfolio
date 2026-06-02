@@ -11,6 +11,8 @@ export default function ClientShell({ children }: ClientShellProps) {
   const [phase, setPhase] = useState<'monogram' | 'content' | 'done'>('monogram');
 
   useEffect(() => {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
     const t1 = window.setTimeout(() => setPhase('content'), 700);
     const t2 = window.setTimeout(() => {
       setPhase('done');

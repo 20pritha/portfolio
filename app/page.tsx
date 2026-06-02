@@ -15,6 +15,7 @@ import Publications from '@/components/Publications';
 import Contact from '@/components/Contact';
 import BackToTop from '@/components/BackToTop';
 import { useSidebar } from '@/hooks/useSidebar';
+import { useEffect } from 'react';
 
 function SectionDivider() {
   return (
@@ -26,6 +27,10 @@ function SectionDivider() {
 
 export default function HomePage() {
   const { expanded, toggle, mobileOpen, openMobile, closeMobile } = useSidebar();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
 
   return (
     <div className="flex min-h-screen relative" style={{ zIndex: 1 }}>

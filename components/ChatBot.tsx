@@ -12,16 +12,17 @@ interface Message {
 interface ChatBotProps {
   defaultOpen?: boolean;
   hideToggle?: boolean;
+  heroLayout?: boolean;
   onMoodHint?: (mood: 'face' | 'celebrating' | 'thinking2') => void;
 }
 
 const SUGGESTIONS = [
-  { emoji: '💼', label: 'What did you build?' },
-  { emoji: '🤖', label: 'Tell me about your AI projects' },
-  { emoji: '🎓', label: 'Where did you study?' },
-  { emoji: '🏆', label: 'Any achievements?' },
-  { emoji: '🛠️', label: "What's your tech stack?" },
-  { emoji: '📬', label: 'How can I contact Pritha?' },
+  { emoji: '◎', label: 'Current work & focus' },
+  { emoji: '◆', label: 'Most impactful project' },
+  { emoji: '◉', label: 'Journey into AI engineering' },
+  { emoji: '◇', label: 'Technical expertise & stack' },
+  { emoji: '△', label: 'Key achievements' },
+  { emoji: '→', label: 'Open to opportunities?' },
 ];
 
 const SESSION_KEY = 'chatbot_msg_count';
@@ -29,12 +30,12 @@ const MSG_LIMIT = 10;
 
 function detectMood(text: string): 'face' | 'celebrating' | 'thinking2' {
   const t = text.toLowerCase();
-  if (/achiev|award|win|champion|robot|dance|club|finalist|competition|techfest|milan|jhalak/.test(t)) return 'celebrating';
-  if (/build|project|ai|ml|rag|llm|stack|tech|code|engineer|intern|pipeline|eval|model|skill|azure|gemini|python|flask|explain|tell/.test(t)) return 'thinking2';
+  if (/achiev|award|win|key achiev|champion|robot|dance|club|finalist|competition|techfest|milan|jhalak/.test(t)) return 'celebrating';
+  if (/build|project|ai|ml|rag|llm|stack|tech|code|engineer|intern|pipeline|eval|model|skill|azure|gemini|python|flask|explain|tell|journey|focus|impact|expert/.test(t)) return 'thinking2';
   return 'face';
 }
 
-export default function ChatBot({ defaultOpen = false, hideToggle = false, onMoodHint }: ChatBotProps) {
+export default function ChatBot({ defaultOpen = false, hideToggle = false, heroLayout = false, onMoodHint }: ChatBotProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -128,10 +129,26 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, onMoo
     messages[messages.length - 1]?.role === 'assistant' &&
     messages[messages.length - 1]?.content === '';
 
+  const cardMotion = heroLayout
+    ? { initial: false as const, animate: undefined, exit: { opacity: 0 }, transition: { duration: 0.2 } }
+    : hideToggle
+    ? {
+        initial: { opacity: 0, x: 60 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: 60 },
+        transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const, delay: 0.45 },
+      }
+    : {
+        initial: { opacity: 0, height: 0 },
+        animate: { opacity: 1, height: 'auto' as const },
+        exit: { opacity: 0, height: 0 },
+        transition: { duration: 0.3, ease: 'easeInOut' as const },
+      };
+
   return (
-    <div className="mt-4 flex w-full flex-col items-center">
-      {/* Toggle pill */}
-      {!hideToggle && (
+    <div className={heroLayout ? 'w-full' : 'mt-4 flex w-full flex-col items-center'}>
+      {/* Toggle pill — hidden in heroLayout or when hideToggle */}
+      {!hideToggle && !heroLayout && (
         <button
           onClick={() => setIsOpen((v) => !v)}
           className="flex items-center gap-2 rounded-full border border-[#8B2635] px-4 py-2 text-sm font-medium text-[#8B2635] transition-colors duration-200 hover:bg-[#8B2635] hover:text-white dark:border-[#8B2635] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white"
@@ -146,57 +163,77 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, onMoo
         {isOpen && (
           <motion.div
             key="chat"
-            initial={hideToggle ? { opacity: 0, x: 60 } : { opacity: 0, height: 0 }}
-            animate={hideToggle ? { opacity: 1, x: 0 } : { opacity: 1, height: 'auto' }}
-            exit={hideToggle ? { opacity: 0, x: 60 } : { opacity: 0, height: 0 }}
-            transition={
-              hideToggle
-                ? { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.45 }
-                : { duration: 0.3, ease: 'easeInOut' }
-            }
-            className={`${!hideToggle ? 'mt-3' : ''} w-full max-w-[420px] overflow-hidden rounded-2xl border border-[#8B2635] bg-white shadow-lg dark:bg-[#161b22]`}
+            {...cardMotion}
+            className={`overflow-hidden border border-[#8B2635] bg-white dark:bg-[#161b22] ${
+              heroLayout
+                ? 'w-full rounded-3xl shadow-xl'
+                : `${!hideToggle ? 'mt-3' : ''} w-full max-w-[420px] rounded-2xl shadow-lg`
+            }`}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-[#8B2635]/30 px-4 py-3">
-              <div className="flex items-center gap-2">
-                <div className="relative h-6 w-6 overflow-hidden rounded-full">
-                  <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
+            {/* Header — only in non-heroLayout */}
+            {!heroLayout && (
+              <div className="flex items-center justify-between border-b border-[#8B2635]/30 px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <div className="relative h-6 w-6 overflow-hidden rounded-full">
+                    <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
+                  </div>
+                  <span className="text-sm font-semibold text-slate-900 dark:text-[#e6edf3]">Pritha&apos;s Assistant</span>
                 </div>
-                <span className="text-sm font-semibold text-slate-900 dark:text-[#e6edf3]">Pritha&apos;s Assistant</span>
+                {!hideToggle && (
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="text-slate-400 hover:text-slate-700 dark:text-[#8b949e] dark:hover:text-[#e6edf3]"
+                    aria-label="Close chat"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
-              {!hideToggle && (
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-slate-400 hover:text-slate-700 dark:text-[#8b949e] dark:hover:text-[#e6edf3]"
-                  aria-label="Close chat"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
+            )}
 
             {/* Messages */}
-            <div className="flex max-h-[320px] min-h-[180px] flex-col gap-3 overflow-y-auto p-4 sm:max-h-[360px]">
+            <div
+              className={`flex flex-col gap-3 overflow-y-auto ${
+                heroLayout
+                  ? 'min-h-[260px] max-h-[400px] p-6'
+                  : 'min-h-[180px] max-h-[320px] sm:max-h-[360px] p-4'
+              }`}
+            >
               {messages.length === 0 && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="flex flex-col gap-3"
+                  className={`flex flex-col gap-4 ${heroLayout ? 'my-auto items-center' : ''}`}
                 >
-                  <p className="text-center text-xs text-slate-500 dark:text-[#8b949e]">
+                  <p className={`text-center text-slate-500 dark:text-[#8b949e] ${heroLayout ? 'text-sm' : 'text-xs'}`}>
                     Ask me anything about Pritha ✨
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {SUGGESTIONS.map((s) => (
-                      <button
-                        key={s.label}
-                        onClick={() => send(s.label)}
-                        className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635]"
-                      >
-                        {s.emoji} {s.label}
-                      </button>
-                    ))}
-                  </div>
+
+                  {heroLayout ? (
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {SUGGESTIONS.map((s) => (
+                        <button
+                          key={s.label}
+                          onClick={() => send(s.label)}
+                          className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635]"
+                        >
+                          {s.emoji} {s.label}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                      {SUGGESTIONS.map((s) => (
+                        <button
+                          key={s.label}
+                          onClick={() => send(s.label)}
+                          className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635]"
+                        >
+                          {s.emoji} {s.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </motion.div>
               )}
 
@@ -227,7 +264,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, onMoo
                 </motion.div>
               ))}
 
-              {/* Brain loading indicator — only while awaiting first token */}
+              {/* Brain — only while waiting for first token */}
               {showBrain && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
@@ -271,7 +308,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, onMoo
             {/* Input */}
             <form
               onSubmit={handleSubmit}
-              className="flex items-center gap-2 border-t border-slate-200 bg-slate-50 px-3 py-2 dark:border-[#30363d] dark:bg-[#0d1117]"
+              className={`flex items-center gap-2 border-t border-slate-200 bg-slate-50 dark:border-[#30363d] dark:bg-[#0d1117] ${heroLayout ? 'px-4 py-3' : 'px-3 py-2'}`}
             >
               <input
                 ref={inputRef}
@@ -279,12 +316,12 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, onMoo
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={isLimited ? 'Session limit reached' : 'Ask about Pritha…'}
                 disabled={isLoading || isLimited}
-                className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors focus:border-[#8B2635] disabled:opacity-50 dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#e6edf3] dark:placeholder-[#8b949e] dark:focus:border-[#8B2635]"
+                className={`flex-1 rounded-xl border border-slate-200 bg-white px-3 text-slate-900 placeholder-slate-400 outline-none transition-colors focus:border-[#8B2635] disabled:opacity-50 dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#e6edf3] dark:placeholder-[#8b949e] dark:focus:border-[#8B2635] ${heroLayout ? 'py-2.5 text-sm' : 'py-2 text-sm'}`}
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading || isLimited}
-                className="rounded-xl bg-[#8B2635] px-3 py-2 text-sm text-white transition-opacity disabled:opacity-40 hover:opacity-90"
+                className={`rounded-xl bg-[#8B2635] text-white transition-opacity disabled:opacity-40 hover:opacity-90 ${heroLayout ? 'px-4 py-2.5 text-sm' : 'px-3 py-2 text-sm'}`}
                 aria-label="Send message"
               >
                 ↑

@@ -67,7 +67,6 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         model: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
-        stream: true,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages.map((m: { role: string; content: string }) => ({
@@ -78,18 +77,13 @@ export async function POST(req: NextRequest) {
       }),
     })
 
-    if (!res.ok) {
-      const data = await res.json()
-      throw new Error(data.error?.message ?? res.statusText)
-    }
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error?.message ?? res.statusText)
 
-    return new Response(res.body, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-      },
-    })
+    const msg = data.choices?.[0]?.message
+    const text = msg?.content || msg?.reasoning
+    if (!text) throw new Error('Empty response from model')
+    return NextResponse.json({ message: text })
   } catch (err) {
     console.error('[chat route error]', err)
     return NextResponse.json({ error: 'Failed to get response' }, { status: 500 })

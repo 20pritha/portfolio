@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         'X-Title': 'Pritha Portfolio',
       },
       body: JSON.stringify({
-        model: 'google/gemma-3n-e4b-it:free',
+        model: 'openai/gpt-oss-20b:free',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages.map((m: { role: string; content: string }) => ({

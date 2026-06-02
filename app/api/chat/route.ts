@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
         'X-Title': 'Pritha Portfolio',
       },
       body: JSON.stringify({
-        model: 'openai/gpt-oss-20b:free',
+        model: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages.map((m: { role: string; content: string }) => ({
@@ -80,7 +80,8 @@ export async function POST(req: NextRequest) {
     const data = await res.json()
     if (!res.ok) throw new Error(data.error?.message ?? res.statusText)
 
-    const text = data.choices?.[0]?.message?.content
+    const msg = data.choices?.[0]?.message
+    const text = msg?.content || msg?.reasoning
     if (!text) throw new Error('Empty response from model')
     return NextResponse.json({ message: text })
   } catch (err) {

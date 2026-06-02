@@ -17,12 +17,12 @@ interface ChatBotProps {
 }
 
 const SUGGESTIONS = [
-  { emoji: '💼', label: 'What did you build?' },
-  { emoji: '🤖', label: 'Tell me about your AI projects' },
-  { emoji: '🎓', label: 'Where did you study?' },
-  { emoji: '🏆', label: 'Any achievements?' },
-  { emoji: '🛠️', label: "What's your tech stack?" },
-  { emoji: '📬', label: 'How can I contact Pritha?' },
+  { emoji: '◎', label: 'Current work & focus' },
+  { emoji: '◆', label: 'Most impactful project' },
+  { emoji: '◉', label: 'Journey into AI engineering' },
+  { emoji: '◇', label: 'Technical expertise & stack' },
+  { emoji: '△', label: 'Key achievements' },
+  { emoji: '→', label: 'Open to opportunities?' },
 ];
 
 const SESSION_KEY = 'chatbot_msg_count';
@@ -30,8 +30,8 @@ const MSG_LIMIT = 10;
 
 function detectMood(text: string): 'face' | 'celebrating' | 'thinking2' {
   const t = text.toLowerCase();
-  if (/achiev|award|win|champion|robot|dance|club|finalist|competition|techfest|milan|jhalak/.test(t)) return 'celebrating';
-  if (/build|project|ai|ml|rag|llm|stack|tech|code|engineer|intern|pipeline|eval|model|skill|azure|gemini|python|flask|explain|tell/.test(t)) return 'thinking2';
+  if (/achiev|award|win|key achiev|champion|robot|dance|club|finalist|competition|techfest|milan|jhalak/.test(t)) return 'celebrating';
+  if (/build|project|ai|ml|rag|llm|stack|tech|code|engineer|intern|pipeline|eval|model|skill|azure|gemini|python|flask|explain|tell|journey|focus|impact|expert/.test(t)) return 'thinking2';
   return 'face';
 }
 

@@ -57,21 +57,14 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json()
 
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://prithamishra.vercel.app',
-        'X-Title': 'Pritha Portfolio',
       },
       body: JSON.stringify({
-        models: [
-          'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
-          'nvidia/nemotron-nano-9b-v2:free',
-          'liquid/lfm-2.5-1.2b-instruct:free',
-        ],
-        route: 'fallback',
+        model: 'llama-3.3-70b-versatile',
         stream: true,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },

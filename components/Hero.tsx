@@ -116,6 +116,11 @@ export default function Hero() {
     setMoodIndex((current) => (current + 1) % moods.length);
   };
 
+  const handleMoodHint = (hint: 'face' | 'celebrating' | 'thinking2') => {
+    const idx = moods.indexOf(hint);
+    if (idx !== -1) setMoodIndex(idx);
+  };
+
   const activeAvatar = isKonamiActive ? 'dancing' : isHovering ? 'waving' : mood;
   const caption = isKonamiActive
     ? 'Konami mode active'
@@ -211,7 +216,7 @@ export default function Hero() {
               )}
             </div>
           </motion.button>
-          <ChatBot defaultOpen hideToggle />
+          <ChatBot defaultOpen hideToggle onMoodHint={handleMoodHint} />
         </motion.div>
         </div>
       </div>

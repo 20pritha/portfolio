@@ -1,103 +1,107 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-type TrailPoint = {
-  id: number;
-  x: number;
-  y: number;
-  created: number;
-};
-
-const TRAIL_DURATION = 400;
-const MAX_TRAIL_POINTS = 12;
+const MAX_TRAIL   = 12;
+const TRAIL_MS    = 600;
+const MIN_MOVE_SQ = 16;
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [trail, setTrail] = useState<TrailPoint[]>([]);
-  const frameRef = useRef<number | null>(null);
-  const isCoarseRef = useRef(false);
-  const lastPositionRef = useRef({ x: 0, y: 0 });
+  const wrapRef  = useRef<HTMLDivElement>(null);
+  const dotRef   = useRef<HTMLSpanElement>(null);
+  const svgRef   = useRef<SVGSVGElement>(null);
+  const posRef   = useRef({ x: 0, y: 0 });
+  const lastRef  = useRef({ x: 0, y: 0 });
+  const trailRef = useRef<{ x: number; y: number; t: number }[]>([]);
+  const interRef = useRef(false);
+  const rafRef   = useRef(0);
 
   useEffect(() => {
-    const media = window.matchMedia('(pointer: coarse)');
-    isCoarseRef.current = media.matches;
-    if (isCoarseRef.current) return undefined;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
 
-    const updateTrail = (time: number) => {
-      setTrail((current) => current.filter((point) => time - point.created < TRAIL_DURATION));
-      frameRef.current = requestAnimationFrame(updateTrail);
-    };
+    const wrap = wrapRef.current;
+    const dot  = dotRef.current;
+    const svg  = svgRef.current;
+    if (!wrap || !dot || !svg) return;
 
-    const handleMove = (event: MouseEvent) => {
-      const x = event.clientX;
-      const y = event.clientY;
-      const now = performance.now();
-      const lastPos = lastPositionRef.current;
+    wrap.style.display = 'block';
 
-      // Only add point if moved at least 4px
-      const distance = Math.sqrt((x - lastPos.x) ** 2 + (y - lastPos.y) ** 2);
-      if (distance > 4) {
-        lastPositionRef.current = { x, y };
-        setTrail((current) => [
-          ...current.slice(-MAX_TRAIL_POINTS + 1),
-          { id: now, x, y, created: now },
-        ]);
+    // Pre-allocate SVG text pool — no per-frame allocation
+    const pool: SVGTextElement[] = [];
+    for (let i = 0; i < MAX_TRAIL; i++) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      el.textContent = '✦';
+      el.setAttribute('text-anchor', 'middle');
+      el.setAttribute('dominant-baseline', 'central');
+      el.setAttribute('fill', '#8B2635');
+      el.style.opacity = '0';
+      svg.appendChild(el);
+      pool.push(el);
+    }
+
+    const onMove = (e: MouseEvent) => {
+      const x = e.clientX, y = e.clientY;
+      posRef.current = { x, y };
+      const dx = x - lastRef.current.x, dy = y - lastRef.current.y;
+      if (dx * dx + dy * dy > MIN_MOVE_SQ) {
+        lastRef.current = { x, y };
+        trailRef.current.push({ x, y, t: performance.now() });
+        if (trailRef.current.length > MAX_TRAIL) trailRef.current.shift();
       }
-
-      setPosition({ x, y });
+      const target = e.target as Element;
+      interRef.current = !!target.closest('a,button,[role="button"],input,textarea,select,label');
     };
 
-    window.addEventListener('mousemove', handleMove, { passive: true });
-    frameRef.current = requestAnimationFrame(updateTrail);
+    const render = (now: number) => {
+      rafRef.current = requestAnimationFrame(render);
+
+      // Direct DOM mutation — no React setState, no re-render
+      const { x, y } = posRef.current;
+      const size = interRef.current ? 52 : 40;
+      dot.style.left     = `${x - size / 2}px`;
+      dot.style.top      = `${y - size / 2}px`;
+      dot.style.fontSize = `${size}px`;
+
+      // Expire trail
+      const cutoff = now - TRAIL_MS;
+      let s = 0;
+      const trail = trailRef.current;
+      while (s < trail.length && trail[s].t < cutoff) s++;
+      if (s > 0) trailRef.current = trail.slice(s);
+      const alive = trailRef.current;
+      const n = alive.length;
+
+      // Update pre-allocated pool elements
+      for (let i = 0; i < MAX_TRAIL; i++) {
+        const el = pool[i];
+        if (i >= n) { el.style.opacity = '0'; continue; }
+        const t  = i / Math.max(1, n - 1);
+        const sz = Math.max(8, 28 - t * 18);
+        const op = Math.max(0.04, 0.70 - t * 0.66);
+        const bl = Math.min(2.5, (1 - t) * 2);
+        el.setAttribute('x', String(alive[i].x));
+        el.setAttribute('y', String(alive[i].y));
+        el.setAttribute('font-size', String(sz));
+        el.setAttribute('fill-opacity', String(op));
+        el.style.filter  = bl > 0.1 ? `blur(${bl.toFixed(1)}px)` : '';
+        el.style.opacity = '1';
+      }
+    };
+
+    window.addEventListener('mousemove', onMove, { passive: true });
+    rafRef.current = requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener('mousemove', handleMove);
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(rafRef.current);
+      pool.forEach((el) => el.remove());
     };
   }, []);
 
-  if (isCoarseRef.current) {
-    return null;
-  }
-
   return (
-    <div className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
-      {/* Particle spark trail */}
-      <svg className="pointer-events-none fixed inset-0 w-full h-full" style={{ zIndex: 0 }}>
-        {trail.map((point, index) => {
-          const t = index / Math.max(1, trail.length - 1);
-          const size = Math.max(13, 31 - t * 18);
-          const opacity = Math.max(0.08, 0.85 - t * 0.75);
-          const blur = Math.min(3, 1 + t * 2);
-          return (
-            <text
-              key={point.id}
-              x={point.x}
-              y={point.y}
-              textAnchor="middle"
-              dominantBaseline="central"
-              fontSize={size}
-              fill="#8B2635"
-              fillOpacity={opacity}
-              style={{ filter: `blur(${blur}px)` }}
-            >
-              ✦
-            </text>
-          );
-        })}
-      </svg>
-
-      {/* Main cursor */}
-      <span
-        className="pointer-events-none absolute text-maroon leading-none"
-        style={{
-          left: position.x - 21,
-          top: position.y - 21,
-          fontSize: '42px',
-          zIndex: 1,
-        }}
-      >
+    <div ref={wrapRef} className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden" style={{ display: 'none' }}>
+      <svg ref={svgRef} className="pointer-events-none fixed inset-0 w-full h-full" />
+      <span ref={dotRef} className="pointer-events-none absolute leading-none text-maroon" style={{ zIndex: 1 }}>
         ✦
       </span>
     </div>

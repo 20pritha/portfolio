@@ -7,20 +7,6 @@ import SectionReveal from '@/components/SectionReveal';
 import GlitchHeading from '@/components/GlitchHeading';
 import skills from '@/data/skills';
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.06,
-    },
-  },
-};
-
-const pillVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Skills() {
   const [query, setQuery] = useState('');
   const q = query.toLowerCase().trim();
@@ -67,27 +53,21 @@ export default function Skills() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {skills.map((group) => (
-              <div key={group.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+              <div key={group.title} className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
                 <h3 className="text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">{group.title}</h3>
-                <motion.div
-                  className="mt-4 flex flex-wrap gap-3"
-                  variants={containerVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
-                >
+                <div className="mt-4 flex flex-wrap gap-3">
                   {group.items.map((item) => (
-                    <motion.span
+                    <span
                       key={item}
-                      variants={pillVariants}
-                      className={`rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 transition hover:border-maroon hover:text-maroon dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635] dark:hover:shadow-[0_0_8px_rgba(139,38,53,0.4)] ${
+                      style={{ transition: 'background-color 150ms,color 150ms,border-color 150ms,transform 150ms,opacity 200ms' }}
+                      className={`rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-default select-none hover:bg-[#8B2635] hover:text-white hover:border-[#8B2635] hover:scale-[1.06] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white dark:hover:border-[#8B2635] dark:hover:shadow-[0_0_12px_rgba(139,38,53,0.5)] ${
                         q && !item.toLowerCase().includes(q) ? 'opacity-20' : 'opacity-100'
                       }`}
                     >
                       {item}
-                    </motion.span>
+                    </span>
                   ))}
-                </motion.div>
+                </div>
               </div>
             ))}
           </div>

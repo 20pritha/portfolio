@@ -3,7 +3,14 @@
 import { motion } from 'framer-motion';
 import SectionReveal from '@/components/SectionReveal';
 import GlitchHeading from '@/components/GlitchHeading';
+import CountUp from '@/components/CountUp';
 import site from '@/data/site';
+
+const stats = [
+  { icon: '⚡', value: 2,    suffix: '',   label: 'production systems shipped', exact: true },
+  { icon: '🤖', value: 3000, suffix: '+',  label: 'prospects screened',         exact: false },
+  { icon: '📊', value: 18,   suffix: '%',  label: 'precision improvement',      exact: true },
+];
 
 export default function About() {
   return (
@@ -15,7 +22,7 @@ export default function About() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
-          <div className="rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+          <div className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
             <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">About</p>
             <GlitchHeading className="mt-4 text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
               {site.about.heading}
@@ -25,15 +32,18 @@ export default function About() {
                 {paragraph}
               </p>
             ))}
-            <div className="mt-6 flex flex-wrap gap-3">
-              {[
-                '⚡ 2 production systems shipped',
-                '🤖 3,000+ prospects screened',
-                '📊 18% precision improvement',
-              ].map((stat) => (
-                <span key={stat} className="rounded-full border border-maroon/30 px-4 py-1.5 text-sm font-medium text-maroon dark:border-[#8B2635]/50">
-                  {stat}
-                </span>
+            <div className="mt-8 flex flex-wrap gap-4">
+              {stats.map(({ icon, value, suffix, label }) => (
+                <div
+                  key={label}
+                  className="flex flex-col items-center rounded-2xl border border-maroon/20 bg-maroon/5 px-5 py-3 text-center dark:border-[#8B2635]/30 dark:bg-[#8B2635]/10"
+                >
+                  <div className="flex items-baseline gap-0.5 text-2xl font-bold text-maroon">
+                    <span>{icon} </span>
+                    <CountUp end={value} duration={1400} suffix={suffix} />
+                  </div>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-[#8b949e]">{label}</p>
+                </div>
               ))}
             </div>
           </div>

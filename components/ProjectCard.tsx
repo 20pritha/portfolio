@@ -8,65 +8,94 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0 });
-  const [isMobile, setIsMobile] = useState(false);
-  const HOVER_DELAY = 500;
-  const flipTimerRef = useRef<number | null>(null);
+  const [isFlipped, setIsFlipped]   = useState(false);
+  const [transform, setTransform]   = useState({ rotateX: 0, rotateY: 0 });
+  const [isMobile, setIsMobile]     = useState(false);
+  const HOVER_DELAY                 = 500;
+  const flipTimerRef                = useRef<number | null>(null);
 
   useEffect(() => {
-    const mql = window.matchMedia('(max-width: 767px)');
+    const mql   = window.matchMedia('(max-width: 767px)');
     const check = () => setIsMobile(mql.matches);
     check();
     mql.addEventListener('change', check);
     return () => mql.removeEventListener('change', check);
   }, []);
 
-  const cardStyle = useMemo(
-    () => ({
-      transform: `perspective(1000px) rotateX(${transform.rotateX + (isFlipped ? 180 : 0)}deg) rotateY(${transform.rotateY}deg)`,
-      transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
-      willChange: 'transform',
-    }),
-    [isFlipped, transform],
-  );
+  useEffect(() => () => { if (flipTimerRef.current) window.clearTimeout(flipTimerRef.current); }, []);
+
+  const cardStyle = useMemo(() => ({
+    transform: `perspective(1000px) rotateX(${transform.rotateX + (isFlipped ? 180 : 0)}deg) rotateY(${transform.rotateY}deg)`,
+    transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
+    willChange: 'transform',
+  }), [isFlipped, transform]);
 
   const handleMove = (event: MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - left;
-    const y = event.clientY - top;
-    const rotateY = ((x / width) * 16) - 8;
-    const rotateX = -((y / height) * 16) + 8;
+    const rotateY = ((event.clientX - left) / width  * 16) - 8;
+    const rotateX = -((event.clientY - top)  / height * 16) + 8;
     setTransform({ rotateX, rotateY });
   };
 
-  const resetTransform = () => setTransform({ rotateX: 0, rotateY: 0 });
+  const actionButton = project.githubUrl ? (
+    <a
+      href={project.githubUrl}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-2 rounded-full bg-maroon px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#732037] hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(139,38,53,0.5)] active:scale-[0.97] transition"
+    >
+      <GitHubIcon />
+      GitHub
+    </a>
+  ) : (
+    <a
+      href={project.detailsUrl}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex rounded-full bg-maroon px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#732037] hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(139,38,53,0.5)] active:scale-[0.97] transition"
+    >
+      View Details
+    </a>
+  );
 
-  useEffect(() => {
-    return () => {
-      if (flipTimerRef.current) {
-        window.clearTimeout(flipTimerRef.current);
-      }
-    };
-  }, []);
+  // ── Mobile: flat card — all info visible, no flip ──
+  if (isMobile) {
+    return (
+      <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
+        <div className="flex items-start justify-between gap-3">
+          {actionButton}
+          <div className="flex flex-wrap justify-end gap-2">
+            {project.stack.map((tag) => (
+              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#e6edf3]">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+        <h3 className="mt-4 text-xl font-semibold text-slate-950 dark:text-[#e6edf3]">{project.title}</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-[#8b949e]">{project.description}</p>
+        <p className="mt-4 text-lg font-bold text-maroon dark:drop-shadow-[0_0_8px_rgba(139,38,53,0.8)]">{project.metric}</p>
+      </div>
+    );
+  }
 
+  // ── Desktop: 3D flip card ──
   return (
     <div
       className="project-card-outer"
-      onClick={isMobile ? () => setIsFlipped((f) => !f) : undefined}
-      onMouseEnter={!isMobile ? () => {
+      onMouseEnter={(e) => {
         if (flipTimerRef.current) window.clearTimeout(flipTimerRef.current);
         flipTimerRef.current = window.setTimeout(() => setIsFlipped(true), HOVER_DELAY);
-      } : undefined}
-      onMouseLeave={!isMobile ? () => {
-        if (flipTimerRef.current) {
-          window.clearTimeout(flipTimerRef.current);
-          flipTimerRef.current = null;
-        }
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 32px rgba(139,38,53,0.18), 0 0 0 1px rgba(139,38,53,0.2)';
+        (e.currentTarget as HTMLDivElement).style.transition = 'box-shadow 250ms ease';
+      }}
+      onMouseLeave={(e) => {
+        if (flipTimerRef.current) { window.clearTimeout(flipTimerRef.current); flipTimerRef.current = null; }
         setIsFlipped(false);
-        resetTransform();
-      } : undefined}
-      onMouseMove={!isMobile ? handleMove : undefined}
+        setTransform({ rotateX: 0, rotateY: 0 });
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '';
+      }}
+      onMouseMove={handleMove}
     >
       <div className="project-card-inner" style={cardStyle}>
         <div className="project-card-face project-card-front">
@@ -80,16 +109,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <h3 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-[#e6edf3] break-words">{project.title}</h3>
           <p className="mt-4 text-slate-700 dark:text-[#8b949e] break-words">{project.description}</p>
           <p className="mt-5 font-semibold text-slate-900 dark:text-[#e6edf3] break-words">{project.metric}</p>
-          <p className="mt-4 md:hidden text-xs font-medium text-[#8B2635]/60 dark:text-[#8B2635]/80">Tap to see details →</p>
+          <p className="mt-4 text-xs font-medium text-[#8B2635]/60 dark:text-[#8B2635]/80">Hover to see details →</p>
         </div>
 
         <div className="project-card-face project-card-back">
-          <div className="flex flex-col justify-between h-full">
+          <div className="flex flex-col h-full">
+            <div className="mb-5">{actionButton}</div>
             <div>
               <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Key metric</p>
               <p className="mt-4 text-3xl font-bold text-maroon dark:drop-shadow-[0_0_8px_rgba(139,38,53,0.8)]">{project.metric}</p>
             </div>
-            <div>
+            <div className="mt-6">
               <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Tech stack</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.stack.map((tag) => (
@@ -97,28 +127,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                     {tag}
                   </span>
                 ))}
-              </div>
-              <div className="mt-8 flex flex-wrap gap-3">
-                {project.githubUrl ? (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full bg-maroon px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#732037]"
-                  >
-                    <GitHubIcon />
-                    GitHub
-                  </a>
-                ) : (
-                  <a
-                    href={project.detailsUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex rounded-full bg-maroon px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#732037]"
-                  >
-                    View Details
-                  </a>
-                )}
               </div>
             </div>
           </div>

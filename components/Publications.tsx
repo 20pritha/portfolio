@@ -23,7 +23,7 @@ export default function Publications() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+            <div className="card-hover rounded-3xl border border-slate-200 bg-white p-7 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
               <p className="text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">Publications</p>
               <ul className="mt-6 space-y-4 text-slate-700 dark:text-[#8b949e]">
                 {publications.publications.map((item) => (
@@ -35,7 +35,7 @@ export default function Publications() {
               </ul>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+            <div className="card-hover rounded-3xl border border-slate-200 bg-white p-7 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
               <p className="text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">Certifications</p>
               <ul className="mt-6 space-y-4 text-slate-700 dark:text-[#8b949e]">
                 {publications.certifications.map((item) => (

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import ProjectCard from '@/components/ProjectCard';
+import MagneticWrapper from '@/components/MagneticWrapper';
 import SectionReveal from '@/components/SectionReveal';
 import GlitchHeading from '@/components/GlitchHeading';
 import projects from '@/data/projects';
@@ -25,7 +26,9 @@ export default function Projects() {
 
           <div className="grid gap-6 md:grid-cols-2">
             {projects.map((project) => (
-              <ProjectCard key={project.title} project={project} />
+              <MagneticWrapper key={project.title} strength={8} radius={100}>
+                <ProjectCard project={project} />
+              </MagneticWrapper>
             ))}
           </div>
         </motion.div>

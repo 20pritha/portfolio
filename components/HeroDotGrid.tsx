@@ -28,6 +28,12 @@ export default function HeroDotGrid() {
     let height = canvas.clientHeight;
     const dpr = window.devicePixelRatio || 1;
 
+    let isDark = document.documentElement.classList.contains('dark');
+    const mo = new MutationObserver(() => {
+      isDark = document.documentElement.classList.contains('dark');
+    });
+    mo.observe(document.documentElement, { attributeFilter: ['class'] });
+
     const dots: Dot[] = Array.from({ length: 64 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -52,7 +58,6 @@ export default function HeroDotGrid() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      const isDark = document.documentElement.classList.contains('dark');
       ctx.fillStyle = isDark ? 'rgba(230, 237, 243, 0.12)' : 'rgba(15, 23, 42, 0.08)';
       dots.forEach((dot) => {
         dot.vx += (Math.random() - 0.5) * 0.03;
@@ -82,6 +87,7 @@ export default function HeroDotGrid() {
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.cancelAnimationFrame(frameId);
+      mo.disconnect();
     };
   }, []);
 

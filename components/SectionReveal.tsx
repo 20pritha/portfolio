@@ -8,8 +8,10 @@ interface SectionRevealProps {
 }
 
 export default function SectionReveal({ label, children }: SectionRevealProps) {
-  const [visible, setVisible] = useState(false);
+  const [typed, setTyped] = useState('');
+  const [showContent, setShowContent] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const fullText = `> loading ${label}...`;
 
   useEffect(() => {
     const element = containerRef.current;
@@ -19,28 +21,45 @@ export default function SectionReveal({ label, children }: SectionRevealProps) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setVisible(true);
-            setTimeout(() => setVisible(false), 800);
             observer.unobserve(entry.target);
+            setTyped('');
+            setShowContent(false);
+
+            let i = 0;
+            const interval = setInterval(() => {
+              i += 1;
+              setTyped(fullText.slice(0, i));
+              if (i >= fullText.length) {
+                clearInterval(interval);
+                setTimeout(() => setShowContent(true), 100);
+                setTimeout(() => setTyped(''), 900);
+              }
+            }, 30);
           }
         });
       },
-      { threshold: 0.25 },
+      { threshold: 0.2 },
     );
 
     observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+    return () => observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fullText]);
 
   return (
     <div ref={containerRef}>
-      <div className={`mb-2 min-h-[1.4rem] text-sm font-mono text-maroon dark:text-[#58a6ff] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-        {`> loading ${label}...`}
+      <div className="mb-2 min-h-[1.4rem] font-mono text-sm text-maroon dark:text-[#58a6ff]">
+        {typed}
+        {typed.length > 0 && typed.length < fullText.length && (
+          <span className="animate-pulse">▋</span>
+        )}
       </div>
-      {children}
+      <div
+        className="transition-opacity duration-500"
+        style={{ opacity: showContent ? 1 : 0, transform: showContent ? 'none' : 'translateY(8px)', transition: 'opacity 0.5s ease, transform 0.5s ease' }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

@@ -1,22 +1,31 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const update = () => {
+      rafRef.current = null;
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       setVisible(window.scrollY > totalHeight * 0.5);
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(update);
+      }
+    };
+
+    update();
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 

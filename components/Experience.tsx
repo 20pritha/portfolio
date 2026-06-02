@@ -40,7 +40,7 @@ export default function Experience() {
               const avatar = experienceAvatars[item.company];
 
               return (
-                <div key={item.company} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-soft transition hover:-translate-y-1 dark:border-[#30363d] dark:bg-[#161b22]">
+                <div key={item.company} className="card-hover rounded-3xl border border-slate-200 bg-white p-7 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
                   <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
                     {avatar ? (
                       <div className="flex-shrink-0">

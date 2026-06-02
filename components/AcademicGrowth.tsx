@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import {
   Line,
   LineChart,
+  Area,
+  AreaChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -22,7 +24,10 @@ const renderCustomDot = ({ cx, cy, payload }: any) => {
   if (payload.sem === 'Sem 8') {
     return (
       <g>
-        <circle cx={cx} cy={cy} r={10} fill="rgba(139, 38, 53, 0.16)" />
+        <circle cx={cx} cy={cy} r={14} fill="rgba(139, 38, 53, 0.08)">
+          <animate attributeName="r" values="10;16;10" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.4;0.1;0.4" dur="2s" repeatCount="indefinite" />
+        </circle>
         <circle cx={cx} cy={cy} r={6} fill="#8B2635" />
       </g>
     );
@@ -57,7 +62,7 @@ export default function AcademicGrowth() {
             </GlitchHeading>
           </div>
 
-          <div className={`grid gap-8 rounded-3xl border p-8 shadow-soft lg:grid-cols-[1.3fr_0.7fr] ${isDark ? 'border-[#30363d] bg-[#161b22]' : 'border-slate-200 bg-white'}`}>
+          <div className={`grid gap-8 rounded-3xl border p-8 shadow-soft lg:grid-cols-[1.3fr_0.7fr] ${isDark ? 'border-[#30363d]/70 bg-[#161b22]/90' : 'border-slate-200 bg-white'}`}>
             <div className="relative h-[250px] md:h-[420px]">
               {showAvatar && (
                 <motion.div
@@ -76,7 +81,13 @@ export default function AcademicGrowth() {
               )}
 
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={activeData} margin={{ top: 24, right: 24, bottom: 40, left: 16 }}>
+                <AreaChart data={activeData} margin={{ top: 24, right: 24, bottom: 40, left: 16 }}>
+                  <defs>
+                    <linearGradient id="cgpaGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8B2635" stopOpacity={isDark ? 0.15 : 0.10} />
+                      <stop offset="95%" stopColor="#8B2635" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid stroke={isDark ? '#21262d' : '#F1F5F9'} strokeDasharray="4 4" />
                   <XAxis
                     dataKey="sem"
@@ -94,11 +105,12 @@ export default function AcademicGrowth() {
                     itemStyle={{ color: isDark ? '#8b949e' : undefined }}
                     wrapperStyle={{ zIndex: 20 }}
                   />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="score"
                     stroke="#8B2635"
                     strokeWidth={3}
+                    fill="url(#cgpaGradient)"
                     dot={renderCustomDot}
                     activeDot={{ r: 6, fill: '#8B2635' }}
                     animationBegin={300}
@@ -113,7 +125,7 @@ export default function AcademicGrowth() {
                     stroke="#8B2635"
                     label={{ position: 'top', value: '↑ Pivot', fill: '#8B2635', fontSize: 12 }}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
 
@@ -123,7 +135,7 @@ export default function AcademicGrowth() {
                 <p className="mt-3 text-2xl font-semibold text-slate-950 dark:text-[#e6edf3]">B.Tech, Electronics &amp; Instrumentation Engineering</p>
                 <p className="mt-3 text-slate-700 dark:text-[#8b949e]">SRM Institute of Science and Technology (2022–2026)</p>
               </div>
-              <div className="rounded-3xl bg-cream p-5 text-slate-700 shadow-sm dark:bg-[#0d1117] dark:text-[#8b949e]">
+              <div className="rounded-3xl bg-white/50 p-5 text-slate-700 shadow-sm dark:bg-[#0d1117]/60 dark:text-[#8b949e]">
                 <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Trajectory</p>
                 <p className="mt-3 text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">Consistent upward trajectory  6.95 → 10.0 across 8 semesters.</p>
               </div>

@@ -156,12 +156,14 @@ export default function Hero() {
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700 dark:text-[#8b949e]">{site.hero.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             {['GenAI', 'RAG', 'Evaluation', 'Azure'].map((tag) => (
-              <span
+              <motion.span
                 key={tag}
-                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#e6edf3]"
+                whileHover={{ scale: 1.07 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 cursor-default select-none transition-colors duration-200 hover:bg-[#8B2635] hover:border-[#8B2635] hover:text-white dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white"
               >
                 {tag}
-              </span>
+              </motion.span>
             ))}
           </div>
         </motion.div>
@@ -180,7 +182,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] bg-transparent p-4 drop-shadow-lg transition-transform duration-300 focus:outline-none hover:scale-105 sm:h-[336px] sm:w-[336px] dark:drop-shadow-[0_0_20px_rgba(139,38,53,0.3)]"
+            className={`relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] bg-transparent p-4 drop-shadow-lg focus:outline-none sm:h-[336px] sm:w-[336px] dark:drop-shadow-[0_0_20px_rgba(139,38,53,0.3)] ${isHovering ? 'avatar-float' : ''}`}
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}

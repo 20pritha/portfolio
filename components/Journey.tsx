@@ -52,6 +52,7 @@ export default function Journey() {
   const [progress, setProgress] = useState(0);
   const lineRef = useRef<SVGLineElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const calculateLength = () => {
@@ -70,7 +71,8 @@ export default function Journey() {
     const element = containerRef.current;
     if (!element || !lineRef.current) return;
 
-    const handleScroll = () => {
+    const update = () => {
+      rafRef.current = null;
       const top = element.getBoundingClientRect().top;
       const height = window.innerHeight;
       const visible = Math.min(Math.max((height - top) / (height * 1.1), 0), 1);
@@ -78,11 +80,18 @@ export default function Journey() {
       lineRef.current!.style.strokeDashoffset = `${strokeLength * (1 - visible)}`;
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(update);
+      }
+    };
+
+    update();
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [strokeLength]);
 
@@ -113,18 +122,11 @@ export default function Journey() {
                 const alignLeft = index % 2 === 0;
 
                 return (
-                  <motion.div
-                    key={`${item.year}-${item.event}`}
-                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    viewport={{ once: true, amount: 0.35 }}
-                    transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-                    className="relative"
-                  >
+                  <div key={`${item.year}-${item.event}`} className="relative">
                     <div className="grid gap-6 lg:grid-cols-[1fr_80px_1fr] lg:items-start">
                       <div className={alignLeft ? 'lg:col-start-1 lg:col-end-2 lg:text-right' : 'hidden lg:block lg:col-start-1 lg:col-end-2'}>
                         {alignLeft && (
-                          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 group-hover:border-maroon group-hover:shadow-[0_0_0_16px_rgba(139,38,53,0.08)] dark:border-[#30363d] dark:bg-[#161b22]">
+                          <div className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
                             {avatar && (
                               <div className="mb-4 items-center gap-3 hidden md:flex lg:hidden">
                                 <Image src={avatar.src} alt={avatar.alt} width={44} height={44} className="object-contain" />
@@ -160,7 +162,7 @@ export default function Journey() {
 
                       <div className={!alignLeft ? 'lg:col-start-3 lg:col-end-4 lg:text-left' : 'hidden lg:block lg:col-start-3 lg:col-end-4'}>
                         {!alignLeft && (
-                          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 group-hover:border-maroon group-hover:shadow-[0_0_0_16px_rgba(139,38,53,0.08)] dark:border-[#30363d] dark:bg-[#161b22]">
+                          <div className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
                             {avatar && (
                               <div className="mb-4 items-center gap-3 hidden md:flex lg:hidden">
                                 <Image src={avatar.src} alt={avatar.alt} width={44} height={44} className="object-contain" />
@@ -180,7 +182,7 @@ export default function Journey() {
                         )}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>

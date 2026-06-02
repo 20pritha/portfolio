@@ -8,25 +8,29 @@ interface ClientShellProps {
 }
 
 export default function ClientShell({ children }: ClientShellProps) {
-  const [showSplash, setShowSplash] = useState(true);
+  const [phase, setPhase] = useState<'monogram' | 'content' | 'done'>('monogram');
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => setShowSplash(false), 800);
-    return () => window.clearTimeout(timeoutId);
+    const t1 = window.setTimeout(() => setPhase('content'), 700);
+    const t2 = window.setTimeout(() => {
+      setPhase('done');
+      document.body.classList.add('page-loaded');
+    }, 1200);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
   }, []);
-
-  useEffect(() => {
-    document.body.classList.toggle('page-loaded', !showSplash);
-  }, [showSplash]);
 
   return (
     <AnimatePresence mode="wait">
-      {showSplash ? (
+      {phase === 'monogram' ? (
         <motion.div
           key="splash"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
           className="flex min-h-screen items-center justify-center"
         >
           <div className="rounded-[2rem] border border-slate-200 bg-white/90 px-10 py-8 text-center shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
@@ -36,10 +40,10 @@ export default function ClientShell({ children }: ClientShellProps) {
       ) : (
         <motion.div
           key="content"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
         >
           {children}
         </motion.div>

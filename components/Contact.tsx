@@ -7,6 +7,7 @@ import emailjs from 'emailjs-com';
 import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
 import GlitchHeading from '@/components/GlitchHeading';
+import MagneticWrapper from '@/components/MagneticWrapper';
 import SectionReveal from '@/components/SectionReveal';
 import site from '@/data/site';
 
@@ -161,7 +162,7 @@ export default function Contact() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
-            <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+            <div className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
               <p className="text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">Email</p>
               <p className="mt-4 break-words whitespace-normal text-slate-700 dark:text-[#e6edf3]">{site.contact.email}</p>
               <p className="mt-8 text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">LinkedIn</p>
@@ -184,7 +185,7 @@ export default function Contact() {
               </a>
             </div>
 
-            <form onSubmit={handleSubmit} className="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+            <form onSubmit={handleSubmit} className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
               <div className="space-y-5">
                 <label className="group block text-sm font-medium text-slate-800 dark:text-[#e6edf3]">
                   Name
@@ -241,13 +242,15 @@ export default function Contact() {
                 </label>
               </div>
 
-              <button
-                type="submit"
-                disabled={!isValid}
-                className="mt-8 inline-flex items-center justify-center rounded-full bg-[#8B2635] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#6B1D2A] hover:scale-[1.02] active:bg-[#6B1D2A] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-[0_0_12px_rgba(139,38,53,0.6)]"
-              >
-                Send Message
-              </button>
+              <MagneticWrapper strength={10} radius={80} className="mt-8 inline-block">
+                <button
+                  type="submit"
+                  disabled={!isValid}
+                  className="inline-flex items-center justify-center rounded-full bg-[#8B2635] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#6B1D2A] hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(139,38,53,0.5)] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-[0_0_16px_rgba(139,38,53,0.6)]"
+                >
+                  Send Message
+                </button>
+              </MagneticWrapper>
               {status ? (
                 <p className={`mt-4 text-sm ${success ? 'font-mono text-maroon' : 'text-slate-600 dark:text-[#8b949e]'}`}>{status}</p>
               ) : null}

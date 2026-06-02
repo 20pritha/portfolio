@@ -6,6 +6,27 @@ import SidebarToggle from '@/components/SidebarToggle';
 import site from '@/data/site';
 import { useTheme } from '@/hooks/useTheme';
 
+function useISTClock() {
+  const [time, setTime] = useState('');
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      setTime(
+        now.toLocaleTimeString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        }) + ' IST',
+      );
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
 const sections = [
   { id: 'hero',         label: 'Home',           icon: '✦' },
   { id: 'about',        label: 'About',          icon: '◎' },
@@ -52,8 +73,10 @@ export default function Sidebar({
   onMobileClose,
 }: Props) {
   const [active, setActive] = useState('hero');
+  const [visited, setVisited] = useState<Set<string>>(new Set(['hero']));
   const visitorCount = useVisitorCount();
   const { theme, toggleTheme } = useTheme();
+  const istTime = useISTClock();
 
   useEffect(() => {
     let raf = 0;
@@ -75,6 +98,12 @@ export default function Sidebar({
       });
 
       setActive(closestId);
+      setVisited((prev) => {
+        if (prev.has(closestId)) return prev;
+        const next = new Set(prev);
+        next.add(closestId);
+        return next;
+      });
     };
 
     const onScroll = () => {
@@ -92,6 +121,9 @@ export default function Sidebar({
     };
   }, []);
 
+  // On mobile the sidebar is always full-width — show labels whenever it's open
+  const showLabels = expanded || mobileOpen;
+
   const navContent = (
     <div className="flex h-full flex-col">
       {/* Header */}
@@ -100,14 +132,14 @@ export default function Sidebar({
           <Image
             src="/avatars/avatar-face.png"
             alt="Pritha Mishra"
-            width={expanded ? 48 : 32}
-            height={expanded ? 48 : 32}
+            width={showLabels ? 48 : 32}
+            height={showLabels ? 48 : 32}
             className="rounded-full object-contain transition-all duration-300"
           />
         </a>
         <div
           className={`min-w-0 flex-1 overflow-hidden transition-all duration-300 ${
-            expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 hidden'
+            showLabels ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 hidden'
           }`}
         >
           <p className="truncate text-sm font-semibold text-slate-900 dark:text-[#e6edf3]">Pritha Mishra</p>
@@ -115,16 +147,21 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Status badge */}
+      {/* Status badge + IST clock */}
       <div
         className={`mx-4 mb-4 overflow-hidden transition-all duration-300 ${
-          expanded ? 'max-h-10 opacity-100' : 'max-h-0 opacity-0'
+          showLabels ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-xs text-slate-600 dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#8b949e]">
           <span className="inline-flex h-2 w-2 shrink-0 animate-pulse rounded-full bg-emerald-500" />
           <span>building in Bengaluru 🇮🇳</span>
         </div>
+        {istTime && (
+          <p className="mt-1.5 px-1 font-mono text-[10px] text-slate-400 dark:text-[#8b949e]/60">
+            🕐 {istTime}
+          </p>
+        )}
       </div>
 
       {/* Nav links */}
@@ -143,17 +180,20 @@ export default function Sidebar({
               }`}
             >
               {isActive && (
-                <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-maroon" />
+                <span className="active-border-pulse absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-maroon" />
               )}
               <span className="shrink-0 text-base leading-none">{icon}</span>
               <span
-                className={`truncate transition-all duration-300 ${
-                  expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'
+                className={`flex-1 truncate transition-all duration-300 ${
+                  showLabels ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'
                 }`}
               >
                 {label}
               </span>
-              {!expanded && (
+              {showLabels && !isActive && visited.has(id) && (
+                <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-maroon/40" />
+              )}
+              {!showLabels && (
                 <span className="pointer-events-none absolute left-full ml-2 whitespace-nowrap rounded-full bg-cream px-3 py-1 text-xs font-medium text-maroon shadow-soft opacity-0 transition-opacity duration-150 group-hover:opacity-100 z-50 dark:bg-[#161b22] dark:text-[#e6edf3]">
                   {label}
                 </span>
@@ -166,22 +206,27 @@ export default function Sidebar({
       {/* Theme toggle */}
       <div className="px-2 pb-2">
         <button
-          onClick={toggleTheme}
+          onClick={(e) => toggleTheme(e)}
           className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[#8B2635] hover:bg-[#8B2635]/10 w-full dark:text-[#e6edf3] dark:hover:bg-white/5"
         >
-          <span className="shrink-0">{theme === 'dark' ? '☀️' : '🌙'}</span>
-          <span className={`truncate transition-all duration-300 ${expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'}`}>
+          <span
+            className="shrink-0 leading-none select-none"
+            style={{
+              fontSize: '15px',
+              color: theme === 'dark' ? '#e6edf3' : '#8B2635',
+              fontFamily: 'system-ui, sans-serif',
+            }}
+          >
+            {theme === 'dark' ? '☀︎' : '⏾'}
+          </span>
+          <span className={`truncate transition-all duration-300 ${showLabels ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'}`}>
             {theme === 'dark' ? 'Light mode' : 'Dark mode'}
           </span>
         </button>
       </div>
 
       {/* Visitor counter */}
-      <div
-        className={`px-4 pb-2 transition-all duration-300 ${
-          expanded ? 'block' : 'hidden'
-        }`}
-      >
+      <div className={`px-4 pb-2 transition-all duration-300 ${showLabels ? 'block' : 'hidden'}`}>
         <p className="font-mono text-[10px] text-maroon/50">
           👁 {visitorCount.toLocaleString()} visitors
         </p>
@@ -190,7 +235,7 @@ export default function Sidebar({
       {/* Bottom social links */}
       <div
         className={`flex items-center border-t border-slate-200/60 px-4 py-4 transition-all duration-300 dark:border-[#30363d] ${
-          expanded ? 'gap-3' : 'flex-col gap-2 justify-center'
+          showLabels ? 'gap-3' : 'flex-col gap-2 justify-center'
         }`}
       >
         <a
@@ -211,7 +256,7 @@ export default function Sidebar({
         </a>
         <span
           className={`truncate text-xs text-slate-400 dark:text-[#8b949e] transition-all duration-300 ${
-            expanded ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'
+            showLabels ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'
           }`}
         >
           {site.contact.email}
@@ -224,7 +269,7 @@ export default function Sidebar({
     <>
       {/* Desktop sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-40 hidden h-screen flex-col border-r border-maroon/10 bg-cream transition-[width] duration-300 ease-in-out md:flex dark:bg-[#0d1117] dark:border-[#30363d] ${
+        className={`fixed left-0 top-0 z-40 hidden h-screen flex-col border-r border-white/40 bg-white/80 backdrop-blur transition-[width] duration-300 ease-in-out md:flex dark:bg-[#0d1117]/85 dark:border-[#30363d]/60 ${
           expanded ? 'w-60' : 'w-16'
         }`}
       >
@@ -259,7 +304,7 @@ export default function Sidebar({
 
       {/* Mobile sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-60 flex-col border-r border-maroon/10 bg-cream transition-transform duration-[250ms] ease-in-out md:hidden dark:bg-[#0d1117] dark:border-[#30363d] ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-60 flex-col border-r border-white/40 bg-white/85 backdrop-blur transition-transform duration-[250ms] ease-in-out md:hidden dark:bg-[#0d1117]/85 dark:border-[#30363d]/60 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

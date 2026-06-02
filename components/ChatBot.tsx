@@ -9,6 +9,11 @@ interface Message {
   content: string;
 }
 
+interface ChatBotProps {
+  defaultOpen?: boolean;
+  hideToggle?: boolean;
+}
+
 const SUGGESTIONS = [
   { emoji: '💼', label: 'What did you build?' },
   { emoji: '🤖', label: 'Tell me about your AI projects' },
@@ -21,8 +26,8 @@ const SUGGESTIONS = [
 const SESSION_KEY = 'chatbot_msg_count';
 const MSG_LIMIT = 10;
 
-export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function ChatBot({ defaultOpen = false, hideToggle = false }: ChatBotProps) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -75,15 +80,17 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="mt-6 flex flex-col items-center md:items-start">
+    <div className="mt-4 flex w-full flex-col items-center">
       {/* Toggle pill */}
-      <button
-        onClick={() => setIsOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-full border border-[#8B2635] px-4 py-2 text-sm font-medium text-[#8B2635] transition-colors duration-200 hover:bg-[#8B2635] hover:text-white dark:border-[#8B2635] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white"
-        aria-expanded={isOpen}
-      >
-        💬 Ask me anything
-      </button>
+      {!hideToggle && (
+        <button
+          onClick={() => setIsOpen((v) => !v)}
+          className="flex items-center gap-2 rounded-full border border-[#8B2635] px-4 py-2 text-sm font-medium text-[#8B2635] transition-colors duration-200 hover:bg-[#8B2635] hover:text-white dark:border-[#8B2635] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white"
+          aria-expanded={isOpen}
+        >
+          💬 Ask me anything
+        </button>
+      )}
 
       {/* Chat window */}
       <AnimatePresence>
@@ -94,7 +101,7 @@ export default function ChatBot() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="mt-3 w-full overflow-hidden rounded-2xl border border-[#8B2635] bg-white shadow-lg sm:w-[380px] dark:bg-[#161b22]"
+            className={`${!hideToggle ? 'mt-3' : ''} w-full max-w-[420px] overflow-hidden rounded-2xl border border-[#8B2635] bg-white shadow-lg dark:bg-[#161b22]`}
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-[#8B2635]/30 px-4 py-3">
@@ -104,13 +111,15 @@ export default function ChatBot() {
                 </div>
                 <span className="text-sm font-semibold text-slate-900 dark:text-[#e6edf3]">Pritha&apos;s Assistant</span>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-slate-400 hover:text-slate-700 dark:text-[#8b949e] dark:hover:text-[#e6edf3]"
-                aria-label="Close chat"
-              >
-                ✕
-              </button>
+              {!hideToggle && (
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-slate-400 hover:text-slate-700 dark:text-[#8b949e] dark:hover:text-[#e6edf3]"
+                  aria-label="Close chat"
+                >
+                  ✕
+                </button>
+              )}
             </div>
 
             {/* Messages */}

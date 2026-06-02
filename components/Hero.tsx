@@ -177,7 +177,7 @@ export default function Hero() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="relative hidden md:flex flex-col items-center justify-center"
+          className="relative hidden md:flex flex-col items-center justify-start gap-4 pt-4"
         >
           <motion.button
             key={activeAvatar}
@@ -185,7 +185,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className={`relative grid h-[260px] w-[260px] max-w-full place-items-center overflow-hidden rounded-[2.5rem] bg-transparent p-4 drop-shadow-lg focus:outline-none sm:h-[336px] sm:w-[336px] dark:drop-shadow-[0_0_20px_rgba(139,38,53,0.3)] ${isHovering ? 'avatar-float' : ''}`}
+            className={`relative grid h-[180px] w-[180px] max-w-full place-items-center overflow-hidden rounded-[2rem] bg-transparent p-3 drop-shadow-lg focus:outline-none sm:h-[200px] sm:w-[200px] dark:drop-shadow-[0_0_20px_rgba(139,38,53,0.3)] ${isHovering ? 'avatar-float' : ''}`}
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}
@@ -203,7 +203,7 @@ export default function Hero() {
                     src={meta.src}
                     alt={meta.alt}
                     fill
-                    sizes="240px"
+                    sizes="200px"
                     className="object-contain transition-opacity duration-300 ease-in-out"
                     style={{ opacity: key === activeAvatar ? 1 : 0 }}
                   />
@@ -211,7 +211,7 @@ export default function Hero() {
               )}
             </div>
           </motion.button>
-          <ChatBot />
+          <ChatBot defaultOpen hideToggle />
         </motion.div>
         </div>
       </div>

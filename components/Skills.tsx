@@ -1,16 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import SectionReveal from '@/components/SectionReveal';
 import GlitchHeading from '@/components/GlitchHeading';
 import skills from '@/data/skills';
 
 export default function Skills() {
-  const [query, setQuery] = useState('');
-  const q = query.toLowerCase().trim();
-
   return (
     <section id="skills">
       <SectionReveal label="skills">
@@ -38,19 +34,6 @@ export default function Skills() {
             </div>
           </div>
 
-          <div className="mb-6">
-            <div className="relative inline-flex w-full max-w-sm">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#8b949e]">🔍</span>
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Filter skills..."
-                className="w-full rounded-full border border-slate-200 bg-cream px-4 py-2 pl-9 font-mono text-sm text-slate-800 outline-none transition focus:border-maroon focus:ring-0 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:placeholder-[#8b949e] dark:focus:border-[#8B2635]"
-              />
-            </div>
-          </div>
-
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {skills.map((group) => (
               <div key={group.title} className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
@@ -59,10 +42,8 @@ export default function Skills() {
                   {group.items.map((item) => (
                     <span
                       key={item}
-                      style={{ transition: 'background-color 150ms,color 150ms,border-color 150ms,transform 150ms,opacity 200ms' }}
-                      className={`rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-default select-none hover:bg-[#8B2635] hover:text-white hover:border-[#8B2635] hover:scale-[1.06] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white dark:hover:border-[#8B2635] dark:hover:shadow-[0_0_12px_rgba(139,38,53,0.5)] ${
-                        q && !item.toLowerCase().includes(q) ? 'opacity-20' : 'opacity-100'
-                      }`}
+                      style={{ transition: 'background-color 150ms,color 150ms,border-color 150ms,transform 150ms' }}
+                      className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-default select-none hover:bg-[#8B2635] hover:text-white hover:border-[#8B2635] hover:scale-[1.06] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white dark:hover:border-[#8B2635] dark:hover:shadow-[0_0_12px_rgba(139,38,53,0.5)]"
                     >
                       {item}
                     </span>

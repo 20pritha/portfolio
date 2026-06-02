@@ -7,6 +7,7 @@ import HeroDotGrid from '@/components/HeroDotGrid';
 import HeroName from '@/components/HeroName';
 import useKonami from '@/hooks/useKonami';
 import site from '@/data/site';
+import ChatBot from '@/components/ChatBot';
 
 const typewriterPhrases = [
   'Agentic Pipeline Builder',
@@ -22,7 +23,7 @@ type Mood = (typeof moods)[number];
 const avatarMeta: Record<Mood | 'waving' | 'dancing', { src: string; alt: string }> = {
   face: { src: '/avatars/avatar-face.png', alt: 'Avatar face close-up' },
   celebrating: { src: '/avatars/avatar-celebrating.png', alt: 'Avatar celebrating with fists up' },
-  thinking2: { src: '/avatars/avatar-thinking2.png', alt: 'Avatar thinking with hand on chin' },
+  thinking2: { src: '/avatars/avatar-thinking.png', alt: 'Avatar thinking with hand on chin' },
   waving: { src: '/avatars/avatar-waving.png', alt: 'Avatar waving hello' },
   dancing: { src: '/avatars/avatar-dancing.png', alt: 'Avatar dancing in a black leather outfit' },
 };
@@ -131,18 +132,19 @@ export default function Hero() {
       <HeroDotGrid />
       <div className="hero-shape pointer-events-none" />
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div ref={panelRef}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          ref={panelRef}
           className="hero-panel max-w-3xl"
         >
-          <div className="mb-6 flex justify-center md:hidden">
+          <div className="mb-6 flex flex-col items-center md:hidden">
             <div className="relative h-[120px] w-[120px] overflow-hidden rounded-full ring-2 ring-[#8B2635]">
               <Image src="/avatars/avatar-face.png" alt="Pritha Mishra" fill className="object-contain" />
             </div>
+            <ChatBot />
           </div>
           <HeroName />
           <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">{site.hero.subtitle}</p>
@@ -167,14 +169,15 @@ export default function Hero() {
             ))}
           </div>
         </motion.div>
+        </div>
 
+        <div ref={avatarRef}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          ref={avatarRef}
-          className="relative hidden md:flex justify-center"
+          className="relative hidden md:flex flex-col items-center justify-center"
         >
           <motion.button
             key={activeAvatar}
@@ -208,7 +211,9 @@ export default function Hero() {
               )}
             </div>
           </motion.button>
+          <ChatBot />
         </motion.div>
+        </div>
       </div>
 
       {showStayPopup && (

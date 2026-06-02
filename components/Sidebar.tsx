@@ -43,17 +43,23 @@ const allSectionIds = ['hero', ...sections.map((s) => s.id)];
 
 function useVisitorCount() {
   const [count, setCount] = useState(0);
+
   useEffect(() => {
-    const stored = parseInt(localStorage.getItem('visitor_count') ?? '0', 10);
-    if (!sessionStorage.getItem('visitor_counted')) {
-      const next = stored + 1;
-      localStorage.setItem('visitor_count', String(next));
-      sessionStorage.setItem('visitor_counted', '1');
-      setCount(next);
+    // Fire visit once per browser session
+    if (!sessionStorage.getItem('visit_logged')) {
+      sessionStorage.setItem('visit_logged', '1');
+      fetch('/api/visit', { method: 'POST' })
+        .then((r) => r.json())
+        .then((d) => setCount(d.total ?? 0))
+        .catch(() => {});
     } else {
-      setCount(stored);
+      fetch('/api/visit')
+        .then((r) => r.json())
+        .then((d) => setCount(d.total ?? 0))
+        .catch(() => {});
     }
   }, []);
+
   return count;
 }
 

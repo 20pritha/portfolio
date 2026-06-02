@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import ClientShell from '@/components/ClientShell';
+import ErrorLogger from '@/components/ErrorLogger';
 import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.variable} font-sans bg-cream dark:bg-[#0d1117] text-slate-900 dark:text-[#e6edf3]`}>
         <ClientShell>{children}</ClientShell>
         <Analytics />
+        <ErrorLogger />
       </body>
     </html>
   );

@@ -32,11 +32,11 @@ export default function About() {
                 {paragraph}
               </p>
             ))}
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-8 grid grid-cols-3 gap-4">
               {stats.map(({ icon, value, suffix, label }) => (
                 <div
                   key={label}
-                  className="flex flex-col items-center rounded-2xl border border-maroon/20 bg-maroon/5 px-5 py-3 text-center dark:border-[#8B2635]/30 dark:bg-[#8B2635]/10"
+                  className="flex flex-col items-center rounded-2xl border border-maroon/20 bg-maroon/5 px-5 py-4 text-center dark:border-[#8B2635]/30 dark:bg-[#8B2635]/10"
                 >
                   <div className="flex items-baseline gap-0.5 text-2xl font-bold text-maroon">
                     <span>{icon} </span>

@@ -41,7 +41,6 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -65,7 +64,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
 
     const userMsg: Message = { role: 'user', content: text.trim() };
     const historyForApi = [...messages, userMsg];
-    setMessages([...historyForApi, { role: 'assistant', content: '' }]);
+    setMessages(historyForApi);
     setInput('');
     setIsLoading(true);
     setError(false);
@@ -77,44 +76,11 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: historyForApi }),
       });
-
-      if (!res.ok) throw new Error('stream error');
-
-      const reader = res.body!.getReader();
-      const decoder = new TextDecoder();
-      let accumulated = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        for (const line of chunk.split('\n')) {
-          if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
-          try {
-            const json = JSON.parse(line.slice(6));
-            const token =
-              json.choices?.[0]?.delta?.content ||
-              json.choices?.[0]?.delta?.reasoning ||
-              '';
-            if (token) {
-              accumulated += token;
-              setMessages(prev => {
-                const copy = [...prev];
-                copy[copy.length - 1] = { role: 'assistant', content: accumulated };
-                return copy;
-              });
-            }
-          } catch {}
-        }
-      }
-
-      if (!accumulated) throw new Error('empty stream');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
     } catch {
       setError(true);
-      setMessages(prev =>
-        prev[prev.length - 1]?.content === '' ? prev.slice(0, -1) : prev,
-      );
     } finally {
       setIsLoading(false);
     }
@@ -125,11 +91,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
     send(input);
   };
 
-  const showBrain =
-    isLoading &&
-    messages.length > 0 &&
-    messages[messages.length - 1]?.role === 'assistant' &&
-    messages[messages.length - 1]?.content === '';
+  const showDots = isLoading;
 
   const cardMotion = heroLayout
     ? { initial: false as const, animate: undefined, exit: { opacity: 0 }, transition: { duration: 0.2 } }
@@ -267,8 +229,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                 </motion.div>
               ))}
 
-              {/* Brain — only while waiting for first token */}
-              {showBrain && (
+              {showDots && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -277,14 +238,15 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                   <div className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full">
                     <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
                   </div>
-                  <div className="flex items-center rounded-2xl bg-slate-100 px-4 py-3 dark:bg-[#21262d]">
-                    <motion.span
-                      className="select-none text-lg leading-none"
-                      animate={{ scale: [1, 1.25, 0.9, 1.15, 1], rotate: [0, -10, 10, -5, 0] }}
-                      transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-                    >
-                      🧠
-                    </motion.span>
+                  <div className="flex gap-1 rounded-2xl bg-slate-100 px-4 py-3 dark:bg-[#21262d]">
+                    {[0, 1, 2].map((i) => (
+                      <motion.span
+                        key={i}
+                        className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-[#8b949e]"
+                        animate={{ y: [0, -4, 0] }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
+                      />
+                    ))}
                   </div>
                 </motion.div>
               )}
@@ -305,7 +267,6 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                 </p>
               )}
 
-              <div ref={bottomRef} />
             </div>
 
             {/* Input */}

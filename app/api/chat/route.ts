@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         'X-Title': 'Pritha Portfolio',
       },
       body: JSON.stringify({
-        model: 'openrouter/free',
+        model: 'google/gemma-3n-e4b-it:free',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages.map((m: { role: string; content: string }) => ({
@@ -79,7 +79,8 @@ export async function POST(req: NextRequest) {
     const data = await res.json()
     if (!res.ok) throw new Error(data.error?.message ?? res.statusText)
 
-    const text = data.choices[0].message.content
+    const text = data.choices?.[0]?.message?.content
+    if (!text) throw new Error('Empty response from model')
     return NextResponse.json({ message: text })
   } catch (err) {
     console.error('[chat route error]', err)

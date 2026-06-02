@@ -62,16 +62,17 @@ export async function POST(req: NextRequest) {
       headers: {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://pritha.dev',
+        'HTTP-Referer': 'https://prithamishra.vercel.app',
         'X-Title': 'Pritha Portfolio',
       },
       body: JSON.stringify({
         models: [
           'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
-          'google/gemma-4-26b-a4b-it:free',
           'nvidia/nemotron-nano-9b-v2:free',
+          'liquid/lfm-2.5-1.2b-instruct:free',
         ],
         route: 'fallback',
+        stream: true,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages.map((m: { role: string; content: string }) => ({
@@ -82,13 +83,18 @@ export async function POST(req: NextRequest) {
       }),
     })
 
-    const data = await res.json()
-    if (!res.ok) throw new Error(data.error?.message ?? res.statusText)
+    if (!res.ok) {
+      const err = await res.json()
+      throw new Error(err.error?.message ?? res.statusText)
+    }
 
-    const msg = data.choices?.[0]?.message
-    const text = msg?.content || msg?.reasoning
-    if (!text) throw new Error('Empty response from model')
-    return NextResponse.json({ message: text })
+    return new Response(res.body, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    })
   } catch (err) {
     console.error('[chat route error]', err)
     return NextResponse.json({ error: 'Failed to get response' }, { status: 500 })

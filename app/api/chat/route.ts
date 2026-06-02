@@ -70,7 +70,6 @@ export async function POST(req: NextRequest) {
           'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
           'google/gemma-4-26b-a4b-it:free',
           'nvidia/nemotron-nano-9b-v2:free',
-          'liquid/lfm-2.5-1.2b-instruct:free',
         ],
         route: 'fallback',
         messages: [

@@ -42,6 +42,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const msgCount = () => parseInt(sessionStorage.getItem(SESSION_KEY) ?? '0', 10);
@@ -49,7 +50,8 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
   const isLimited = messages.filter(m => m.role === 'user').length > 0 && msgCount() >= MSG_LIMIT;
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = messagesRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages, isLoading]);
 
   useEffect(() => {
@@ -193,6 +195,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
 
             {/* Messages */}
             <div
+              ref={messagesRef}
               className={`flex flex-col gap-3 overflow-y-auto ${
                 heroLayout
                   ? 'min-h-[260px] max-h-[400px] p-6'

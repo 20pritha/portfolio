@@ -12,6 +12,7 @@ interface Message {
 interface ChatBotProps {
   defaultOpen?: boolean;
   hideToggle?: boolean;
+  onMoodHint?: (mood: 'face' | 'celebrating' | 'thinking2') => void;
 }
 
 const SUGGESTIONS = [
@@ -26,7 +27,14 @@ const SUGGESTIONS = [
 const SESSION_KEY = 'chatbot_msg_count';
 const MSG_LIMIT = 10;
 
-export default function ChatBot({ defaultOpen = false, hideToggle = false }: ChatBotProps) {
+function detectMood(text: string): 'face' | 'celebrating' | 'thinking2' {
+  const t = text.toLowerCase();
+  if (/achiev|award|win|champion|robot|dance|club|finalist|competition|techfest|milan|jhalak/.test(t)) return 'celebrating';
+  if (/build|project|ai|ml|rag|llm|stack|tech|code|engineer|intern|pipeline|eval|model|skill|azure|gemini|python|flask|explain|tell/.test(t)) return 'thinking2';
+  return 'face';
+}
+
+export default function ChatBot({ defaultOpen = false, hideToggle = false, onMoodHint }: ChatBotProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -37,7 +45,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false }: Cha
 
   const msgCount = () => parseInt(sessionStorage.getItem(SESSION_KEY) ?? '0', 10);
   const bumpCount = () => sessionStorage.setItem(SESSION_KEY, String(msgCount() + 1));
-  const isLimited = messages.length > 0 && msgCount() >= MSG_LIMIT;
+  const isLimited = messages.filter(m => m.role === 'user').length > 0 && msgCount() >= MSG_LIMIT;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -50,9 +58,11 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false }: Cha
   async function send(text: string) {
     if (!text.trim() || isLoading || msgCount() >= MSG_LIMIT) return;
 
+    onMoodHint?.(detectMood(text));
+
     const userMsg: Message = { role: 'user', content: text.trim() };
-    const next = [...messages, userMsg];
-    setMessages(next);
+    const historyForApi = [...messages, userMsg];
+    setMessages([...historyForApi, { role: 'assistant', content: '' }]);
     setInput('');
     setIsLoading(true);
     setError(false);
@@ -62,13 +72,46 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false }: Cha
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: historyForApi }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setMessages((prev) => [...prev, { role: 'assistant', content: data.message }]);
+
+      if (!res.ok) throw new Error('stream error');
+
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        for (const line of chunk.split('\n')) {
+          if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
+          try {
+            const json = JSON.parse(line.slice(6));
+            const token =
+              json.choices?.[0]?.delta?.content ||
+              json.choices?.[0]?.delta?.reasoning ||
+              '';
+            if (token) {
+              accumulated += token;
+              setMessages(prev => {
+                const copy = [...prev];
+                copy[copy.length - 1] = { role: 'assistant', content: accumulated };
+                return copy;
+              });
+            }
+          } catch {}
+        }
+      }
+
+      if (!accumulated) throw new Error('empty stream');
     } catch {
       setError(true);
+      setMessages(prev =>
+        prev[prev.length - 1]?.content === '' ? prev.slice(0, -1) : prev,
+      );
     } finally {
       setIsLoading(false);
     }
@@ -78,6 +121,12 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false }: Cha
     e.preventDefault();
     send(input);
   };
+
+  const showBrain =
+    isLoading &&
+    messages.length > 0 &&
+    messages[messages.length - 1]?.role === 'assistant' &&
+    messages[messages.length - 1]?.content === '';
 
   return (
     <div className="mt-4 flex w-full flex-col items-center">
@@ -97,10 +146,14 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false }: Cha
         {isOpen && (
           <motion.div
             key="chat"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            initial={hideToggle ? { opacity: 0, x: 60 } : { opacity: 0, height: 0 }}
+            animate={hideToggle ? { opacity: 1, x: 0 } : { opacity: 1, height: 'auto' }}
+            exit={hideToggle ? { opacity: 0, x: 60 } : { opacity: 0, height: 0 }}
+            transition={
+              hideToggle
+                ? { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.45 }
+                : { duration: 0.3, ease: 'easeInOut' }
+            }
             className={`${!hideToggle ? 'mt-3' : ''} w-full max-w-[420px] overflow-hidden rounded-2xl border border-[#8B2635] bg-white shadow-lg dark:bg-[#161b22]`}
           >
             {/* Header */}
@@ -160,19 +213,22 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false }: Cha
                       <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
                     </div>
                   )}
-                  <div
-                    className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'bg-[#8B2635] text-white'
-                        : 'bg-slate-100 text-slate-800 dark:bg-[#21262d] dark:text-[#e6edf3]'
-                    }`}
-                  >
-                    {msg.content}
-                  </div>
+                  {msg.content && (
+                    <div
+                      className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                        msg.role === 'user'
+                          ? 'bg-[#8B2635] text-white'
+                          : 'bg-slate-100 text-slate-800 dark:bg-[#21262d] dark:text-[#e6edf3]'
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+                  )}
                 </motion.div>
               ))}
 
-              {isLoading && (
+              {/* Brain loading indicator — only while awaiting first token */}
+              {showBrain && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -181,15 +237,14 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false }: Cha
                   <div className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full">
                     <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
                   </div>
-                  <div className="flex gap-1 rounded-2xl bg-slate-100 px-4 py-3 dark:bg-[#21262d]">
-                    {[0, 1, 2].map((i) => (
-                      <motion.span
-                        key={i}
-                        className="h-2 w-2 rounded-full bg-[#8B2635]"
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
-                      />
-                    ))}
+                  <div className="flex items-center rounded-2xl bg-slate-100 px-4 py-3 dark:bg-[#21262d]">
+                    <motion.span
+                      className="select-none text-lg leading-none"
+                      animate={{ scale: [1, 1.25, 0.9, 1.15, 1], rotate: [0, -10, 10, -5, 0] }}
+                      transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                      🧠
+                    </motion.span>
                   </div>
                 </motion.div>
               )}

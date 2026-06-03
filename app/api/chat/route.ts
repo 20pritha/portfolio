@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+export const runtime = 'edge'
+
 const SYSTEM_PROMPT = `You are Pritha's portfolio assistant — a warm, professional AI that answers questions about Pritha Mishra.
 
 ABOUT PRITHA:

@@ -44,16 +44,16 @@ export default function Publications() {
                         {item.status}
                       </span>
                     </div>
-                    <div className="flex-shrink-0">
+                    <div className="w-60 flex-shrink-0">
                       <motion.img
                         src={item.image}
                         alt={item.title}
-                        className="h-40 w-60 cursor-pointer rounded-xl border-2 border-[#8B2635]/30 object-cover transition-colors hover:border-[#8B2635]"
+                        className="h-40 w-full cursor-pointer rounded-xl border-2 border-[#8B2635]/30 object-cover transition-colors hover:border-[#8B2635]"
                         whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.2 }}
                         onClick={() => setLightbox({ src: item.image, alt: item.title })}
                       />
-                      <p className="mt-1.5 text-center text-xs text-slate-500 dark:text-[#8b949e]">
+                      <p className="mt-1.5 w-full text-center text-xs text-slate-500 dark:text-[#8b949e]">
                         WiFi-Controlled Humanoid Robotic Arm
                       </p>
                     </div>

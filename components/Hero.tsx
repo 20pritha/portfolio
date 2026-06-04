@@ -102,8 +102,8 @@ export default function Hero() {
       <HeroDotGrid />
       <div className="hero-shape pointer-events-none" />
 
-      <div className="flex flex-col items-center text-center">
-
+      {/* Mobile: Centered layout */}
+      <div className="lg:hidden flex flex-col items-center text-center gap-6">
         {/* Avatar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -116,7 +116,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className={`relative grid h-[110px] w-[110px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-2 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.3)] ${isHovering ? 'avatar-float' : ''}`}
+            className="relative grid h-[110px] w-[110px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-2 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.4)] transition-transform duration-300"
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}
@@ -144,7 +144,6 @@ export default function Hero() {
 
         {/* Name + subtitle + typewriter */}
         <motion.div
-          className="mt-5"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 }}
@@ -161,14 +160,98 @@ export default function Hero() {
 
         {/* Chat card */}
         <motion.div
-          className="mt-8 w-full max-w-3xl"
+          className="w-full max-w-3xl"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.35 }}
         >
           <ChatBot defaultOpen hideToggle heroLayout onMoodHint={handleMoodHint} />
         </motion.div>
+      </div>
 
+      {/* Desktop: Two-column layout */}
+      <div className="hidden lg:grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+        {/* Left Column: Name + Description */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="hero-panel flex flex-col justify-start"
+        >
+          <HeroName />
+          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">
+            {site.hero.subtitle}
+          </p>
+          <p className="mb-5 h-6 font-mono text-sm text-slate-700 dark:text-[#58a6ff]">
+            {typewriterText}
+            <span className="animate-pulse text-maroon dark:text-[#58a6ff]">|</span>
+          </p>
+          <h2 className="mb-6 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 dark:text-[#e6edf3] sm:text-5xl">
+            {site.hero.title}
+          </h2>
+          <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-700 dark:text-[#8b949e]">
+            {site.hero.description}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {['GenAI', 'RAG', 'Evaluation', 'Azure'].map((tag) => (
+              <motion.span
+                key={tag}
+                whileHover={{ scale: 1.07 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 cursor-default select-none transition-colors duration-200 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#e6edf3]"
+              >
+                {tag}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Right Column: Avatar + ChatBot */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="relative flex flex-col items-center gap-6 pt-2"
+        >
+          {/* Avatar */}
+          <motion.button
+            key={activeAvatar}
+            type="button"
+            onClick={handleAvatarClick}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            className="relative grid h-[220px] w-[220px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-3 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.4)] transition-transform duration-300 hover:scale-105"
+            aria-label="Avatar mood toggle"
+            animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
+            transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}
+            onAnimationComplete={() => {
+              if (isKonamiActive) setIsKonamiActive(false);
+            }}
+          >
+            <div className="relative h-full w-full">
+              {(Object.entries(avatarMeta) as [keyof typeof avatarMeta, { src: string; alt: string }][]).map(
+                ([key, meta]) => (
+                  <Image
+                    key={key}
+                    src={meta.src}
+                    alt={meta.alt}
+                    fill
+                    sizes="220px"
+                    className="object-contain transition-opacity duration-300 ease-in-out"
+                    style={{ opacity: key === activeAvatar ? 1 : 0 }}
+                  />
+                ),
+              )}
+            </div>
+          </motion.button>
+
+          {/* ChatBot */}
+          <div className="w-full max-w-sm">
+            <ChatBot defaultOpen hideToggle onMoodHint={handleMoodHint} />
+          </div>
+        </motion.div>
       </div>
 
       {showStayPopup && (

@@ -105,17 +105,17 @@ export default function Journey() {
           transition={{ duration: 0.7 }}
         >
           <div className="mb-10 flex flex-col gap-3">
-            <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Journey</p>
-            <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
+            <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Journey</p>
+            <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#f0f6fc]">
               Growth milestones from campus to AI production.
             </GlitchHeading>
-            <p className="max-w-3xl text-slate-700 dark:text-[#8b949e]">
+            <p className="max-w-3xl text-slate-700 dark:text-[#a0aec0]">
               A timeline of the moments, teams, and events that shaped my trajectory in AI engineering, robotics, and research.
             </p>
           </div>
 
           <div ref={containerRef} className="relative mx-auto w-full">
-            <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-slate-200 dark:bg-[#30363d]" />
+            <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-slate-200 dark:bg-[#8B2635]/25" />
             <div className="space-y-16">
               {journey.map((item, index) => {
                 const avatar = getAvatar(item);
@@ -126,28 +126,28 @@ export default function Journey() {
                     <div className="grid gap-6 lg:grid-cols-[1fr_80px_1fr] lg:items-start">
                       <div className={alignLeft ? 'lg:col-start-1 lg:col-end-2 lg:text-right' : 'hidden lg:block lg:col-start-1 lg:col-end-2'}>
                         {alignLeft && (
-                          <div className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
+                          <div className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#8B2635]/30 dark:bg-[#1c2128]/90">
                             {avatar && (
                               <div className="mb-4 items-center gap-3 hidden md:flex lg:hidden">
                                 <Image src={avatar.src} alt={avatar.alt} width={44} height={44} className="object-contain" />
                               </div>
                             )}
-                            <div className="text-sm text-slate-500 dark:text-[#8b949e]">
-                              <span className="font-semibold text-slate-900 dark:text-[#e6edf3]">{item.year}</span>
-                              <span className="ml-3 rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#8b949e]">
+                            <div className="text-sm text-slate-500 dark:text-[#a0aec0]">
+                              <span className="font-semibold text-slate-900 dark:text-[#f0f6fc]">{item.year}</span>
+                              <span className="ml-3 rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#a0aec0]">
                                 {item.location}
                               </span>
                             </div>
-                            <p className="mt-4 text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">{item.event}</p>
+                            <p className="mt-4 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">{item.event}</p>
                             <div className="mt-4 opacity-100">
-                              <p className="text-slate-700 dark:text-[#8b949e]">{item.description}</p>
+                              <p className="text-slate-700 dark:text-[#a0aec0]">{item.description}</p>
                             </div>
                           </div>
                         )}
                       </div>
 
                       <div className="relative hidden lg:flex justify-center">
-                        <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full border border-slate-200 bg-transparent shadow-sm dark:border-[#30363d]">
+                        <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full border border-slate-200 bg-transparent shadow-sm dark:border-[#8B2635]/35">
                           {avatar && (
                             <Image
                               src={avatar.src}
@@ -162,21 +162,21 @@ export default function Journey() {
 
                       <div className={!alignLeft ? 'lg:col-start-3 lg:col-end-4 lg:text-left' : 'hidden lg:block lg:col-start-3 lg:col-end-4'}>
                         {!alignLeft && (
-                          <div className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
+                          <div className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#8B2635]/30 dark:bg-[#1c2128]/90">
                             {avatar && (
                               <div className="mb-4 items-center gap-3 hidden md:flex lg:hidden">
                                 <Image src={avatar.src} alt={avatar.alt} width={44} height={44} className="object-contain" />
                               </div>
                             )}
-                            <div className="text-sm text-slate-500 dark:text-[#8b949e]">
-                              <span className="font-semibold text-slate-900 dark:text-[#e6edf3]">{item.year}</span>
-                              <span className="ml-3 rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#8b949e]">
+                            <div className="text-sm text-slate-500 dark:text-[#a0aec0]">
+                              <span className="font-semibold text-slate-900 dark:text-[#f0f6fc]">{item.year}</span>
+                              <span className="ml-3 rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#a0aec0]">
                                 {item.location}
                               </span>
                             </div>
-                            <p className="mt-4 text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">{item.event}</p>
+                            <p className="mt-4 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">{item.event}</p>
                             <div className="mt-4 opacity-100">
-                              <p className="text-slate-700 dark:text-[#8b949e]">{item.description}</p>
+                              <p className="text-slate-700 dark:text-[#a0aec0]">{item.description}</p>
                             </div>
                           </div>
                         )}

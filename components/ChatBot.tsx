@@ -18,11 +18,11 @@ interface ChatBotProps {
 }
 
 const SUGGESTIONS = [
-  { emoji: '◎', label: 'Current work & focus' },
-  { emoji: '◆', label: 'Most impactful project' },
-  { emoji: '◉', label: 'Journey into AI engineering' },
-  { emoji: '◇', label: 'Technical expertise & stack' },
-  { emoji: '△', label: 'Key achievements' },
+  { emoji: '👋', label: 'Who are you?' },
+  { emoji: '🔨', label: 'What have you built?' },
+  { emoji: '💼', label: 'Why should I hire you?' },
+  { emoji: '✨', label: "What's your story?" },
+  { emoji: '🚀', label: "What's your proudest project?" },
   { emoji: '→', label: 'Open to opportunities?' },
 ];
 
@@ -132,7 +132,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 16, scale: 0.95 }}
               transition={{ duration: 0.22, ease: 'easeOut' }}
-              className="w-[340px] overflow-hidden rounded-2xl border border-[#8B2635]/30 bg-white shadow-2xl dark:bg-[#161b22]"
+              className="w-[340px] overflow-hidden rounded-2xl border border-[#8B2635]/30 bg-white shadow-2xl dark:bg-[#1c2128]"
             >
               {/* Floating panel header */}
               <div className="flex items-center justify-between border-b border-[#8B2635]/20 px-4 py-3">
@@ -140,11 +140,14 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#8B2635] text-xs font-bold text-white">
                     PM
                   </div>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-[#e6edf3]">Pritha&apos;s Assistant</span>
+                  <div>
+                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Chat with AI-Pritha</span>
+                    <span className="block text-xs text-slate-400 dark:text-[#a0aec0]">🤖 AI version of me</span>
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-slate-400 hover:text-slate-700 dark:text-[#8b949e] dark:hover:text-[#e6edf3]"
+                  className="text-slate-400 hover:text-slate-700 dark:text-[#a0aec0] dark:hover:text-[#f0f6fc]"
                   aria-label="Close"
                 >
                   ✕
@@ -155,18 +158,18 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
               <div ref={messagesRef} className="flex max-h-[360px] min-h-[200px] flex-col gap-3 overflow-y-auto p-4">
                 {messages.length === 0 && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-3">
-                    <p className="text-center text-xs text-slate-500 dark:text-[#8b949e]">Ask me anything about Pritha ✨</p>
+                    <p className="text-center text-xs text-slate-500 dark:text-[#a0aec0]">Ask me anything — I&apos;m an AI version of Pritha 🤖</p>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        "What projects has she built?",
-                        "What are her skills?",
-                        "Is she open to opportunities?",
-                        "Tell me about her internship",
+                        "Who are you?",
+                        "What have you built?",
+                        "Why should I hire you?",
+                        "What's your story?",
                       ].map((s) => (
                         <button
                           key={s}
                           onClick={() => send(s)}
-                          className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635]"
+                          className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:hover:border-[#8B2635]"
                         >
                           {s}
                         </button>
@@ -188,7 +191,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                         PM
                       </div>
                     )}
-                    <div className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-[#8B2635] text-white' : 'bg-slate-100 text-slate-800 dark:bg-[#21262d] dark:text-[#e6edf3]'}`}>
+                    <div className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-[#8B2635] text-white' : 'bg-slate-100 text-slate-800 dark:bg-[#21262d] dark:text-[#f0f6fc]'}`}>
                       {msg.content}
                     </div>
                   </motion.div>
@@ -199,7 +202,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#8B2635] text-[9px] font-bold text-white">PM</div>
                     <div className="flex gap-1 rounded-2xl bg-slate-100 px-4 py-3 dark:bg-[#21262d]">
                       {[0, 1, 2].map((i) => (
-                        <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-[#8b949e]" animate={{ y: [0, -4, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }} />
+                        <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-[#a0aec0]" animate={{ y: [0, -4, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }} />
                       ))}
                     </div>
                   </motion.div>
@@ -215,7 +218,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
 
                 {error && <p className="text-center text-xs text-slate-400">Oops — try again!</p>}
                 {isLimited && (
-                  <p className="text-center text-xs text-slate-500 dark:text-[#8b949e]">
+                  <p className="text-center text-xs text-slate-500 dark:text-[#a0aec0]">
                     Session limit reached —{' '}
                     <a href="mailto:pritha.mishra2003@gmail.com" className="text-[#8B2635] underline">reach out directly</a>!
                   </p>
@@ -223,14 +226,14 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
               </div>
 
               {/* Input */}
-              <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-slate-200 bg-slate-50 px-3 py-2 dark:border-[#30363d] dark:bg-[#0d1117]">
+              <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-slate-200 bg-slate-50 px-3 py-2 dark:border-[#8B2635]/35 dark:bg-[#0d1117]">
                 <input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={isLimited ? 'Session limit reached' : 'Ask about Pritha…'}
+                  placeholder={isLimited ? 'Session limit reached' : 'Ask me anything...'}
                   disabled={isLoading || isLimited}
-                  className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors focus:border-[#8B2635] disabled:opacity-50 dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#e6edf3] dark:placeholder-[#8b949e] dark:focus:border-[#8B2635]"
+                  className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors focus:border-[#8B2635] disabled:opacity-50 dark:border-[#8B2635]/35 dark:bg-[#1c2128] dark:text-[#f0f6fc] dark:placeholder-[#a0aec0] dark:focus:border-[#8B2635]"
                 />
                 <button type="submit" disabled={!input.trim() || isLoading || isLimited} className="rounded-xl bg-[#8B2635] px-3 py-2 text-sm text-white transition-opacity disabled:opacity-40 hover:opacity-90">↑</button>
               </form>
@@ -264,7 +267,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
       {!hideToggle && !heroLayout && (
         <button
           onClick={() => setIsOpen((v) => !v)}
-          className="flex items-center gap-2 rounded-full border border-[#8B2635] px-4 py-2 text-sm font-medium text-[#8B2635] transition-colors duration-200 hover:bg-[#8B2635] hover:text-white dark:border-[#8B2635] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white"
+          className="flex items-center gap-2 rounded-full border border-[#8B2635] px-4 py-2 text-sm font-medium text-[#8B2635] transition-colors duration-200 hover:bg-[#8B2635] hover:text-white dark:border-[#8B2635] dark:text-[#f0f6fc] dark:hover:bg-[#8B2635] dark:hover:text-white"
           aria-expanded={isOpen}
         >
           💬 Ask me anything
@@ -277,7 +280,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
           <motion.div
             key="chat"
             {...cardMotion}
-            className={`overflow-hidden border border-[#8B2635] bg-white dark:bg-[#161b22] ${
+            className={`overflow-hidden border border-[#8B2635] bg-white dark:bg-[#1c2128] ${
               heroLayout
                 ? 'w-full rounded-3xl shadow-xl'
                 : `${!hideToggle ? 'mt-3' : ''} w-full max-w-[420px] rounded-2xl shadow-lg`
@@ -290,12 +293,15 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                   <div className="relative h-6 w-6 overflow-hidden rounded-full">
                     <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
                   </div>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-[#e6edf3]">Pritha&apos;s Assistant</span>
+                  <div>
+                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Chat with AI-Pritha</span>
+                    <span className="block text-xs text-slate-400 dark:text-[#a0aec0]">🤖 AI version of me</span>
+                  </div>
                 </div>
                 {!hideToggle && (
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="text-slate-400 hover:text-slate-700 dark:text-[#8b949e] dark:hover:text-[#e6edf3]"
+                    className="text-slate-400 hover:text-slate-700 dark:text-[#a0aec0] dark:hover:text-[#f0f6fc]"
                     aria-label="Close chat"
                   >
                     ✕
@@ -319,8 +325,8 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                   animate={{ opacity: 1 }}
                   className={`flex flex-col gap-4 ${heroLayout ? 'my-auto items-center' : ''}`}
                 >
-                  <p className={`text-center text-slate-500 dark:text-[#8b949e] ${heroLayout ? 'text-sm' : 'text-xs'}`}>
-                    Ask me anything about Pritha ✨
+                  <p className={`text-center text-slate-500 dark:text-[#a0aec0] ${heroLayout ? 'text-sm' : 'text-xs'}`}>
+                    Ask me anything — I&apos;m an AI version of Pritha 🤖
                   </p>
 
                   {heroLayout ? (
@@ -329,7 +335,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                         <button
                           key={s.label}
                           onClick={() => send(s.label)}
-                          className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635]"
+                          className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:hover:border-[#8B2635]"
                         >
                           {s.emoji} {s.label}
                         </button>
@@ -341,7 +347,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                         <button
                           key={s.label}
                           onClick={() => send(s.label)}
-                          className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:border-[#8B2635]"
+                          className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-[#8B2635] hover:bg-[#8B2635]/5 dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:hover:border-[#8B2635]"
                         >
                           {s.emoji} {s.label}
                         </button>
@@ -369,7 +375,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                       className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                         msg.role === 'user'
                           ? 'bg-[#8B2635] text-white'
-                          : 'bg-slate-100 text-slate-800 dark:bg-[#21262d] dark:text-[#e6edf3]'
+                          : 'bg-slate-100 text-slate-800 dark:bg-[#21262d] dark:text-[#f0f6fc]'
                       }`}
                     >
                       {msg.content}
@@ -391,7 +397,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                     {[0, 1, 2].map((i) => (
                       <motion.span
                         key={i}
-                        className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-[#8b949e]"
+                        className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-[#a0aec0]"
                         animate={{ y: [0, -4, 0] }}
                         transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
                       />
@@ -413,13 +419,13 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
               )}
 
               {error && (
-                <p className="text-center text-xs text-slate-400 dark:text-[#8b949e]">
+                <p className="text-center text-xs text-slate-400 dark:text-[#a0aec0]">
                   Oops, something went wrong — try again!
                 </p>
               )}
 
               {isLimited && (
-                <p className="text-center text-xs text-slate-500 dark:text-[#8b949e]">
+                <p className="text-center text-xs text-slate-500 dark:text-[#a0aec0]">
                   You&apos;ve reached the session limit —{' '}
                   <a href="mailto:pritha.mishra2003@gmail.com" className="text-[#8B2635] underline">
                     reach out directly
@@ -433,15 +439,15 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
             {/* Input */}
             <form
               onSubmit={handleSubmit}
-              className={`flex items-center gap-2 border-t border-slate-200 bg-slate-50 dark:border-[#30363d] dark:bg-[#0d1117] ${heroLayout ? 'px-4 py-3' : 'px-3 py-2'}`}
+              className={`flex items-center gap-2 border-t border-slate-200 bg-slate-50 dark:border-[#8B2635]/35 dark:bg-[#0d1117] ${heroLayout ? 'px-4 py-3' : 'px-3 py-2'}`}
             >
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={isLimited ? 'Session limit reached' : 'Ask about Pritha…'}
+                placeholder={isLimited ? 'Session limit reached' : 'Ask me anything...'}
                 disabled={isLoading || isLimited}
-                className={`flex-1 rounded-xl border border-slate-200 bg-white px-3 text-slate-900 placeholder-slate-400 outline-none transition-colors focus:border-[#8B2635] disabled:opacity-50 dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#e6edf3] dark:placeholder-[#8b949e] dark:focus:border-[#8B2635] ${heroLayout ? 'py-2.5 text-sm' : 'py-2 text-sm'}`}
+                className={`flex-1 rounded-xl border border-slate-200 bg-white px-3 text-slate-900 placeholder-slate-400 outline-none transition-colors focus:border-[#8B2635] disabled:opacity-50 dark:border-[#8B2635]/35 dark:bg-[#1c2128] dark:text-[#f0f6fc] dark:placeholder-[#a0aec0] dark:focus:border-[#8B2635] ${heroLayout ? 'py-2.5 text-sm' : 'py-2 text-sm'}`}
               />
               <button
                 type="submit"

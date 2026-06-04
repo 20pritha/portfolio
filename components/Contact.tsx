@@ -135,8 +135,8 @@ export default function Contact() {
         >
           <div className="mb-10 flex flex-wrap items-center gap-6">
             <div className="min-w-[220px]">
-              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Contact</p>
-              <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
+              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Contact</p>
+              <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#f0f6fc]">
                 {site.contact.heading}
               </GlitchHeading>
             </div>
@@ -162,10 +162,10 @@ export default function Contact() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
-            <div className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
-              <p className="text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">Email</p>
-              <p className="mt-4 break-words whitespace-normal text-slate-700 dark:text-[#e6edf3]">{site.contact.email}</p>
-              <p className="mt-8 text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">LinkedIn</p>
+            <div className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#8B2635]/30 dark:bg-[#1c2128]/90">
+              <p className="text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">Email</p>
+              <p className="mt-4 break-words whitespace-normal text-slate-700 dark:text-[#f0f6fc]">{site.contact.email}</p>
+              <p className="mt-8 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">LinkedIn</p>
               <a
                 href={site.contact.linkedin}
                 target="_blank"
@@ -174,7 +174,7 @@ export default function Contact() {
               >
                 {site.contact.linkedInLabel}
               </a>
-              <p className="mt-8 text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">GitHub</p>
+              <p className="mt-8 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">GitHub</p>
               <a
                 href={site.contact.github}
                 target="_blank"
@@ -185,35 +185,35 @@ export default function Contact() {
               </a>
             </div>
 
-            <form onSubmit={handleSubmit} className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
+            <form onSubmit={handleSubmit} className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#8B2635]/30 dark:bg-[#1c2128]/90">
               <div className="space-y-5">
-                <label className="group block text-sm font-medium text-slate-800 dark:text-[#e6edf3]">
+                <label className="group block text-sm font-medium text-slate-800 dark:text-[#f0f6fc]">
                   Name
                   <div className="mt-2 relative">
                     <input
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder={placeholders.name}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:placeholder-[#8b949e]"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:placeholder-[#a0aec0]"
                     />
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 rounded-full bg-maroon transition-transform duration-300 group-focus-within:scale-x-100" />
                   </div>
                 </label>
 
-                <label className="group block text-sm font-medium text-slate-800 dark:text-[#e6edf3]">
+                <label className="group block text-sm font-medium text-slate-800 dark:text-[#f0f6fc]">
                   Designation
                   <div className="mt-2 relative">
                     <input
                       value={form.designation}
                       onChange={(e) => setForm({ ...form, designation: e.target.value })}
                       placeholder={placeholders.designation}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:placeholder-[#8b949e]"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:placeholder-[#a0aec0]"
                     />
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 rounded-full bg-maroon transition-transform duration-300 group-focus-within:scale-x-100" />
                   </div>
                 </label>
 
-                <label className="group block text-sm font-medium text-slate-800 dark:text-[#e6edf3]">
+                <label className="group block text-sm font-medium text-slate-800 dark:text-[#f0f6fc]">
                   Email
                   <div className="mt-2 relative">
                     <input
@@ -221,13 +221,13 @@ export default function Contact() {
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       placeholder={placeholders.email}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:placeholder-[#8b949e]"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:placeholder-[#a0aec0]"
                     />
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 rounded-full bg-maroon transition-transform duration-300 group-focus-within:scale-x-100" />
                   </div>
                 </label>
 
-                <label className="group block text-sm font-medium text-slate-800 dark:text-[#e6edf3]">
+                <label className="group block text-sm font-medium text-slate-800 dark:text-[#f0f6fc]">
                   Message
                   <div className="mt-2 relative">
                     <textarea
@@ -235,7 +235,7 @@ export default function Contact() {
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       rows={5}
                       placeholder={placeholders.message}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:placeholder-[#8b949e]"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-transparent focus:ring-0 dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:placeholder-[#a0aec0]"
                     />
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 rounded-full bg-maroon transition-transform duration-300 group-focus-within:scale-x-100" />
                   </div>
@@ -252,7 +252,7 @@ export default function Contact() {
                 </button>
               </MagneticWrapper>
               {status ? (
-                <p className={`mt-4 text-sm ${success ? 'font-mono text-maroon' : 'text-slate-600 dark:text-[#8b949e]'}`}>{status}</p>
+                <p className={`mt-4 text-sm ${success ? 'font-mono text-maroon' : 'text-slate-600 dark:text-[#a0aec0]'}`}>{status}</p>
               ) : null}
             </form>
           </div>

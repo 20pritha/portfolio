@@ -18,8 +18,8 @@ export default function Projects() {
           transition={{ duration: 0.7 }}
         >
           <div className="mb-10 flex flex-col gap-3">
-            <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Projects</p>
-            <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
+            <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Projects</p>
+            <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#f0f6fc]">
               Selected work that bridges AI and production.
             </GlitchHeading>
           </div>

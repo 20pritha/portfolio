@@ -149,7 +149,7 @@ export default function Hero() {
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 }}
         >
           <HeroName />
-          <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">
+          <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">
             {site.hero.subtitle}
           </p>
           <p className="mt-3 h-6 font-mono text-sm text-slate-700 dark:text-[#58a6ff]">
@@ -180,17 +180,17 @@ export default function Hero() {
           className="hero-panel flex flex-col justify-start"
         >
           <HeroName />
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">
+          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">
             {site.hero.subtitle}
           </p>
           <p className="mb-5 h-6 font-mono text-sm text-slate-700 dark:text-[#58a6ff]">
             {typewriterText}
             <span className="animate-pulse text-maroon dark:text-[#58a6ff]">|</span>
           </p>
-          <h2 className="mb-6 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 dark:text-[#e6edf3] sm:text-5xl">
+          <h2 className="mb-6 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 dark:text-[#f0f6fc] sm:text-5xl">
             {site.hero.title}
           </h2>
-          <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-700 dark:text-[#8b949e]">
+          <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-700 dark:text-[#a0aec0]">
             {site.hero.description}
           </p>
           <div className="flex flex-wrap gap-3">
@@ -199,7 +199,7 @@ export default function Hero() {
                 key={tag}
                 whileHover={{ scale: 1.07 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 cursor-default select-none transition-colors duration-200 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#e6edf3]"
+                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 cursor-default select-none transition-colors duration-200 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#f0f6fc]"
               >
                 {tag}
               </motion.span>
@@ -259,12 +259,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-6 right-6 z-50 flex max-w-xs items-center gap-3 rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-soft dark:border-[#30363d] dark:bg-[#161b22]"
+          className="fixed bottom-6 right-6 z-50 flex max-w-xs items-center gap-3 rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-soft dark:border-[#8B2635]/35 dark:bg-[#1c2128]"
         >
-          <div className="relative h-12 w-12 overflow-hidden rounded-full border border-slate-200 bg-transparent dark:border-[#30363d]">
+          <div className="relative h-12 w-12 overflow-hidden rounded-full border border-slate-200 bg-transparent dark:border-[#8B2635]/35">
             <Image src="/avatars/avatar-waving.png" alt="Avatar waving" fill className="object-contain" />
           </div>
-          <p className="text-sm font-medium text-slate-900 dark:text-[#e6edf3]">Still here? I see you 👀</p>
+          <p className="text-sm font-medium text-slate-900 dark:text-[#f0f6fc]">Still here? I see you 👀</p>
         </motion.div>
       )}
     </section>

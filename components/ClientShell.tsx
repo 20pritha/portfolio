@@ -35,7 +35,7 @@ export default function ClientShell({ children }: ClientShellProps) {
           transition={{ duration: 0.35, ease: 'easeOut' }}
           className="flex min-h-screen items-center justify-center"
         >
-          <div className="rounded-[2rem] border border-slate-200 bg-white/90 px-10 py-8 text-center shadow-soft dark:border-[#30363d] dark:bg-[#161b22]">
+          <div className="rounded-[2rem] border border-slate-200 bg-white/90 px-10 py-8 text-center shadow-soft dark:border-[#8B2635]/35 dark:bg-[#1c2128]">
             <span className="text-5xl font-black tracking-[0.35em] text-maroon">✦ PM</span>
           </div>
         </motion.div>

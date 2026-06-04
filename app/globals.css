@@ -205,8 +205,8 @@ section {
 }
 
 .dark .hero-panel {
-  background: rgba(22, 27, 34, 0.95);
-  border-color: #30363d;
+  background: rgba(28, 33, 40, 0.95);
+  border-color: rgba(139,38,53,0.35);
 }
 
 .hero-shape {
@@ -267,7 +267,7 @@ section {
 }
 
 .dark .project-card-front {
-  background: rgba(22, 27, 34, 0.90);
+  background: rgba(28, 33, 40, 0.90);
   border: 1px solid rgba(48, 54, 61, 0.8);
 }
 
@@ -278,7 +278,7 @@ section {
 }
 
 .dark .project-card-back {
-  background: rgba(22, 27, 34, 0.92);
+  background: rgba(28, 33, 40, 0.92);
   border: 1px solid rgba(139, 38, 53, 0.5);
 }
 
@@ -288,6 +288,17 @@ section {
 
 [data-active='true'] {
   color: #8B2635;
+}
+
+/* ── Dark card top-edge maroon gradient ── */
+.dark .card-hover,
+.dark .timeline-card,
+.dark .hero-panel {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(139, 38, 53, 0.07) 0%,
+    transparent 56px
+  );
 }
 
 /* ── Card hover glows ── */

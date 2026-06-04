@@ -61,19 +61,19 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   // ── Mobile: flat card — all info visible, no flip ──
   if (isMobile) {
     return (
-      <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
+      <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-soft dark:border-[#8B2635]/30 dark:bg-[#1c2128]/90">
         <div className="flex items-start justify-between gap-3">
           {actionButton}
           <div className="flex flex-wrap justify-end gap-2">
             {project.stack.map((tag) => (
-              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#e6edf3]">
+              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#f0f6fc]">
                 {tag}
               </span>
             ))}
           </div>
         </div>
-        <h3 className="mt-4 text-xl font-semibold text-slate-950 dark:text-[#e6edf3]">{project.title}</h3>
-        <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-[#8b949e]">{project.description}</p>
+        <h3 className="mt-4 text-xl font-semibold text-slate-950 dark:text-[#f0f6fc]">{project.title}</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-[#a0aec0]">{project.description}</p>
         <p className="mt-4 text-lg font-bold text-maroon dark:drop-shadow-[0_0_8px_rgba(139,38,53,0.8)]">{project.metric}</p>
       </div>
     );
@@ -101,14 +101,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <div className="project-card-face project-card-front">
           <div className="flex flex-wrap gap-2">
             {project.stack.map((tag) => (
-              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#e6edf3]">
+              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#f0f6fc]">
                 {tag}
               </span>
             ))}
           </div>
-          <h3 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-[#e6edf3] break-words">{project.title}</h3>
-          <p className="mt-4 text-slate-700 dark:text-[#8b949e] break-words">{project.description}</p>
-          <p className="mt-5 font-semibold text-slate-900 dark:text-[#e6edf3] break-words">{project.metric}</p>
+          <h3 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-[#f0f6fc] break-words">{project.title}</h3>
+          <p className="mt-4 text-slate-700 dark:text-[#a0aec0] break-words">{project.description}</p>
+          <p className="mt-5 font-semibold text-slate-900 dark:text-[#f0f6fc] break-words">{project.metric}</p>
           <p className="mt-4 text-xs font-medium text-[#8B2635]/60 dark:text-[#8B2635]/80">Hover to see details →</p>
         </div>
 
@@ -116,14 +116,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <div className="flex flex-col h-full">
             <div className="mb-5">{actionButton}</div>
             <div>
-              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Key metric</p>
+              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Key metric</p>
               <p className="mt-4 text-3xl font-bold text-maroon dark:drop-shadow-[0_0_8px_rgba(139,38,53,0.8)]">{project.metric}</p>
             </div>
             <div className="mt-6">
-              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Tech stack</p>
+              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Tech stack</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.stack.map((tag) => (
-                  <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#e6edf3]">
+                  <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#f0f6fc]">
                     {tag}
                   </span>
                 ))}

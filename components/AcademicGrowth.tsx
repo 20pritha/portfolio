@@ -56,13 +56,13 @@ export default function AcademicGrowth() {
           transition={{ duration: 0.7 }}
         >
           <div className="mb-10 flex flex-col gap-3">
-            <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Academic Growth</p>
-            <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
+            <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Academic Growth</p>
+            <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#f0f6fc]">
               CGPA progression with a clear upward trajectory.
             </GlitchHeading>
           </div>
 
-          <div className={`grid gap-8 rounded-3xl border p-8 shadow-soft lg:grid-cols-[1.3fr_0.7fr] ${isDark ? 'border-[#30363d]/70 bg-[#161b22]/90' : 'border-slate-200 bg-white'}`}>
+          <div className={`grid gap-8 rounded-3xl border p-8 shadow-soft lg:grid-cols-[1.3fr_0.7fr] ${isDark ? 'border-[#8B2635]/30 bg-[#1c2128]/90' : 'border-slate-200 bg-white'}`}>
             <div className="relative h-[250px] md:h-[420px]">
               {showAvatar && (
                 <motion.div
@@ -94,15 +94,15 @@ export default function AcademicGrowth() {
                     tickLine={false}
                     axisLine={false}
                     interval={0}
-                    tick={{ fill: isDark ? '#8b949e' : '#475569', fontSize: 10, textAnchor: 'middle' }}
+                    tick={{ fill: isDark ? '#a0aec0' : '#475569', fontSize: 10, textAnchor: 'middle' }}
                     angle={0}
                     dy={10}
                   />
-                  <YAxis domain={[6, 10]} ticks={[6, 7, 8, 9, 10]} tickLine={false} axisLine={false} tick={{ fill: isDark ? '#8b949e' : '#475569' }} width={32} dx={-4} />
+                  <YAxis domain={[6, 10]} ticks={[6, 7, 8, 9, 10]} tickLine={false} axisLine={false} tick={{ fill: isDark ? '#a0aec0' : '#475569' }} width={32} dx={-4} />
                   <Tooltip
-                    contentStyle={{ borderRadius: 16, borderColor: isDark ? '#30363d' : '#E2E8F0', backgroundColor: isDark ? '#161b22' : '#fff' }}
-                    labelStyle={{ color: isDark ? '#e6edf3' : '#0F172A' }}
-                    itemStyle={{ color: isDark ? '#8b949e' : undefined }}
+                    contentStyle={{ borderRadius: 16, borderColor: isDark ? 'rgba(139,38,53,0.35)' : '#E2E8F0', backgroundColor: isDark ? '#1c2128' : '#fff' }}
+                    labelStyle={{ color: isDark ? '#f0f6fc' : '#0F172A' }}
+                    itemStyle={{ color: isDark ? '#a0aec0' : undefined }}
                     wrapperStyle={{ zIndex: 20 }}
                   />
                   <Area
@@ -131,13 +131,13 @@ export default function AcademicGrowth() {
 
             <div className="flex flex-col justify-center gap-6">
               <div>
-                <p className="text-base uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Degree</p>
-                <p className="mt-3 text-2xl font-semibold text-slate-950 dark:text-[#e6edf3]">B.Tech, Electronics &amp; Instrumentation Engineering</p>
-                <p className="mt-3 text-slate-700 dark:text-[#8b949e]">SRM Institute of Science and Technology (2022–2026)</p>
+                <p className="text-base uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Degree</p>
+                <p className="mt-3 text-2xl font-semibold text-slate-950 dark:text-[#f0f6fc]">B.Tech, Electronics &amp; Instrumentation Engineering</p>
+                <p className="mt-3 text-slate-700 dark:text-[#a0aec0]">SRM Institute of Science and Technology (2022–2026)</p>
               </div>
-              <div className="rounded-3xl bg-white/50 p-5 text-slate-700 shadow-sm dark:bg-[#0d1117]/60 dark:text-[#8b949e]">
-                <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Trajectory</p>
-                <p className="mt-3 text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">Consistent upward trajectory  6.95 → 10.0 across 8 semesters.</p>
+              <div className="rounded-3xl bg-white/50 p-5 text-slate-700 shadow-sm dark:bg-[#0d1117]/60 dark:text-[#a0aec0]">
+                <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Trajectory</p>
+                <p className="mt-3 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">Consistent upward trajectory  6.95 → 10.0 across 8 semesters.</p>
               </div>
             </div>
           </div>

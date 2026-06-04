@@ -89,7 +89,7 @@ export default function HeroName() {
 
   return (
     <h1
-      className="mb-5 cursor-pointer text-4xl font-semibold tracking-tight text-slate-950 transition-colors duration-300 hover:text-maroon sm:text-5xl dark:text-[#e6edf3] dark:hover:text-maroon"
+      className="mb-5 cursor-pointer text-4xl font-semibold tracking-tight text-slate-950 transition-colors duration-300 hover:text-maroon sm:text-5xl dark:text-[#f0f6fc] dark:hover:text-maroon"
       onMouseEnter={handleMouseEnter}
       data-text={text}
       aria-label="Pritha Mishra"

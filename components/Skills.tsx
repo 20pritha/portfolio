@@ -27,8 +27,8 @@ export default function Skills() {
               />
             </div>
             <div className="min-w-[220px]">
-              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#8b949e]">Skills</p>
-              <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#e6edf3]">
+              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Skills</p>
+              <GlitchHeading className="text-3xl font-semibold text-slate-950 dark:text-[#f0f6fc]">
                 A focused toolkit for AI engineering delivery.
               </GlitchHeading>
             </div>
@@ -36,14 +36,14 @@ export default function Skills() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {skills.map((group) => (
-              <div key={group.title} className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#30363d]/70 dark:bg-[#161b22]/90">
-                <h3 className="text-lg font-semibold text-slate-950 dark:text-[#e6edf3]">{group.title}</h3>
+              <div key={group.title} className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-[#8B2635]/30 dark:bg-[#1c2128]/90">
+                <h3 className="text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">{group.title}</h3>
                 <div className="mt-4 flex flex-wrap gap-3">
                   {group.items.map((item) => (
                     <span
                       key={item}
                       style={{ transition: 'background-color 150ms,color 150ms,border-color 150ms,transform 150ms' }}
-                      className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-default select-none hover:bg-[#8B2635] hover:text-white hover:border-[#8B2635] hover:scale-[1.06] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#8B2635] dark:hover:text-white dark:hover:border-[#8B2635] dark:hover:shadow-[0_0_12px_rgba(139,38,53,0.5)]"
+                      className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-default select-none hover:bg-[#8B2635] hover:text-white hover:border-[#8B2635] hover:scale-[1.06] dark:border-[#8B2635]/35 dark:bg-[#21262d] dark:text-[#f0f6fc] dark:hover:bg-[#8B2635] dark:hover:text-white dark:hover:border-[#8B2635] dark:hover:shadow-[0_0_12px_rgba(139,38,53,0.5)]"
                     >
                       {item}
                     </span>

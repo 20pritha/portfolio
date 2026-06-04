@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           __html: `(function(){var s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.classList.add('dark');}else if(!s){if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.classList.add('dark');}}})();`
         }} />
       </head>
-      <body className={`${inter.variable} font-sans bg-cream dark:bg-[#0d1117] text-slate-900 dark:text-[#e6edf3]`}>
+      <body className={`${inter.variable} font-sans bg-cream dark:bg-[#0d1117] text-slate-900 dark:text-[#f0f6fc]`}>
         <ClientShell>{children}</ClientShell>
         <Analytics />
         <ErrorLogger />

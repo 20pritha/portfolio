@@ -294,7 +294,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                     <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
                   </div>
                   <div>
-                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Virtual Pritha/span>
+                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Virtual Pritha</span>
                     <span className="block text-xs text-slate-400 dark:text-[#a0aec0]">🤖 AI version of me</span>
                   </div>
                 </div>

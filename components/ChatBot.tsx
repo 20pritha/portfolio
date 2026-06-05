@@ -18,12 +18,12 @@ interface ChatBotProps {
 }
 
 const SUGGESTIONS = [
-  { emoji: '👋', label: 'Who are you?' },
-  { emoji: '🔨', label: 'What have you built?' },
-  { emoji: '💼', label: 'Why should I hire you?' },
-  { emoji: '✨', label: "What's your story?" },
-  { emoji: '🚀', label: "What's your proudest project?" },
-  { emoji: '→', label: 'Open to opportunities?' },
+  { emoji: '', label: 'Who are you?' },
+  { emoji: '', label: 'What have you built?' },
+  { emoji: '', label: 'Why should I hire you?' },
+  { emoji: '', label: "What's your story?" },
+  { emoji: '', label: "What's your proudest project?" },
+  { emoji: '', label: 'Open to opportunities?' },
 ];
 
 const SESSION_KEY = 'chatbot_msg_count';
@@ -294,7 +294,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                     <Image src="/avatars/avatar-face.png" alt="Pritha" fill className="object-contain" />
                   </div>
                   <div>
-                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Chat with AI-Pritha</span>
+                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Virtual Pritha/span>
                     <span className="block text-xs text-slate-400 dark:text-[#a0aec0]">🤖 AI version of me</span>
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                   className={`flex flex-col gap-4 ${heroLayout ? 'my-auto items-center' : ''}`}
                 >
                   <p className={`text-center text-slate-500 dark:text-[#a0aec0] ${heroLayout ? 'text-sm' : 'text-xs'}`}>
-                    Ask me anything — I&apos;m an AI version of Pritha 🤖
+                    TO KNOW MORE - ASK MY AVATAR
                   </p>
 
                   {heroLayout ? (

@@ -69,7 +69,7 @@ function buildChatMLPrompt(messages: { role: string; content: string }[]): strin
 async function callHuggingFace(
   messages: { role: string; content: string }[]
 ): Promise<string> {
-  const endpoint = `https://api-inference.huggingface.co/models/${HF_MODEL_ID}`
+  const endpoint = `https://router.huggingface.co/hf-inference/models/${HF_MODEL_ID}`
   const prompt = buildChatMLPrompt(messages)
   const MAX_RETRIES = 3
   const RETRY_DELAY_MS = 5000

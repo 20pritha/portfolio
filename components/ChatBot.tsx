@@ -141,7 +141,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                     PM
                   </div>
                   <div>
-                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Chat with AI-Pritha</span>
+                    <span className="block text-sm font-semibold text-slate-900 dark:text-[#f0f6fc]">Virtual Pritha</span>
                     <span className="block text-xs text-slate-400 dark:text-[#a0aec0]">🤖 AI version of me</span>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
               <div ref={messagesRef} className="flex max-h-[360px] min-h-[200px] flex-col gap-3 overflow-y-auto p-4">
                 {messages.length === 0 && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-3">
-                    <p className="text-center text-xs text-slate-500 dark:text-[#a0aec0]">Ask me anything — I&apos;m an AI version of Pritha 🤖</p>
+                    <p className="text-center text-xs text-slate-500 dark:text-[#a0aec0]">To know more— Ask my Avatar 🤖</p>
                     <div className="grid grid-cols-2 gap-2">
                       {[
                         "Who are you?",

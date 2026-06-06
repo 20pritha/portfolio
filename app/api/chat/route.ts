@@ -1,17 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Node runtime (not edge): HF cold starts can take 30-60s.
-// Edge runtime times out at 25s on Vercel free tier — not enough.
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
 const HF_API_TOKEN = process.env.HF_API_TOKEN
-const HF_MODEL_ID = process.env.HF_MODEL_ID
-
-// Fallback to Groq while the fine-tuned model is being trained/uploaded.
-// Once HF_MODEL_ID is set and the model is live, this path is never hit.
-const GROQ_API_KEY = process.env.GROQ_API_KEY
-const GROQ_MODEL = 'llama-3.3-70b-versatile'
 
 const SYSTEM_PROMPT = `You are Pritha's portfolio assistant — warm, sharp, conversational. Only answer questions about Pritha Mishra. For off-topic questions say exactly: I'm Pritha's portfolio assistant — I can only answer questions about her work and background!
 
@@ -53,9 +45,6 @@ RESPONSE RULES (strict):
 - Dismissive questions → confident not defensive: "Pretty good — she shipped a production GenAI system to a US PE firm as a final-year undergrad."
 - Never make up information not listed above`
 
-// Build ChatML prompt for Qwen2.5-Instruct.
-// Must exactly match the format used during fine-tuning — the model learned to
-// generate after the final <|im_start|>assistant\n token.
 function buildChatMLPrompt(messages: { role: string; content: string }[]): string {
   let prompt = `<|im_start|>system\n${SYSTEM_PROMPT}<|im_end|>\n`
   for (const msg of messages) {
@@ -66,91 +55,43 @@ function buildChatMLPrompt(messages: { role: string; content: string }[]): strin
   return prompt
 }
 
-async function callHuggingFace(
-  messages: { role: string; content: string }[]
-): Promise<string> {
-  const endpoint = `https://router.huggingface.co/hf-inference/models/${HF_MODEL_ID}`
+async function callHuggingFace(messages: { role: string; content: string }[]): Promise<string> {
   const prompt = buildChatMLPrompt(messages)
-  const MAX_RETRIES = 3
-  const RETRY_DELAY_MS = 5000
+  const endpoint = 'https://router.huggingface.co/featherless-ai/models/Prixie22/pritha-portfolio-slm'
 
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${HF_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 200,
-          temperature: 0.7,
-          top_p: 0.9,
-          do_sample: true,
-          return_full_text: false,
-          stop: ['<|im_end|>', '<|im_start|>'],
-        },
-      }),
-    })
-
-    if (res.status === 429) {
-      return "I'm getting a lot of questions right now — please try again in a moment!"
-    }
-
-    // 503 = HF cold start — model is loading from disk
-    if (res.status === 503) {
-      if (attempt < MAX_RETRIES) {
-        await new Promise(r => setTimeout(r, RETRY_DELAY_MS))
-        continue
-      }
-      return '__warming_up__'
-    }
-
-    if (!res.ok) {
-      const body = await res.text()
-      throw new Error(`HF API ${res.status}: ${body}`)
-    }
-
-    const data = await res.json() as Array<{ generated_text: string }>
-    if (!Array.isArray(data) || !data[0]?.generated_text) {
-      throw new Error('Unexpected HF response shape')
-    }
-
-    const reply = data[0].generated_text
-      .replace(/<\|im_end\|>.*/s, '')
-      .replace(/<\|im_start\|>.*/s, '')
-      .trim()
-
-    return reply || "I didn't quite catch that — could you rephrase?"
-  }
-
-  return '__warming_up__'
-}
-
-async function callGroqFallback(
-  messages: { role: string; content: string }[]
-): Promise<string> {
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${GROQ_API_KEY}`,
+      Authorization: `Bearer ${HF_API_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: GROQ_MODEL,
-      stream: false,
-      max_tokens: 200,
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...messages.map((m) => ({ role: m.role, content: m.content })),
-      ],
+      inputs: prompt,
+      parameters: {
+        max_new_tokens: 200,
+        temperature: 0.7,
+        top_p: 0.9,
+        do_sample: true,
+        return_full_text: false,
+        stop: ['<|im_end|>', '<|im_start|>'],
+      },
     }),
   })
 
-  if (!res.ok) throw new Error(`Groq ${res.status}`)
-  const data = await res.json() as { choices: Array<{ message: { content: string } }> }
-  return data.choices[0]?.message?.content?.trim() ?? 'Something went wrong.'
+  if (!res.ok) {
+    const body = await res.text()
+    throw new Error(`HF Featherless ${res.status}: ${body}`)
+  }
+
+  const data = await res.json() as Array<{ generated_text: string }>
+  if (!Array.isArray(data) || !data[0]?.generated_text) {
+    throw new Error('Unexpected response shape')
+  }
+
+  return data[0].generated_text
+    .replace(/<\|im_end\|>.*/s, '')
+    .replace(/<\|im_start\|>.*/s, '')
+    .trim() || "I didn't quite catch that — could you rephrase?"
 }
 
 export async function POST(req: NextRequest) {
@@ -163,21 +104,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'messages array required' }, { status: 400 })
     }
 
-    let message: string
-
-    if (HF_MODEL_ID && HF_API_TOKEN) {
-      // Fine-tuned SLM path
-      message = await callHuggingFace(messages)
-    } else if (GROQ_API_KEY) {
-      // Fallback while model is being trained — remove once HF vars are set
-      message = await callGroqFallback(messages)
-    } else {
+    if (!HF_API_TOKEN) {
       return NextResponse.json(
-        { error: 'No AI backend configured. Set HF_MODEL_ID + HF_API_TOKEN in env.' },
+        { error: 'HF_API_TOKEN not configured' },
         { status: 503 }
       )
     }
 
+    const message = await callHuggingFace(messages)
     return NextResponse.json({ message })
   } catch (err) {
     console.error('[chat/route] error:', err)

@@ -420,7 +420,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
 
               {error && (
                 <p className="text-center text-xs text-slate-400 dark:text-[#a0aec0]">
-                  Oops, something went wrong — try again!
+                  Hey! still building this feature — try again later.
                 </p>
               )}
 

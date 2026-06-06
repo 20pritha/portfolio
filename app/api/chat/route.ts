@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error('[chat/route] error:', err)
     return NextResponse.json(
-      { message: "Hey! still building this feature — try again later." },
+      { message: "Something went wrong — please try again." },
       { status: 500 }
     )
   }

@@ -57,7 +57,7 @@ function buildChatMLPrompt(messages: { role: string; content: string }[]): strin
 
 async function callHuggingFace(messages: { role: string; content: string }[]): Promise<string> {
   const prompt = buildChatMLPrompt(messages)
-  const endpoint = 'https://router.huggingface.co/featherless-ai/models/Prixie22/pritha-portfolio-slm'
+  const endpoint = 'https://router.huggingface.co/hf-inference/models/Prixie22/pritha-portfolio-slm'
 
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -80,7 +80,7 @@ async function callHuggingFace(messages: { role: string; content: string }[]): P
 
   if (!res.ok) {
     const body = await res.text()
-    throw new Error(`HF Featherless ${res.status}: ${body}`)
+    throw new Error(`HF inference models ${res.status}: ${body}`)
   }
 
   const data = await res.json() as Array<{ generated_text: string }>

@@ -57,7 +57,7 @@ function buildChatMLPrompt(messages: { role: string; content: string }[]): strin
 
 async function callHuggingFace(messages: { role: string; content: string }[]): Promise<string> {
   const prompt = buildChatMLPrompt(messages)
-  const endpoint = 'https://router.huggingface.co/featherless-ai/models/Prixie22/pritha-portfolio-slm'
+  const endpoint = 'https://api-inference.huggingface.co/models/Prixie22/slm'
 
   const res = await fetch(endpoint, {
     method: 'POST',

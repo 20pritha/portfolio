@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
-const HF_API_TOKEN = process.env.HF_API_TOKEN
+const GROQ_API_KEY = process.env.GROQ_API_KEY
 
 const SYSTEM_PROMPT = `You are Pritha's portfolio assistant — warm, sharp, conversational. Only answer questions about Pritha Mishra. For off-topic questions say exactly: I'm Pritha's portfolio assistant — I can only answer questions about her work and background!
 
@@ -45,53 +45,32 @@ RESPONSE RULES (strict):
 - Dismissive questions → confident not defensive: "Pretty good — she shipped a production GenAI system to a US PE firm as a final-year undergrad."
 - Never make up information not listed above`
 
-function buildChatMLPrompt(messages: { role: string; content: string }[]): string {
-  let prompt = `<|im_start|>system\n${SYSTEM_PROMPT}<|im_end|>\n`
-  for (const msg of messages) {
-    const role = msg.role === 'user' ? 'user' : 'assistant'
-    prompt += `<|im_start|>${role}\n${msg.content}<|im_end|>\n`
-  }
-  prompt += `<|im_start|>assistant\n`
-  return prompt
-}
-
-async function callHuggingFace(messages: { role: string; content: string }[]): Promise<string> {
-  const prompt = buildChatMLPrompt(messages)
-  const endpoint = 'https://router.huggingface.co/featherless-ai/models/Qwen/Qwen2.5-0.5B-Instruct'
-
-  const res = await fetch(endpoint, {
+async function callGroq(messages: { role: string; content: string }[]): Promise<string> {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${HF_API_TOKEN}`,
+      Authorization: `Bearer ${GROQ_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      inputs: prompt,
-      parameters: {
-        max_new_tokens: 200,
-        temperature: 0.7,
-        top_p: 0.9,
-        do_sample: true,
-        return_full_text: false,
-        stop: ['<|im_end|>', '<|im_start|>'],
-      },
+      model: 'llama-3.1-8b-instant',
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...messages,
+      ],
+      max_tokens: 200,
+      temperature: 0.7,
+      top_p: 0.9,
     }),
   })
 
   if (!res.ok) {
     const body = await res.text()
-    throw new Error(`HF inference models ${res.status}: ${body}`)
+    throw new Error(`Groq ${res.status}: ${body}`)
   }
 
-  const data = await res.json() as Array<{ generated_text: string }>
-  if (!Array.isArray(data) || !data[0]?.generated_text) {
-    throw new Error('Unexpected response shape')
-  }
-
-  return data[0].generated_text
-    .replace(/<\|im_end\|>.*/s, '')
-    .replace(/<\|im_start\|>.*/s, '')
-    .trim() || "I didn't quite catch that — could you rephrase?"
+  const data = await res.json() as { choices: Array<{ message: { content: string } }> }
+  return data.choices[0]?.message?.content?.trim() || "I didn't quite catch that — could you rephrase?"
 }
 
 export async function POST(req: NextRequest) {
@@ -104,14 +83,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'messages array required' }, { status: 400 })
     }
 
-    if (!HF_API_TOKEN) {
+    if (!GROQ_API_KEY) {
       return NextResponse.json(
-        { error: 'HF_API_TOKEN not configured' },
+        { error: 'GROQ_API_KEY not configured' },
         { status: 503 }
       )
     }
 
-    const message = await callHuggingFace(messages)
+    const message = await callGroq(messages)
     return NextResponse.json({ message })
   } catch (err) {
     console.error('[chat/route] error:', err)

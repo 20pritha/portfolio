@@ -57,7 +57,7 @@ function buildChatMLPrompt(messages: { role: string; content: string }[]): strin
 
 async function callHuggingFace(messages: { role: string; content: string }[]): Promise<string> {
   const prompt = buildChatMLPrompt(messages)
-  const endpoint = 'https://api-inference.huggingface.co/models/Prixie22/slm'
+  const endpoint = 'https://router.huggingface.co/hf-inference/models/Prixie22/slm'
 
   const res = await fetch(endpoint, {
     method: 'POST',

@@ -53,12 +53,12 @@ async function callGroq(messages: { role: string; content: string }[]): Promise<
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
+      model: 'llama-3.3-70b-versatile',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         ...messages,
       ],
-      max_tokens: 200,
+      max_tokens: 350,
       temperature: 0.7,
       top_p: 0.9,
     }),

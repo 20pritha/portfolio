@@ -42,7 +42,6 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [isWarmingUp, setIsWarmingUp] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,14 +80,7 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? data.message);
 
-      if (data.message === '__warming_up__') {
-        // HF model cold-starting — show status, don't add a message bubble
-        setIsWarmingUp(true);
-        setTimeout(() => setIsWarmingUp(false), 25000);
-      } else {
-        setIsWarmingUp(false);
-        setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
-      }
+      setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
     } catch {
       setError(true);
     } finally {
@@ -205,14 +197,6 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                         <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-[#a0aec0]" animate={{ y: [0, -4, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }} />
                       ))}
                     </div>
-                  </motion.div>
-                )}
-
-                {isWarmingUp && (
-                  <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-center">
-                    <p className="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-center text-xs text-amber-700 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-400">
-                      Model warming up (~20s) — try again shortly!
-                    </p>
                   </motion.div>
                 )}
 
@@ -403,18 +387,6 @@ export default function ChatBot({ defaultOpen = false, hideToggle = false, heroL
                       />
                     ))}
                   </div>
-                </motion.div>
-              )}
-
-              {isWarmingUp && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center justify-center"
-                >
-                  <p className="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-center text-xs text-amber-700 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-400">
-                    Model warming up (~20s) — try again in a moment!
-                  </p>
                 </motion.div>
               )}
 

@@ -14,6 +14,7 @@ import AcademicGrowth from '@/components/AcademicGrowth';
 import Publications from '@/components/Publications';
 import Contact from '@/components/Contact';
 import BackToTop from '@/components/BackToTop';
+import ChatBot from '@/components/ChatBot';
 import { useSidebar } from '@/hooks/useSidebar';
 import { useEffect } from 'react';
 
@@ -72,6 +73,7 @@ export default function HomePage() {
           <span className="text-maroon">✦</span> Pritha Mishra · 2026 · Built with Next.js &amp; Tailwind
         </footer>
         <BackToTop />
+        <ChatBot floating />
       </main>
     </div>
   );

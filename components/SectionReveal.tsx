@@ -34,7 +34,7 @@ export default function SectionReveal({ label, children }: SectionRevealProps) {
                 setTimeout(() => setShowContent(true), 100);
                 setTimeout(() => setTyped(''), 900);
               }
-            }, 30);
+            }, 60);
           }
         });
       },

@@ -21,7 +21,7 @@ function useISTClock() {
       );
     };
     tick();
-    const id = setInterval(tick, 1000);
+    const id = setInterval(tick, 10000);
     return () => clearInterval(id);
   }, []);
   return time;

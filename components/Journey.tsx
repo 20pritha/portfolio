@@ -19,6 +19,11 @@ const journeyAvatars = [
     alt: 'Dancing avatar for Crew 616 node',
   },
   {
+    match: (item: typeof journey[number]) => item.year === '2023' && item.event.includes('WiFi'),
+    src: '/avatars/avatar-thinking.png',
+    alt: 'Thinking avatar for WiFi robot pivot node',
+  },
+  {
     match: (item: typeof journey[number]) => item.year === '2024' && item.event.includes('TECHnoxian'),
     src: '/avatars/avatar-pointing.png',
     alt: 'Pointing avatar for TECHnoxian node',
@@ -141,6 +146,16 @@ export default function Journey() {
                             <p className="mt-4 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">{item.event}</p>
                             <div className="mt-4 opacity-100">
                               <p className="text-slate-700 dark:text-[#a0aec0]">{item.description}</p>
+                              {item.link && (
+                                <a
+                                  href={item.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-3 inline-flex items-center gap-1 text-xs text-[#8B2635] underline underline-offset-2 hover:opacity-75"
+                                >
+                                  {item.linkLabel ?? 'Watch →'}
+                                </a>
+                              )}
                             </div>
                           </div>
                         )}
@@ -177,6 +192,16 @@ export default function Journey() {
                             <p className="mt-4 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">{item.event}</p>
                             <div className="mt-4 opacity-100">
                               <p className="text-slate-700 dark:text-[#a0aec0]">{item.description}</p>
+                              {item.link && (
+                                <a
+                                  href={item.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-3 inline-flex items-center gap-1 text-xs text-[#8B2635] underline underline-offset-2 hover:opacity-75"
+                                >
+                                  {item.linkLabel ?? 'Watch →'}
+                                </a>
+                              )}
                             </div>
                           </div>
                         )}

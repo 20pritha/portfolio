@@ -14,6 +14,15 @@ const journey = [
     type: 'cocurricular',
   },
   {
+    year: '2023',
+    event: 'WiFi-Controlled Voice-Enabled Robot — Solo build, Sem 4',
+    location: 'SRM',
+    description: 'No team, no template. Built a WiFi-controlled, voice-enabled robot from scratch — completely alone. It worked. CGPA went from 7.0 to 10 that semester. The department posted it on YouTube. Everything clicked.',
+    type: 'project',
+    link: 'https://www.youtube.com/watch?v=F_RfdsAkQ68',
+    linkLabel: 'Watch on YouTube →',
+  },
+  {
     year: '2024',
     event: 'TECHnoxian World Robotics Cup, Delhi — Reached Finals, 4th Place',
     location: 'Delhi',

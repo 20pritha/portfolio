@@ -97,7 +97,13 @@ export default function TechBackground() {
     init();
     const onResize = () => init();
     window.addEventListener('resize', onResize);
-    const onMove = (e: MouseEvent) => { mouseTgt.current = { x: e.clientX, y: e.clientY }; };
+    let lastMove = 0;
+    const onMove = (e: MouseEvent) => {
+      const now = performance.now();
+      if (now - lastMove < 16) return;
+      lastMove = now;
+      mouseTgt.current = { x: e.clientX, y: e.clientY };
+    };
     window.addEventListener('mousemove', onMove, { passive: true });
 
     const glowDot = (x: number, y: number, r: number, a: number) => {

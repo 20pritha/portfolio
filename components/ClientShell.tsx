@@ -13,11 +13,11 @@ export default function ClientShell({ children }: ClientShellProps) {
   useEffect(() => {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-    const t1 = window.setTimeout(() => setPhase('content'), 700);
+    const t1 = window.setTimeout(() => setPhase('content'), 300);
     const t2 = window.setTimeout(() => {
       setPhase('done');
       document.body.classList.add('page-loaded');
-    }, 1200);
+    }, 600);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);

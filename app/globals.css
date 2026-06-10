@@ -234,7 +234,7 @@ section {
 
 .project-card-outer {
   perspective: 1000px;
-  min-height: 22rem;
+  min-height: 26rem;
   position: relative;
   z-index: 0;
 }
@@ -247,7 +247,7 @@ section {
   position: relative;
   transform-style: preserve-3d;
   width: 100%;
-  min-height: 22rem;
+  min-height: 26rem;
 }
 
 .project-card-face {

@@ -56,7 +56,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const flipTimerRef                = useRef<number | null>(null);
 
   useEffect(() => {
-    const mql   = window.matchMedia('(max-width: 767px)');
+    const mql   = window.matchMedia('(max-width: 1023px)');
     const check = () => setIsMobile(mql.matches);
     check();
     mql.addEventListener('change', check);

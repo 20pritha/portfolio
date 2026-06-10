@@ -47,15 +47,6 @@ export default function Publications() {
                     <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:border-amber-800/30 dark:bg-amber-900/20 dark:text-amber-400">
                       {item.status}
                     </span>
-                    <a
-                      href="https://www.youtube.com/watch?v=F_RfdsAkQ68"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-medium text-[#8B2635] hover:underline"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                       View Robot →
-                    </a>
                   </div>
                 </div>
                 <div className="w-full flex-shrink-0 sm:w-60">

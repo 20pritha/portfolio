@@ -164,7 +164,12 @@ export default function Contact() {
           <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
             <div className="card-hover rounded-3xl border border-slate-200 bg-white p-8 shadow-soft dark:border-[#8B2635]/30 dark:bg-[#1c2128]/90">
               <p className="text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">Email</p>
-              <p className="mt-4 break-words whitespace-normal text-slate-700 dark:text-[#f0f6fc]">{site.contact.email}</p>
+              <a
+                href={`mailto:${site.contact.email}`}
+                className="mt-4 inline-block break-words whitespace-normal text-maroon underline dark:text-[#58a6ff]"
+              >
+                {site.contact.email}
+              </a>
               <p className="mt-8 text-lg font-semibold text-slate-950 dark:text-[#f0f6fc]">LinkedIn</p>
               <a
                 href={site.contact.linkedin}

@@ -3,6 +3,47 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { Project } from '@/data/projects';
 
+const TECH_META: Record<string, { color: string; bg: string; icon: string }> = {
+  'Python':          { color: '#3776AB', bg: '#3776AB18', icon: '🐍' },
+  'PyTorch':         { color: '#EE4C2C', bg: '#EE4C2C18', icon: '🔥' },
+  'FastAPI':         { color: '#009688', bg: '#00968818', icon: '⚡' },
+  'Gemini':          { color: '#4285F4', bg: '#4285F418', icon: '✦' },
+  'Claude':          { color: '#D97706', bg: '#D9770618', icon: '◈' },
+  'Azure Functions': { color: '#0078D4', bg: '#0078D418', icon: '☁' },
+  'OpenCV':          { color: '#5C3EE8', bg: '#5C3EE818', icon: '👁' },
+  'Raspberry Pi':    { color: '#C51A4A', bg: '#C51A4A18', icon: '⬡' },
+  'Scikit-learn':    { color: '#F7931E', bg: '#F7931E18', icon: '◉' },
+  'Pandas':          { color: '#150458', bg: '#e8e4f818', icon: '📊' },
+  'Asyncio':         { color: '#3776AB', bg: '#3776AB18', icon: '⟳' },
+  'RAG':             { color: '#8B2635', bg: '#8B263518', icon: '◇' },
+  'FastMCP':         { color: '#10B981', bg: '#10B98118', icon: '⚙' },
+  'CNN':             { color: '#7C3AED', bg: '#7C3AED18', icon: '◎' },
+  'Pix2Pix GAN':     { color: '#7C3AED', bg: '#7C3AED18', icon: '◎' },
+  'Robotics':        { color: '#64748B', bg: '#64748B18', icon: '⚙' },
+  'CERT Dataset':    { color: '#059669', bg: '#05966918', icon: '∷' },
+  'CUHK':            { color: '#8B0000', bg: '#8B000018', icon: '≡' },
+};
+
+function TechPill({ tag }: { tag: string }) {
+  const meta = TECH_META[tag];
+  if (!meta) {
+    return (
+      <span className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#f0f6fc]">
+        {tag}
+      </span>
+    );
+  }
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium"
+      style={{ backgroundColor: meta.bg, color: meta.color, borderColor: meta.color + '40' }}
+    >
+      <span className="shrink-0 text-[10px] leading-none" style={{ color: meta.color }}>{meta.icon}</span>
+      {tag}
+    </span>
+  );
+}
+
 interface ProjectCardProps {
   project: Project;
 }
@@ -66,9 +107,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {actionButton}
           <div className="flex flex-wrap justify-end gap-2">
             {project.stack.map((tag) => (
-              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#f0f6fc]">
-                {tag}
-              </span>
+              <TechPill key={tag} tag={tag} />
             ))}
           </div>
         </div>
@@ -101,9 +140,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <div className="project-card-face project-card-front">
           <div className="flex flex-wrap gap-2">
             {project.stack.map((tag) => (
-              <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#f0f6fc]">
-                {tag}
-              </span>
+              <TechPill key={tag} tag={tag} />
             ))}
           </div>
           <h3 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-[#f0f6fc] break-words">{project.title}</h3>
@@ -123,9 +160,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-[#c07080]">Tech stack</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.stack.map((tag) => (
-                  <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 dark:bg-[#21262d] dark:text-[#f0f6fc]">
-                    {tag}
-                  </span>
+                  <TechPill key={tag} tag={tag} />
                 ))}
               </div>
             </div>

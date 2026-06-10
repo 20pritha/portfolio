@@ -248,11 +248,6 @@ export default function ChatBot({
               {/* Messages */}
               {messageList('min-h-[160px]', 'max-h-[300px]', 'p-4')}
 
-              {/* Quick chips — always visible */}
-              <div className="border-t border-slate-100 dark:border-[#8B2635]/10">
-                {quickChips}
-              </div>
-
               {/* Input */}
               <div className="border-t border-slate-100 bg-slate-50 dark:border-[#8B2635]/10 dark:bg-[#0d1117]">
                 {inputForm('px-3', 'py-2')}

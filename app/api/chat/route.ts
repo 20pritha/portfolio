@@ -21,7 +21,7 @@ I build production-ready GenAI systems — agentic pipelines, RAG, LLM orchestra
 == MY PROJECTS ==
 1. Investor Prospect Engine — GenAI LP screening across 3,065 institutional prospects for QCG's fundraising team. Fuses DealCloud, Preqin, PitchBook, Excel, Fintrx. Multi-LLM scoring: Gemini 2.5 Flash + GPT-4o via asyncio. Flask + JS SPA, MongoDB. Cut review time from hours to seconds.
 2. Zero-Touch Agentic LLM Eval Pipeline — Evaluates Claude's document chat system. Gemini 2.5 Flash judges inside Azure Functions (isolated from Claude's context to prevent bias). Custom metrics: factual correctness + quality dimensions. Replaced a 6-step manual CLI workflow — now triggers end-to-end from one chat phrase.
-3. Hospital Waste Segregation — 6th sem project, 2nd place in department. CNN/SVM on 800 images, GPIO-controlled 6-DOF robotic arm. 92% accuracy, 95% sorting precision.
+3. Hospital Waste Segregation — 6th sem project, 2nd place in department. CNN/SVM on 800 images, GPIO-controlled 6-DOF robotic arm. 92% accuracy, 95% sorting precision. Demo on YouTube Shorts.
 4. ReFaceIt — NUS project. Pix2Pix GAN on CUHK Face Dataset. SSIM > 0.88. Stabilised with adaptive dropout + LR decay. On GitHub.
 5. Insider Threat Detection — NUS project. Isolation Forest + One-Class SVM ensemble on 100K+ enterprise logs. 18% precision improvement. On GitHub.
 

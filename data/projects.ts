@@ -5,6 +5,7 @@ export type Project = {
   metric: string;
   detailsUrl?: string;
   githubUrl?: string;
+  videoUrl?: string;
   metrics?: Array<{ value: number; suffix?: string; label: string }>;
 };
 
@@ -29,6 +30,7 @@ const projects: Project[] = [
     stack: ['OpenCV', 'Raspberry Pi', 'CNN', 'Robotics'],
     description: 'End-to-end computer vision system for hazardous waste sorting, controlling a 6-DOF robotic arm via GPIO. 6th semester project — 2nd place in department.',
     metric: 'Achieved ~92% classification accuracy and 95% sorting precision.',
+    videoUrl: 'https://youtube.com/shorts/Hny3iAIbsLk?si=xUSu0xFnxEtk37zS',
     metrics: [
       { value: 92, suffix: '%', label: 'classification accuracy' },
       { value: 95, suffix: '%', label: 'sorting precision' },

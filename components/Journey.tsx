@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
 import journey from '@/data/journey';
 import SectionReveal from '@/components/SectionReveal';
 import GlitchHeading from '@/components/GlitchHeading';
@@ -53,53 +52,6 @@ const journeyAvatars = [
 const getAvatar = (item: typeof journey[number]) => journeyAvatars.find((entry) => entry.match(item));
 
 export default function Journey() {
-  const [strokeLength, setStrokeLength] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const lineRef = useRef<SVGLineElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const rafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const calculateLength = () => {
-      if (!lineRef.current) return;
-      setStrokeLength(lineRef.current.getTotalLength());
-    };
-
-    calculateLength();
-    window.addEventListener('resize', calculateLength);
-    return () => {
-      window.removeEventListener('resize', calculateLength);
-    };
-  }, []);
-
-  useEffect(() => {
-    const element = containerRef.current;
-    if (!element || !lineRef.current) return;
-
-    const update = () => {
-      rafRef.current = null;
-      const top = element.getBoundingClientRect().top;
-      const height = window.innerHeight;
-      const visible = Math.min(Math.max((height - top) / (height * 1.1), 0), 1);
-      setProgress(visible);
-      lineRef.current!.style.strokeDashoffset = `${strokeLength * (1 - visible)}`;
-    };
-
-    const handleScroll = () => {
-      if (rafRef.current === null) {
-        rafRef.current = requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [strokeLength]);
-
   return (
     <section id="journey">
       <SectionReveal label="journey">
@@ -119,7 +71,7 @@ export default function Journey() {
             </p>
           </div>
 
-          <div ref={containerRef} className="relative mx-auto w-full">
+          <div className="relative mx-auto w-full">
             <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-slate-200 dark:bg-[#8B2635]/25" />
             <div className="space-y-16">
               {journey.map((item, index) => {

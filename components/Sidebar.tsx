@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import SidebarToggle from '@/components/SidebarToggle';
 import site from '@/data/site';
 import { useTheme } from '@/hooks/useTheme';
 

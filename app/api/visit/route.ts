@@ -4,14 +4,13 @@ const TOTAL_KEY = 'visits:total';
 const LOG_KEY   = 'visits:log';
 const MAX_LOG   = 200;
 
-const KV_AVAILABLE = !!(
-  process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN
-);
+const KV_URL   = process.env.pm_KV_REST_API_URL   ?? process.env.KV_REST_API_URL;
+const KV_TOKEN = process.env.pm_KV_REST_API_TOKEN ?? process.env.KV_REST_API_TOKEN;
 
 async function getKv() {
-  if (!KV_AVAILABLE) return null;
-  const { kv } = await import('@vercel/kv');
-  return kv;
+  if (!KV_URL || !KV_TOKEN) return null;
+  const { createClient } = await import('@vercel/kv');
+  return createClient({ url: KV_URL, token: KV_TOKEN });
 }
 
 export async function POST(req: NextRequest) {

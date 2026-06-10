@@ -1,15 +1,15 @@
 const site = {
   hero: {
-    title: 'I build production-ready GenAI systems, agentic pipelines, and confidence-first AI tools.',
-    subtitle: 'AI Engineer',
-    description: 'Practical AI work with metrics, clear architecture, and polished delivery — from research to deployed systems that teams actually use.',
+    title: 'I build production-ready GenAI systems and agentic pipelines that teams actually use daily.',
+    subtitle: 'AI Engineer — Open to Full-Time Roles',
+    description: 'From a solo WiFi robot in sem 4 to GenAI pipelines running live at a US private equity firm — I build things that work, ship them, and make them reliable.',
     cta: 'See My Work',
   },
   about: {
-    heading: 'A practical AI engineer who loves building systems people can trust.',
+    heading: 'Final-year undergrad. One production AI system used daily by a PE firm. Built it alone.',
     paragraphs: [
-      'I design and ship AI products with a focus on reliability, observability, and measurable business outcomes. My work sits at the intersection of LLM orchestration, RAG pipelines, and real-world production deployment.',
-      'I enjoy turning research-led ideas into production-grade tools, then refining them until they fit the team and the use case.',
+      'Started in hardware — a WiFi-controlled, voice-enabled robot I built solo in sem 4 with no team and no template. CGPA went from 7 to 10 that semester. Something clicked.',
+      'Now I build LLM orchestration pipelines, RAG systems, and agentic workflows that real teams use. Currently at Quantum Capital Group, shipping GenAI tools for a $30M AUM oil & gas PE firm. Open to full-time AI roles from May 2026.',
     ],
   },
   contact: {

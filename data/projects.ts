@@ -3,7 +3,7 @@ export type Project = {
   stack: string[];
   description: string;
   metric: string;
-  detailsUrl: string;
+  detailsUrl?: string;
   githubUrl?: string;
   metrics?: Array<{ value: number; suffix?: string; label: string }>;
 };
@@ -14,7 +14,6 @@ const projects: Project[] = [
     stack: ['FastAPI', 'Gemini', 'RAG', 'Asyncio'],
     description: 'GenAI-enabled LP screening system for a $30M AUM oil & gas PE firm, pulling signals from DealCloud, Preqin, PitchBook, Excel, and Fintrx.',
     metric: 'Reduced prospect review time from hours to seconds for the live fundraising team.',
-    detailsUrl: 'https://github.com/prixie',
     metrics: [{ value: 3065, suffix: '', label: 'institutional prospects' }],
   },
   {
@@ -30,7 +29,6 @@ const projects: Project[] = [
     stack: ['OpenCV', 'Raspberry Pi', 'CNN', 'Robotics'],
     description: 'End-to-end computer vision system for hazardous waste sorting, controlling a 6-DOF robotic arm via GPIO. 6th semester project — 2nd place in department.',
     metric: 'Achieved ~92% classification accuracy and 95% sorting precision.',
-    detailsUrl: 'https://github.com/prixie',
     metrics: [
       { value: 92, suffix: '%', label: 'classification accuracy' },
       { value: 95, suffix: '%', label: 'sorting precision' },

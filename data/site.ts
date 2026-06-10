@@ -6,10 +6,10 @@ const site = {
     cta: 'See My Work',
   },
   about: {
-    heading: 'Final-year undergrad. One production AI system used daily by a PE firm. Built it alone.',
+    heading: 'AI engineer, final year. Shipping in production since sem 6.',
     paragraphs: [
-      'Started in hardware — a WiFi-controlled, voice-enabled robot I built solo in sem 4 with no team and no template. CGPA went from 7 to 10 that semester. Something clicked.',
-      'Now I build LLM orchestration pipelines, RAG systems, and agentic workflows that real teams use. Currently at Quantum Capital Group, shipping GenAI tools for a $30M AUM oil & gas PE firm. Open to full-time AI roles from May 2026.',
+      'I work on LLM pipelines, RAG, and agentic systems — currently at Quantum Capital Group where I\'ve built two production tools used daily by the IR team.',
+      'Previously at NUS for research. My background is in electronics and instrumentation, which shapes how I think about system reliability. Graduating May 2026, open to AI/ML engineering roles.',
     ],
   },
   contact: {

@@ -18,10 +18,11 @@ interface ChatBotProps {
 }
 
 const QUICK_ACTIONS = [
-  { label: 'Work',     question: 'What do you do and how can you help me?' },
-  { label: 'About me', question: 'Tell me more about yourself.' },
-  { label: 'Skills',   question: 'Tell me about your skills and projects.' },
-  { label: 'Contact',  question: 'How can I contact you?' },
+  { label: 'Work',       question: 'What do you do and how can you help me?' },
+  { label: 'Experience', question: 'Tell me about your internship experience at QCG and NUS.' },
+  { label: 'Skills',     question: 'Tell me about your skills and projects.' },
+  { label: 'About me',   question: 'Tell me more about yourself.' },
+  { label: 'Contact',    question: 'How can I contact you?' },
 ] as const;
 
 type QuickLabel = typeof QUICK_ACTIONS[number]['label'];

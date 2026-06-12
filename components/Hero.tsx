@@ -116,7 +116,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="relative grid h-[110px] w-[110px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-2 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.4)] transition-transform duration-300"
+            className="relative grid h-[110px] w-[110px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-2 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.5)]"
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}
@@ -158,6 +158,23 @@ export default function Hero() {
           </p>
         </motion.div>
 
+        {/* Download Resume Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.25 }}
+        >
+          <a
+            href="/Pritha-Mishra-Resume.pdf"
+            download="Pritha-Mishra-Resume.pdf"
+            className="inline-flex items-center gap-2 rounded-full border border-maroon/40 bg-maroon/5 px-6 py-2.5 text-sm font-medium text-maroon transition-all duration-300 hover:border-maroon/60 hover:bg-maroon/10 dark:border-[#8B2635]/40 dark:bg-[#8B2635]/5 dark:text-[#ff6b9d] dark:hover:border-[#8B2635]/60 dark:hover:bg-[#8B2635]/10"
+            aria-label="Download resume PDF"
+          >
+            <span>📄</span>
+            <span>Download Resume</span>
+          </a>
+        </motion.div>
+
         {/* Chat card */}
         <motion.div
           className="w-full max-w-3xl"
@@ -193,18 +210,28 @@ export default function Hero() {
           <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-700 dark:text-[#a0aec0]">
             {site.hero.description}
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-8">
             {['GenAI', 'RAG', 'Evaluation', 'Azure'].map((tag) => (
               <motion.span
                 key={tag}
                 whileHover={{ scale: 1.07 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 cursor-default select-none transition-colors duration-200 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#f0f6fc]"
+                className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-600 cursor-default select-none transition-colors duration-200 dark:border-[#8B2635]/30 dark:bg-[#8B2635]/10 dark:text-[#c07080]"
               >
                 {tag}
               </motion.span>
             ))}
           </div>
+          {/* Download Resume Button */}
+          <a
+            href="/Pritha-Mishra-Resume.pdf"
+            download="Pritha-Mishra-Resume.pdf"
+            className="w-fit inline-flex items-center gap-2 rounded-full border border-maroon/40 bg-maroon/5 px-6 py-2.5 text-sm font-medium text-maroon transition-all duration-300 hover:border-maroon/60 hover:bg-maroon/10 dark:border-[#8B2635]/40 dark:bg-[#8B2635]/5 dark:text-[#ff6b9d] dark:hover:border-[#8B2635]/60 dark:hover:bg-[#8B2635]/10"
+            aria-label="Download resume PDF"
+          >
+            <span>📄</span>
+            <span>Download Resume</span>
+          </a>
         </motion.div>
 
         {/* Right Column: Avatar + ChatBot */}
@@ -222,7 +249,7 @@ export default function Hero() {
             onClick={handleAvatarClick}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="relative grid h-[220px] w-[220px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-3 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.4)] transition-transform duration-300 hover:scale-105"
+            className="relative grid h-[220px] w-[220px] place-items-center overflow-hidden rounded-[2rem] bg-transparent p-3 drop-shadow-lg focus:outline-none dark:drop-shadow-[0_0_16px_rgba(139,38,53,0.5)]"
             aria-label="Avatar mood toggle"
             animate={isKonamiActive ? { y: [0, -18, 0] } : undefined}
             transition={isKonamiActive ? { duration: 0.4, repeat: 3, ease: 'easeInOut' } : undefined}

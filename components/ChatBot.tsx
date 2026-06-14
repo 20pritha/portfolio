@@ -181,7 +181,7 @@ export default function ChatBot({
       )}
 
       {messages.map((msg, i) => {
-        const isStreamingMsg = isLoading && i === messages.length - 1 && msg.role === 'assistant';
+        const isStreamingMsg = i === messages.length - 1 && msg.role === 'assistant' && !msg.content;
         const displayContent = isStreamingMsg
           ? fullTextRef.current.slice(0, typedLen)
           : msg.content;

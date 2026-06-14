@@ -107,7 +107,7 @@ export default function ChatBot({
         const match = remaining.match(/^(\S+\s*)/);
         return prev + (match ? match[0].length : 1);
       });
-    }, 240);
+    }, 150);
 
     setIsLoading(true);
 

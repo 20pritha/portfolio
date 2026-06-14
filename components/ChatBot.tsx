@@ -48,8 +48,11 @@ export default function ChatBot({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [usedActions, setUsedActions] = useState<Set<QuickLabel>>(new Set());
+  const [typedLen, setTypedLen] = useState(0);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fullTextRef = useRef('');
+  const typingIntervalRef = useRef<ReturnType<typeof setInterval>>();
 
   const msgCount = () => parseInt(sessionStorage.getItem(SESSION_KEY) ?? '0', 10);
   const bumpCount = () => sessionStorage.setItem(SESSION_KEY, String(msgCount() + 1));
@@ -64,6 +67,35 @@ export default function ChatBot({
     if (isOpen) inputRef.current?.focus();
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isLoading) {
+      clearInterval(typingIntervalRef.current);
+      const full = fullTextRef.current;
+      if (full) {
+        setMessages(prev => {
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (last?.role === 'assistant') updated[updated.length - 1] = { role: 'assistant', content: full };
+          return updated;
+        });
+        setTypedLen(full.length);
+      }
+      return;
+    }
+    fullTextRef.current = '';
+    setTypedLen(0);
+    typingIntervalRef.current = setInterval(() => {
+      setTypedLen(prev => {
+        const full = fullTextRef.current;
+        if (prev >= full.length) return prev;
+        const remaining = full.slice(prev);
+        const match = remaining.match(/^(\S+\s*)/);
+        return prev + (match ? match[0].length : 1);
+      });
+    }, 40);
+    return () => clearInterval(typingIntervalRef.current);
+  }, [isLoading]);
+
   async function send(text: string) {
     if (!text.trim() || isLoading || msgCount() >= MSG_LIMIT) return;
 
@@ -74,7 +106,7 @@ export default function ChatBot({
 
     const userMsg: Message = { role: 'user', content: text.trim() };
     const historyForApi = [...messages, userMsg];
-    setMessages(historyForApi);
+    setMessages([...historyForApi, { role: 'assistant', content: '' }]);
     setInput('');
     setIsLoading(true);
     setError(false);
@@ -86,11 +118,21 @@ export default function ChatBot({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: historyForApi }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? data.message);
-      setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
+
+      if (!res.ok || !res.body) throw new Error('Stream failed');
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value);
+        fullTextRef.current += chunk;
+      }
     } catch {
       setError(true);
+      setMessages(prev => prev.slice(0, -1));
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +180,13 @@ export default function ChatBot({
         </motion.p>
       )}
 
-      {messages.map((msg, i) => (
+      {messages.map((msg, i) => {
+        const isStreamingMsg = isLoading && i === messages.length - 1 && msg.role === 'assistant';
+        const displayContent = isStreamingMsg
+          ? fullTextRef.current.slice(0, typedLen)
+          : msg.content;
+        if (msg.role === 'assistant' && !displayContent) return null;
+        return (
         <motion.div
           key={i}
           initial={{ opacity: 0, y: 6 }}
@@ -151,19 +199,23 @@ export default function ChatBot({
               PM
             </div>
           )}
-          {msg.content && (
+          {displayContent && (
             <div className={`max-w-[78%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
               msg.role === 'user'
                 ? 'rounded-br-sm bg-[#8B2635] text-white'
                 : 'rounded-bl-sm bg-slate-100 text-slate-800 dark:bg-[#21262d] dark:text-[#f0f6fc]'
             }`}>
-              {msg.content}
+              {displayContent}
+              {isStreamingMsg && (
+                <span className="ml-0.5 inline-block h-3.5 w-0.5 translate-y-0.5 animate-pulse bg-current align-middle opacity-70" />
+              )}
             </div>
           )}
         </motion.div>
-      ))}
+        );
+      })}
 
-      {isLoading && (
+      {isLoading && typedLen === 0 && (
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex items-end gap-2">
           <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#8B2635] text-[9px] font-bold text-white">PM</div>
           <div className="flex gap-1 rounded-2xl rounded-bl-sm bg-slate-100 px-4 py-3 dark:bg-[#21262d]">

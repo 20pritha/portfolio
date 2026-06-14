@@ -259,6 +259,14 @@ export default function Sidebar({
         >
           <EmailIcon />
         </a>
+        <a
+          href="/resume.pdf"
+          download="Pritha_Mishra_Resume.pdf"
+          title="Download Resume"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-maroon hover:text-maroon dark:border-[#8B2635]/35 dark:bg-[#1c2128] dark:text-[#a0aec0] dark:hover:border-[#8B2635] dark:hover:text-[#f0f6fc]"
+        >
+          <ResumeIcon />
+        </a>
         <span
           className={`truncate text-xs text-slate-400 dark:text-[#a0aec0] transition-all duration-300 ${
             showLabels ? 'max-w-xs opacity-100' : 'max-w-0 opacity-0 overflow-hidden'
@@ -340,6 +348,14 @@ function EmailIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
       <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+    </svg>
+  );
+}
+
+function ResumeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM12 17l-4-4h2.5v-3h3v3H16l-4 4z" />
     </svg>
   );
 }

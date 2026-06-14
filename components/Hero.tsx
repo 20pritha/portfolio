@@ -158,22 +158,24 @@ export default function Hero() {
           </p>
         </motion.div>
 
-        {/* Download Resume Button */}
-        <motion.div
+        {/* Download Resume */}
+        <motion.a
+          href="/resume.pdf"
+          download="Pritha_Mishra_Resume.pdf"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.25 }}
+          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.28 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.97 }}
+          className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-800 shadow-sm transition-colors duration-200 hover:bg-slate-200 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#f0f6fc] dark:hover:bg-[#2d333b]"
         >
-          <a
-            href="/Pritha-Mishra-Resume.pdf"
-            download="Pritha-Mishra-Resume.pdf"
-            className="inline-flex items-center gap-2 rounded-full border border-maroon/40 bg-maroon/5 px-6 py-2.5 text-sm font-medium text-maroon transition-all duration-300 hover:border-maroon/60 hover:bg-maroon/10 dark:border-[#8B2635]/40 dark:bg-[#8B2635]/5 dark:text-[#ff6b9d] dark:hover:border-[#8B2635]/60 dark:hover:bg-[#8B2635]/10"
-            aria-label="Download resume PDF"
-          >
-            <span>📄</span>
-            <span>Download Resume</span>
-          </a>
-        </motion.div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download Resume
+        </motion.a>
 
         {/* Chat card */}
         <motion.div
@@ -222,16 +224,23 @@ export default function Hero() {
               </motion.span>
             ))}
           </div>
-          {/* Download Resume Button */}
-          <a
-            href="/Pritha-Mishra-Resume.pdf"
-            download="Pritha-Mishra-Resume.pdf"
-            className="w-fit inline-flex items-center gap-2 rounded-full border border-maroon/40 bg-maroon/5 px-6 py-2.5 text-sm font-medium text-maroon transition-all duration-300 hover:border-maroon/60 hover:bg-maroon/10 dark:border-[#8B2635]/40 dark:bg-[#8B2635]/5 dark:text-[#ff6b9d] dark:hover:border-[#8B2635]/60 dark:hover:bg-[#8B2635]/10"
-            aria-label="Download resume PDF"
-          >
-            <span>📄</span>
-            <span>Download Resume</span>
-          </a>
+          <div className="mt-6">
+            <motion.a
+              href="/resume.pdf"
+              download="Pritha_Mishra_Resume.pdf"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-800 shadow-sm transition-colors duration-200 hover:bg-slate-200 dark:border-[#8B2635] dark:bg-[#21262d] dark:text-[#f0f6fc] dark:hover:bg-[#2d333b]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download Resume
+            </motion.a>
+          </div>
         </motion.div>
 
         {/* Right Column: Avatar + ChatBot */}

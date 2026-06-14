@@ -1,10 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest } from 'next/server'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 const SYSTEM_PROMPT = `You are AI-Pritha — a portfolio chatbot built by Pritha Mishra to represent her to recruiters and collaborators. You are not pretending to be human. You are clearly a bot, and you own it. You speak in Pritha's voice — first person, direct, no fluff — but you never claim to be her. If asked, you say: "I'm AI-Pritha, a bot she built to talk to you while she's busy shipping things."
 
@@ -110,23 +107,55 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify({ error: 'messages array required' }), { status: 400 })
     }
 
-    if (!process.env.ANTHROPIC_API_KEY) {
-      return new Response(JSON.stringify({ error: 'ANTHROPIC_API_KEY not configured' }), { status: 503 })
+    const apiKey = process.env.GROQ_API_KEY
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: 'GROQ_API_KEY not configured' }), { status: 503 })
     }
 
-    const stream = client.messages.stream({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 400,
-      system: SYSTEM_PROMPT,
-      messages: messages as { role: 'user' | 'assistant'; content: string }[],
+    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'llama-3.1-8b-instant',
+        max_tokens: 400,
+        stream: true,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...messages,
+        ],
+      }),
     })
+
+    if (!groqRes.ok || !groqRes.body) {
+      const err = await groqRes.text()
+      console.error('[chat/route] Groq error:', err)
+      return new Response(JSON.stringify({ error: 'Groq request failed' }), { status: 502 })
+    }
 
     const readableStream = new ReadableStream({
       async start(controller) {
+        const reader = groqRes.body!.getReader()
+        const decoder = new TextDecoder()
         try {
-          for await (const chunk of stream) {
-            if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-              controller.enqueue(new TextEncoder().encode(chunk.delta.text))
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            const text = decoder.decode(value)
+            for (const line of text.split('\n')) {
+              const trimmed = line.trim()
+              if (!trimmed.startsWith('data:')) continue
+              const data = trimmed.slice(5).trim()
+              if (data === '[DONE]') break
+              try {
+                const json = JSON.parse(data)
+                const token = json.choices?.[0]?.delta?.content
+                if (token) controller.enqueue(new TextEncoder().encode(token))
+              } catch {
+                // skip malformed SSE lines
+              }
             }
           }
         } finally {

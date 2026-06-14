@@ -67,34 +67,19 @@ export default function ChatBot({
     if (isOpen) inputRef.current?.focus();
   }, [isOpen]);
 
+  // Finalize message once stream is done AND typing has caught up
   useEffect(() => {
-    if (!isLoading) {
-      clearInterval(typingIntervalRef.current);
-      const full = fullTextRef.current;
-      if (full) {
-        setMessages(prev => {
-          const updated = [...prev];
-          const last = updated[updated.length - 1];
-          if (last?.role === 'assistant') updated[updated.length - 1] = { role: 'assistant', content: full };
-          return updated;
-        });
-        setTypedLen(full.length);
-      }
-      return;
-    }
-    fullTextRef.current = '';
-    setTypedLen(0);
-    typingIntervalRef.current = setInterval(() => {
-      setTypedLen(prev => {
-        const full = fullTextRef.current;
-        if (prev >= full.length) return prev;
-        const remaining = full.slice(prev);
-        const match = remaining.match(/^(\S+\s*)/);
-        return prev + (match ? match[0].length : 1);
-      });
-    }, 40);
-    return () => clearInterval(typingIntervalRef.current);
-  }, [isLoading]);
+    if (isLoading) return;
+    const full = fullTextRef.current;
+    if (!full || typedLen < full.length) return;
+    clearInterval(typingIntervalRef.current);
+    setMessages(prev => {
+      const updated = [...prev];
+      const last = updated[updated.length - 1];
+      if (last?.role === 'assistant') updated[updated.length - 1] = { role: 'assistant', content: full };
+      return updated;
+    });
+  }, [typedLen, isLoading]);
 
   async function send(text: string) {
     if (!text.trim() || isLoading || msgCount() >= MSG_LIMIT) return;
@@ -108,9 +93,23 @@ export default function ChatBot({
     const historyForApi = [...messages, userMsg];
     setMessages([...historyForApi, { role: 'assistant', content: '' }]);
     setInput('');
-    setIsLoading(true);
     setError(false);
     bumpCount();
+
+    fullTextRef.current = '';
+    setTypedLen(0);
+    clearInterval(typingIntervalRef.current);
+    typingIntervalRef.current = setInterval(() => {
+      setTypedLen(prev => {
+        const full = fullTextRef.current;
+        if (prev >= full.length) return prev;
+        const remaining = full.slice(prev);
+        const match = remaining.match(/^(\S+\s*)/);
+        return prev + (match ? match[0].length : 1);
+      });
+    }, 40);
+
+    setIsLoading(true);
 
     try {
       const res = await fetch('/api/chat', {
@@ -131,6 +130,7 @@ export default function ChatBot({
         fullTextRef.current += chunk;
       }
     } catch {
+      clearInterval(typingIntervalRef.current);
       setError(true);
       setMessages(prev => prev.slice(0, -1));
     } finally {

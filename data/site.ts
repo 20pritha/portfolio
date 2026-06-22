@@ -4,7 +4,7 @@ const site = {
     subtitle: 'AI Engineer — Open to Full-Time Roles',
     description: 'From a solo WiFi robot in sem 4 to GenAI pipelines running live at a US private equity firm — I build things that work, ship them, and make them reliable.',
     cta: 'See My Work',
-  },
+  },h
   about: {
     heading: 'AI engineer, final year. Shipping in production since sem 6.',
     paragraphs: [
@@ -13,7 +13,7 @@ const site = {
     ],
   },
   contact: {
-    email: 'pritha.mishra2003@gmail.com',
+    email: 'edupritha@gmail.com',
     linkedin: 'https://www.linkedin.com/in/prixie',
     linkedInLabel: 'linkedin.com/in/prixie',
     github: 'https://github.com/20pritha',

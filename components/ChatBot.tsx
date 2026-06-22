@@ -233,7 +233,7 @@ export default function ChatBot({
       {isLimited && (
         <p className="text-center text-xs text-slate-500 dark:text-[#8b949e]">
           Session limit reached —{' '}
-          <a href="mailto:pritha.mishra2003@gmail.com" className="text-[#8B2635] underline">reach out directly</a>!
+          <a href="mailto:edupritha@gmail.com" className="text-[#8B2635] underline">reach out directly</a>!
         </p>
       )}
     </div>

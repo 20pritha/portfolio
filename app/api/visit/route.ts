@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkOrigin, checkAdminToken } from '@/lib/auth';
 
 const TOTAL_KEY = 'visits:total';
 const LOG_KEY   = 'visits:log';
@@ -14,6 +15,10 @@ async function getKv() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!checkOrigin(req)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   const kv = await getKv();
   if (!kv) {
     return NextResponse.json({ total: 0 });
@@ -43,7 +48,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!checkAdminToken(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const kv = await getKv();
   if (!kv) {
     return NextResponse.json({ total: 0, log: [] });

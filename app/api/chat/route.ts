@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import { checkOrigin } from '@/lib/auth'
 import experience from '@/data/experience'
 import projects from '@/data/projects'
 import skills from '@/data/skills'
@@ -237,6 +238,14 @@ function buildSystemPrompt(): string {
 // ── POST handler ───────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
     try {
+          // 0. Origin check
+      if (!checkOrigin(req)) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403,
+          headers: { 'Content-Type': 'application/json' },
+        })
+      }
+
           // 1. Rate limiting
       const ip = getClientIp(req)
           if (!checkRateLimit(ip)) {

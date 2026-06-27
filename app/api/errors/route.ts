@@ -1,10 +1,15 @@
 import { kv } from '@vercel/kv';
 import { NextRequest, NextResponse } from 'next/server';
+import { checkOrigin, checkAdminToken } from '@/lib/auth';
 
 const LOG_KEY = 'errors:log';
 const MAX_LOG = 100;
 
 export async function POST(req: NextRequest) {
+  if (!checkOrigin(req)) {
+    return NextResponse.json({ ok: false }, { status: 403 });
+  }
+
   try {
     const body = await req.json();
     const ua   = req.headers.get('user-agent') ?? 'unknown';
@@ -27,7 +32,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!checkAdminToken(req)) {
+    return NextResponse.json({ log: [] }, { status: 401 });
+  }
+
   try {
     const raw = await kv.lrange<string>(LOG_KEY, 0, 99);
     const log = raw.map((r) => {
